@@ -236,6 +236,49 @@ textarea{
 }
 .chip.selected{ background:var(--terracotta); border-color:var(--terracotta); color:var(--cream); }
 
+.slider-wrap{ padding:18px 4px; }
+.slider-value{
+  font-family:var(--font-display);
+  font-size:2.4rem;
+  font-weight:700;
+  color:var(--terracotta-deep);
+  text-align:center;
+  margin-bottom:20px;
+}
+.slider-input{
+  width:100%;
+  height:8px;
+  border-radius:999px;
+  appearance:none;
+  -webkit-appearance:none;
+  background:linear-gradient(90deg, var(--sage), var(--terracotta));
+  outline:none;
+  cursor:pointer;
+}
+.slider-input::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+  width:26px; height:26px;
+  border-radius:50%;
+  background:var(--cream);
+  border:3px solid var(--terracotta-deep);
+  box-shadow:0 2px 8px rgba(0,0,0,0.18);
+  cursor:pointer;
+}
+.slider-input::-moz-range-thumb{
+  width:26px; height:26px;
+  border-radius:50%;
+  background:var(--cream);
+  border:3px solid var(--terracotta-deep);
+  box-shadow:0 2px 8px rgba(0,0,0,0.18);
+  cursor:pointer;
+}
+.slider-scale{
+  display:flex; justify-content:space-between;
+  font-size:0.75rem; color:var(--ink-soft);
+  margin-top:10px; font-weight:500;
+}
+
 .nav-row{ display:flex; gap:10px; margin-top:18px; }
 .nav-row .btn{ flex:1; }
 
@@ -292,7 +335,47 @@ textarea{
 }
 .settings-row:last-child{ border-bottom:none; }
 .settings-row .t{ font-weight:600; font-size:0.95rem; }
-.settings-row .d{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; }
+.settings-row .d{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; max-width:210px; }
+
+.switch{ position:relative; display:inline-block; width:46px; height:27px; flex-shrink:0; }
+.switch input{ opacity:0; width:0; height:0; }
+.switch-track{
+  position:absolute; inset:0; border-radius:999px;
+  background:var(--line); cursor:pointer; transition:background .2s ease;
+}
+.switch-thumb{
+  position:absolute; top:3px; left:3px; width:21px; height:21px;
+  border-radius:50%; background:var(--cream); transition:transform .2s ease;
+  box-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.switch input:checked + .switch-track{ background:var(--sage); }
+.switch input:checked + .switch-track .switch-thumb{ transform:translateX(19px); }
+
+.time-input{
+  width:auto; padding:9px 12px; font-size:0.95rem;
+  font-weight:600; color:var(--ink); border-radius:10px;
+  border:1.5px solid var(--line); background:var(--paper);
+  font-family:'Inter', sans-serif;
+}
+
+/* ---------- Stats ---------- */
+.stats-summary{ display:flex; gap:12px; margin:14px 0; }
+.stat-card{
+  flex:1; background:var(--paper); border:1.5px solid var(--line);
+  border-radius:var(--radius); padding:18px 14px; text-align:center;
+}
+.stat-num{ font-family:var(--font-display); font-size:1.8rem; font-weight:700; color:var(--terracotta-deep); }
+.stat-label{ font-size:0.72rem; color:var(--ink-soft); margin-top:4px; line-height:1.3; font-weight:500; }
+
+.mood-highlight{
+  background:linear-gradient(135deg, #9CB090, var(--sage));
+  border-radius:var(--radius); padding:16px 18px; color:var(--cream);
+}
+.mood-highlight .label{ color:#E4ECDE; }
+.mood-highlight-val{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; margin-top:4px; }
+
+.mood-chart{ background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius); padding:14px 10px; }
+.mood-chart-svg{ width:100%; height:auto; display:block; }
 
 .toast{
   position:fixed; bottom:96px; left:50%; transform:translateX(-50%);
@@ -327,56 +410,57 @@ textarea{
   margin:0 auto 28px;
   line-height:1.6;
 }
-.breath-circle{
-  width:225px; height:225px;
-  border-radius:50%;
+.wave-stage{
+  position:relative;
+  width:100%;
+  max-width:300px;
+  height:160px;
+  margin:0 auto;
+  border-radius:28px;
+  overflow:hidden;
+  background:linear-gradient(180deg, #F1ECE1 0%, #EAE3D4 100%);
+  transition:background 1.2s ease;
+}
+.wave-svg{ width:100%; height:100%; display:block; }
+.wave-svg path{
+  fill:none;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke:#C9BBA0;
+  transition:stroke 1s ease;
+}
+.wave-center{
+  position:absolute;
+  inset:0;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  margin:0 auto;
-  color:var(--cream);
+  pointer-events:none;
   font-family:var(--font-display);
-  transition:transform 1s ease-in-out, background 0.6s ease, box-shadow 0.6s ease;
-  box-shadow:0 0 0 0 rgba(0,0,0,0);
-}
-.breath-circle .breath-count{ font-size:1.9rem; font-weight:600; margin-top:8px; opacity:0.95; }
-.breath-circle span:first-child{ font-size:1.3rem; font-weight:600; letter-spacing:0.01em; }
-
-.breath-circle.idle{
-  background:radial-gradient(circle at 35% 30%, #E6DECF, var(--paper));
   color:var(--ink-soft);
-  transform:scale(0.88);
 }
+.wave-center span:first-child{ font-size:1.2rem; font-weight:600; }
+.wave-center .breath-count{ font-size:1.7rem; font-weight:700; margin-top:4px; opacity:0.9; }
+
+.wave-stage.idle .wave-svg path{ stroke:#D6CFC2; }
+.wave-stage.idle .wave-center{ color:var(--ink-soft); }
 
 /* Inspire : bleu doux et pastel */
-.breath-circle.inspire{
-  background:radial-gradient(circle at 35% 30%, #ABC9DD, #7FA8C9);
-  transform:scale(1.16);
-  transition:transform 6s cubic-bezier(.37,.18,.4,1), background 0.8s ease, box-shadow 6s ease-in-out;
-  box-shadow:0 0 0 16px rgba(127,168,201,0.14);
-}
+.wave-stage.inspire{ background:linear-gradient(180deg, #E4EFF6 0%, #D6E6EF 100%); }
+.wave-stage.inspire .wave-svg path{ stroke:#7FA8C9; }
+.wave-stage.inspire .wave-center{ color:#3E6E8E; }
 
-/* Bloque : lavande douce, statique */
-.breath-circle.bloque{
-  background:radial-gradient(circle at 35% 30%, #C5BBDB, #A99BC4);
-  transform:scale(1.16);
-  transition:background 0.5s ease;
-  box-shadow:0 0 0 16px rgba(169,155,196,0.16);
-  animation:pulseHold 2s ease-in-out infinite;
-}
-@keyframes pulseHold{
-  0%, 100%{ box-shadow:0 0 0 16px rgba(169,155,196,0.16); }
-  50%{ box-shadow:0 0 0 9px rgba(169,155,196,0.09); }
-}
+/* Bloque : lavande douce, suspendue */
+.wave-stage.bloque{ background:linear-gradient(180deg, #ECE7F3 0%, #E0D8ED 100%); }
+.wave-stage.bloque .wave-svg path{ stroke:#A99BC4; }
+.wave-stage.bloque .wave-center{ color:#6E5C8A; }
 
-/* Expire : abricot doux, dégonflement lent */
-.breath-circle.expire{
-  background:radial-gradient(circle at 35% 30%, #EFC6A8, #D9A07E);
-  transform:scale(0.86);
-  transition:transform 6s cubic-bezier(.37,.18,.4,1), background 0.8s ease, box-shadow 6s ease-in-out;
-  box-shadow:0 0 0 0 rgba(217,160,126,0);
-}
+/* Expire : abricot doux, vague qui s'apaise */
+.wave-stage.expire{ background:linear-gradient(180deg, #F7EBDF 0%, #F1DEC8 100%); }
+.wave-stage.expire .wave-svg path{ stroke:#D9A07E; }
+.wave-stage.expire .wave-center{ color:#A9744F; }
 
 .breath-legend{
   display:flex;
@@ -390,7 +474,7 @@ textarea{
 .breath-legend span{ display:flex; align-items:center; gap:6px; }
 .breath-legend i{ width:9px; height:9px; border-radius:50%; display:inline-block; }
 
-/* Compteur de série, affiché sous le cercle */
+/* Compteur de série, affiché sous la vague */
 .breath-rounds{ display:flex; justify-content:center; gap:10px; margin-top:26px; }
 .breath-round-dot{
   width:11px; height:11px; border-radius:50%;
@@ -405,6 +489,34 @@ textarea{
   font-weight:600;
   color:var(--ink-soft);
   margin-top:12px;
+}
+
+/* ---------- Modale de confirmation ---------- */
+.modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(36,30,28,0.5);
+  display:flex; align-items:center; justify-content:center;
+  z-index:100;
+  padding:24px;
+  animation:fadeIn .2s ease;
+}
+.modal-card{
+  background:var(--cream);
+  border-radius:var(--radius);
+  padding:24px 22px;
+  max-width:340px;
+  width:100%;
+  box-shadow:0 24px 60px -20px rgba(0,0,0,0.35);
+}
+.modal-title{
+  font-family:var(--font-display);
+  font-size:1.2rem;
+  margin-bottom:8px;
+}
+.modal-msg{
+  font-size:0.9rem;
+  color:var(--ink-soft);
+  line-height:1.5;
 }
 </style>
 </head>
@@ -567,6 +679,71 @@ const Store = (() => {
 })();
 
 
+// ============ REMINDER : notification locale quotidienne, aucun serveur ============
+const Reminder = (() => {
+  let checkInterval = null;
+
+  async function requestPermission() {
+    if (!('Notification' in window)) return 'unsupported';
+    if (Notification.permission === 'granted') return 'granted';
+    if (Notification.permission === 'denied') return 'denied';
+    return await Notification.requestPermission();
+  }
+
+  function fireNotification() {
+    const reg = navigator.serviceWorker && navigator.serviceWorker.ready;
+    const body = "Deux minutes pour faire le point sur ta journée.";
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(r => {
+        r.showNotification('Ancrage', {
+          body,
+          icon: 'icon-192.png',
+          badge: 'icon-192.png',
+          tag: 'ancrage-daily'
+        });
+      });
+    } else if (Notification.permission === 'granted') {
+      new Notification('Ancrage', { body, icon: 'icon-192.png' });
+    }
+  }
+
+  function todayAt(hh, mm) {
+    const d = new Date();
+    d.setHours(hh, mm, 0, 0);
+    return d;
+  }
+
+  // Vérifie chaque minute si l'heure de rappel est atteinte et si aucune entrée n'existe encore aujourd'hui
+  function startWatcher(getSettings, hasEntryToday) {
+    stopWatcher();
+    checkInterval = setInterval(() => {
+      const settings = getSettings();
+      if (!settings || !settings.enabled) return;
+      const now = new Date();
+      const target = todayAt(settings.hour, settings.minute);
+      const diffMs = now - target;
+      // fenêtre de tolérance de 60s autour de l'heure cible
+      if (diffMs >= 0 && diffMs < 60000) {
+        const lastFired = settings.lastFiredDate;
+        const todayStr = now.toISOString().slice(0,10);
+        if (lastFired !== todayStr && !hasEntryToday()) {
+          fireNotification();
+          settings.lastFiredDate = todayStr;
+          Store.setMeta('reminder', settings);
+        }
+      }
+    }, 30000);
+  }
+
+  function stopWatcher() {
+    if (checkInterval) clearInterval(checkInterval);
+    checkInterval = null;
+  }
+
+  return { requestPermission, startWatcher, stopWatcher, fireNotification };
+})();
+
+
 // ============ CONTENU : synthèse des 3 exercices (Comitys) ============
 
 // Parcours rapide quotidien (synthèse des 3 PDF en 4 questions, ~2 min)
@@ -671,7 +848,34 @@ const BREATHING = {
   rounds: 3
 };
 
-const FULL_EXERCISES = [FULL_VOIX, FULL_COURAGE, FULL_REVEIL];
+// Parcours complet #4 — Remettre en question les pensées négatives (restructuration cognitive)
+const FULL_PENSEES = {
+  key: 'pensees_negatives_full',
+  title: "Remettre en question mes pensées",
+  tag: "Exercice complet · 10 min",
+  objective: "Prendre du recul sur une pensée qui fait mal, en s'appuyant sur les faits",
+  intro: "Quand une émotion forte nous submerge, une pensée automatique en est souvent à l'origine — pas toujours vraie, même si elle en a l'air. Cet exercice aide à la déposer, l'examiner, et construire une vision plus équilibrée.",
+  steps: [
+    { id:'p1', text:"Je décris la situation.", type:'text', hint:"Quoi ? Où ? Quand ? Avec qui ?" },
+    { id:'p2', text:"Quelles émotions est-ce que je ressens ?", type:'chips',
+      options:['Colère','Tristesse','Anxiété','Honte','Dégoût','Peur','Culpabilité','Déception','Fierté','Soulagement'], multi:true },
+    { id:'p3', text:"À quelle intensité je ressens l'émotion la plus forte ?", type:'slider', hint:"0% = à peine perceptible, 100% = la plus forte intensité possible." },
+    { id:'p4', text:"Quelles pensées traversaient mon esprit juste avant de me sentir ainsi ?", type:'text',
+      hint:"Qu'est-ce que ça signifie pour moi, mon futur, ma vie ? Que craignais-je ? Quelle est la pire chose qui puisse arriver ? Comment je pense être perçu·e ?" },
+    { id:'p5', text:"Parmi ces pensées, laquelle porte la plus grande charge émotionnelle ? J'écris cette \"pensée chaude\".", type:'text' },
+    { id:'p6', text:"À quel point je crois en cette pensée chaude ?", type:'slider', hint:"0% = je n'y crois pas du tout, 100% = j'y crois complètement." },
+    { id:'p7', text:"Quels faits soutiennent cette pensée ?", type:'text', hint:"Des faits, pas des interprétations ni de la lecture de pensée." },
+    { id:'p8', text:"Quels faits la contredisent ?", type:'text',
+      hint:"Ai-je déjà vécu une situation qui montre que cette pensée n'est pas toujours vraie ? Que dirais-je à un·e ami·e qui pensait ça ? Que me dirait-on à moi ?" },
+    { id:'p9', text:"En tenant compte des deux côtés, quelle est ma pensée alternative, plus équilibrée ?", type:'text',
+      hint:"Essaie de relier les faits pour et contre avec un \"et\" plutôt qu'un \"mais\"." },
+    { id:'p10', text:"Maintenant, à quelle intensité je ressens cette émotion ?", type:'slider', hint:"Compare avec ton score de départ." },
+    { id:'p11', text:"Quel petit pas puis-je faire ?", type:'text', hint:"Soit pour changer la situation, soit pour réagir différemment la prochaine fois." }
+  ],
+  bilan: true
+};
+
+const FULL_EXERCISES = [FULL_VOIX, FULL_COURAGE, FULL_REVEIL, FULL_PENSEES];
 
 
 // ============ APP : état global + rendu ============
@@ -685,7 +889,8 @@ const App = (() => {
     entriesIndex: {},       // { 'YYYY-MM-DD': {payload} } -- chiffré, chargé une fois
     viewMonth: new Date(),  // mois affiché dans le calendrier
     selectedEntryDate: null,
-    toastTimer: null
+    toastTimer: null,
+    reminderSettings: { enabled: false, hour: 20, minute: 0, lastFiredDate: null }
   };
 
   function dateKey(d) {
@@ -710,6 +915,10 @@ const App = (() => {
     if ('serviceWorker' in navigator) {
       try { await navigator.serviceWorker.register('sw.js'); } catch(e) {}
     }
+    const savedReminder = await Store.getMeta('reminder');
+    if (savedReminder) state.reminderSettings = savedReminder;
+    Reminder.startWatcher(() => state.reminderSettings, () => !!state.entriesIndex[state.todayKey]);
+
     const verifier = await Store.getMeta('verifier');
     if (!verifier) {
       state.screen = 'setup';
@@ -788,8 +997,8 @@ const App = (() => {
 
   function moodScore(moodLabels) {
     if (!moodLabels || !moodLabels.length) return null;
-    const low = ['Stressé·e','En colère','Déçu·e','Inquiet·ète','Découragé·e','Agité·e'];
-    const high = ['Motivé·e','Joyeux·se','Paisible','Ravi·e'];
+    const low = ['Stressé·e','En colère','Déçu·e','Inquiet·ète','Découragé·e','Agité·e','Colère','Tristesse','Anxiété','Honte','Dégoût','Peur','Culpabilité','Déception'];
+    const high = ['Motivé·e','Joyeux·se','Paisible','Ravi·e','Fierté','Soulagement'];
     let score = 0;
     moodLabels.forEach(m => { if (low.includes(m)) score -= 1; if (high.includes(m)) score += 1; });
     return score;
@@ -834,7 +1043,7 @@ const App = (() => {
     const step = currentStep();
     if (step) state.flow.answers[step.id] = value;
     if (step && step.type === 'chips') {
-      const moodSteps = ['reveil_humeur', 'r1'];
+      const moodSteps = ['reveil_humeur', 'r1', 'p2'];
       if (moodSteps.includes(step.id)) state.flow.mood = value;
     }
     if (state.flow.idx + 1 >= state.flow.steps.length) {
@@ -880,7 +1089,14 @@ const App = (() => {
     screen.innerHTML = `
       <div class="breath-intro" id="breath-intro">
         <p class="breath-tagline">Pose ton téléphone à plat, installe-toi confortablement, et laisse ton souffle ralentir tout doucement.</p>
-        <div class="breath-circle idle"><span id="breath-label">On y va, en douceur</span></div>
+        <div class="wave-stage idle">
+          <svg class="wave-svg" id="wave-svg" viewBox="0 0 320 160" preserveAspectRatio="none">
+            <path id="wave-path" d="" />
+          </svg>
+          <div class="wave-center">
+            <span id="breath-label">On y va, en douceur</span>
+          </div>
+        </div>
         <div class="breath-legend">
           <span><i style="background:#7FA8C9"></i> Inspire</span>
           <span><i style="background:#A99BC4"></i> Bloque</span>
@@ -892,14 +1108,54 @@ const App = (() => {
       </div>
     `;
     content.appendChild(screen);
+    drawWave(screen.querySelector('#wave-path'), 0);
 
-    top.querySelector('#breath-close').onclick = () => {
+    top.querySelector('#breath-close').addEventListener('click', () => {
+      stopWaveLoop();
       stopBreathing();
       state.screen = 'home';
       render();
-    };
+    });
 
     screen.querySelector('#breath-start').onclick = () => runBreathingSequence(screen);
+  }
+
+  // Dessine une vague sinusoïdale douce. amplitude: 0 (plate) à 1 (pleine)
+  function drawWave(pathEl, amplitude, phaseOffset, wavelength) {
+    if (!pathEl || !pathEl.isConnected) { stopWaveLoop(); return; }
+    const w = 320, h = 160, midY = h / 2;
+    const maxAmp = 34;
+    const amp = maxAmp * amplitude;
+    const wl = wavelength || 160;
+    const points = [];
+    for (let x = -20; x <= w + 20; x += 8) {
+      const y = midY + Math.sin((x / wl) * Math.PI * 2 + (phaseOffset || 0)) * amp;
+      points.push(`${x},${y.toFixed(1)}`);
+    }
+    pathEl.setAttribute('d', 'M' + points.join(' L'));
+  }
+
+  let waveAnimFrame = null;
+  let waveState = { amplitude: 0, targetAmplitude: 0, phase: 0, lerpRate: 0.04, wavelength: 160, targetWavelength: 160 };
+
+  function startWaveLoop(pathEl) {
+    stopWaveLoop();
+    function tick() {
+      // chaque phase a sa propre vitesse d'approche -> une vraie texture de mouvement par phase
+      waveState.amplitude += (waveState.targetAmplitude - waveState.amplitude) * waveState.lerpRate;
+      waveState.wavelength += (waveState.targetWavelength - waveState.wavelength) * waveState.lerpRate;
+      // la houle avance plus vite quand l'amplitude est grande (vivant), plus doucement quand elle est plate
+      const speed = 0.018 + waveState.amplitude / 34 * 0.03;
+      waveState.phase += speed;
+      drawWave(pathEl, waveState.amplitude, waveState.phase, waveState.wavelength);
+      waveAnimFrame = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function stopWaveLoop() {
+    if (waveAnimFrame) cancelAnimationFrame(waveAnimFrame);
+    waveAnimFrame = null;
   }
 
   function runBreathingSequence(screen) {
@@ -909,16 +1165,22 @@ const App = (() => {
 
     const intro = screen.querySelector('#breath-intro');
     intro.innerHTML = `
-      <div class="breath-circle" id="breath-circle">
-        <span id="breath-label">${phases[0].label}</span>
-        <span class="breath-count" id="breath-count">${secondsLeft}</span>
+      <div class="wave-stage" id="wave-stage">
+        <svg class="wave-svg" id="wave-svg" viewBox="0 0 320 160" preserveAspectRatio="none">
+          <path id="wave-path" d="" />
+        </svg>
+        <div class="wave-center">
+          <span id="breath-label">${phases[0].label}</span>
+          <span class="breath-count" id="breath-count">${secondsLeft}</span>
+        </div>
       </div>
       <div class="breath-rounds" id="breath-rounds">
         ${Array.from({length: totalRounds}).map((_,i)=>`<span class="breath-round-dot${i===0?' active':''}"></span>`).join('')}
       </div>
       <div class="breath-round-label" id="breath-round-label">Série 1 sur ${totalRounds}</div>
     `;
-    const circle = screen.querySelector('#breath-circle');
+    const stage = screen.querySelector('#wave-stage');
+    const wavePath = screen.querySelector('#wave-path');
     const label = screen.querySelector('#breath-label');
     const count = screen.querySelector('#breath-count');
     const roundLabel = screen.querySelector('#breath-round-label');
@@ -933,11 +1195,26 @@ const App = (() => {
     }
 
     function applyPhaseClass() {
-      circle.classList.remove('inspire','bloque','expire');
+      stage.classList.remove('inspire','bloque','expire');
       const cls = phases[phaseIdx].label === 'Inspire' ? 'inspire' : phases[phaseIdx].label === 'Bloque' ? 'bloque' : 'expire';
-      circle.classList.add(cls);
+      stage.classList.add(cls);
+      // chaque phase a sa propre texture : inspire monte avec énergie, bloque se stabilise, expire s'étire en douceur
+      if (cls === 'inspire') {
+        waveState.targetAmplitude = 1;
+        waveState.lerpRate = 0.05;
+        waveState.targetWavelength = 130;
+      } else if (cls === 'bloque') {
+        waveState.targetAmplitude = 0.92;
+        waveState.lerpRate = 0.025;
+        waveState.targetWavelength = 150;
+      } else {
+        waveState.targetAmplitude = 0.1;
+        waveState.lerpRate = 0.018;
+        waveState.targetWavelength = 210;
+      }
     }
     applyPhaseClass();
+    startWaveLoop(wavePath);
 
     breathTimer = setInterval(() => {
       secondsLeft -= 1;
@@ -962,16 +1239,24 @@ const App = (() => {
   }
 
   function finishBreathing(screen) {
+    stopWaveLoop();
+    waveState = { amplitude: 0, targetAmplitude: 0, phase: 0 };
     screen.querySelector('#breath-intro').innerHTML = `
-      <div class="breath-circle idle"><span>✓</span></div>
+      <div class="wave-stage idle">
+        <svg class="wave-svg" id="wave-done-svg" viewBox="0 0 320 160" preserveAspectRatio="none">
+          <path id="wave-done-path" d="" />
+        </svg>
+        <div class="wave-center"><span>✓</span></div>
+      </div>
       <p class="breath-tagline" style="margin-top:22px;">Bien joué. Prends un instant avant de reprendre ta journée.</p>
       <div class="nav-row" style="margin-top:24px;">
         <button class="btn btn-ghost btn-block" id="breath-again">Refaire</button>
         <button class="btn btn-primary btn-block" id="breath-done">Terminer</button>
       </div>
     `;
+    drawWave(screen.querySelector('#wave-done-path'), 0.08);
     screen.querySelector('#breath-again').onclick = () => runBreathingSequence(screen);
-    screen.querySelector('#breath-done').onclick = () => { state.screen = 'home'; render(); };
+    screen.querySelector('#breath-done').onclick = () => { stopWaveLoop(); state.screen = 'home'; render(); };
   }
 
   // ---------- RENDER ROOT ----------
@@ -990,12 +1275,13 @@ const App = (() => {
     if (state.screen === 'flow') renderFlow(content);
     if (state.screen === 'breathing') renderBreathing(content);
     if (state.screen === 'calendar') renderCalendar(content);
+    if (state.screen === 'stats') renderStats(content);
     if (state.screen === 'entry') renderEntryDetail(content);
     if (state.screen === 'settings') renderSettings(content);
 
     root.appendChild(content);
 
-    if (['home','calendar','settings'].includes(state.screen)) {
+    if (['home','calendar','stats','settings'].includes(state.screen)) {
       root.appendChild(renderBottomNav());
     }
   }
@@ -1126,7 +1412,7 @@ const App = (() => {
         <div class="nav-row"><button class="btn btn-primary btn-block" id="flow-start">Commencer</button></div>
       `;
       content.appendChild(screen);
-      top.querySelector('#flow-close').onclick = () => { state.flow=null; state.screen='home'; render(); };
+      top.querySelector('#flow-close').addEventListener('click', () => { state.flow=null; state.screen='home'; render(); });
       screen.querySelector('#flow-start').onclick = () => { f.idx = 0; render(); };
       return;
     }
@@ -1165,6 +1451,19 @@ const App = (() => {
       });
       qBlock.appendChild(chipsWrap);
       getValue = () => Array.from(selected);
+    } else if (step.type === 'slider') {
+      const initial = f.answers[step.id] !== undefined ? f.answers[step.id] : 50;
+      const sliderWrap = el('div', 'slider-wrap');
+      sliderWrap.innerHTML = `
+        <div class="slider-value" id="slider-value">${initial}%</div>
+        <input type="range" min="0" max="100" step="5" value="${initial}" class="slider-input" id="slider-input">
+        <div class="slider-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+      `;
+      qBlock.appendChild(sliderWrap);
+      const input = sliderWrap.querySelector('#slider-input');
+      const valueLabel = sliderWrap.querySelector('#slider-value');
+      input.addEventListener('input', () => { valueLabel.textContent = input.value + '%'; });
+      getValue = () => parseInt(input.value, 10);
     } else {
       const ta = document.createElement('textarea');
       ta.placeholder = 'Écris librement ici…';
@@ -1190,11 +1489,13 @@ const App = (() => {
     screen.appendChild(navRow);
 
     content.appendChild(screen);
-    top.querySelector('#flow-close').onclick = () => {
-      if (confirm('Quitter sans terminer ? Tes réponses ne seront pas enregistrées.')) {
-        state.flow = null; state.screen = 'home'; render();
-      }
-    };
+    top.querySelector('#flow-close').addEventListener('click', () => {
+      showConfirmModal(
+        'Quitter sans terminer ?',
+        "Tes réponses ne seront pas enregistrées.",
+        () => { stopBreathing(); state.flow = null; state.screen = 'home'; render(); }
+      );
+    });
   }
 
   // ---------- CALENDAR ----------
@@ -1280,6 +1581,133 @@ const App = (() => {
     }
   }
 
+  // ---------- STATS ----------
+  async function renderStats(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Statistiques</h1><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    screen.innerHTML = `<p class="q-hint">Analyse en cours…</p>`;
+    content.appendChild(screen);
+
+    const allDates = Object.keys(state.entriesIndex).sort();
+    if (!allDates.length) {
+      screen.innerHTML = `<div class="empty-state"><span class="ic">📈</span>Écris ta première entrée pour voir tes statistiques apparaître ici.</div>`;
+      return;
+    }
+
+    // 30 derniers jours glissants
+    const days = [];
+    const today = new Date();
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      days.push(dateKey(d));
+    }
+
+    const dailyScores = [];
+    let writtenCount = 0;
+    const moodTally = {};
+
+    for (const dStr of days) {
+      const entry = state.entriesIndex[dStr] ? await decryptEntry(dStr) : null;
+      if (entry && entry.sections && entry.sections.length) {
+        writtenCount++;
+        const scores = entry.sections.map(s => moodScore(s.mood)).filter(s => s !== null);
+        entry.sections.forEach(s => (s.mood || []).forEach(m => { moodTally[m] = (moodTally[m]||0) + 1; }));
+        dailyScores.push(scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null);
+      } else {
+        dailyScores.push(null);
+      }
+    }
+
+    const validScores = dailyScores.filter(s => s !== null);
+    const avgScore = validScores.length ? validScores.reduce((a,b)=>a+b,0)/validScores.length : 0;
+    const firstHalf = validScores.slice(0, Math.floor(validScores.length/2));
+    const secondHalf = validScores.slice(Math.floor(validScores.length/2));
+    const avgFirst = firstHalf.length ? firstHalf.reduce((a,b)=>a+b,0)/firstHalf.length : 0;
+    const avgSecond = secondHalf.length ? secondHalf.reduce((a,b)=>a+b,0)/secondHalf.length : 0;
+    const trend = avgSecond - avgFirst;
+
+    let topMood = null, topMoodCount = 0;
+    Object.entries(moodTally).forEach(([m,c]) => { if (c > topMoodCount) { topMood = m; topMoodCount = c; } });
+
+    screen.innerHTML = '';
+
+    // Cartes résumé
+    const summaryGrid = el('div', 'stats-summary');
+    summaryGrid.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-num">${writtenCount}</div>
+        <div class="stat-label">jours écrits<br>sur 30</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${trend > 0.15 ? '↗' : trend < -0.15 ? '↘' : '→'}</div>
+        <div class="stat-label">${trend > 0.15 ? 'en amélioration' : trend < -0.15 ? 'en baisse' : 'stable'}</div>
+      </div>
+    `;
+    screen.appendChild(summaryGrid);
+
+    if (topMood) {
+      const moodCard = el('div', 'mood-highlight');
+      moodCard.innerHTML = `<span class="label">Ressenti le plus fréquent</span><div class="mood-highlight-val">${topMood}</div>`;
+      screen.appendChild(moodCard);
+    }
+
+    // Graphique
+    const chartLabel = el('div', 'label');
+    chartLabel.textContent = '30 derniers jours';
+    chartLabel.style.margin = '24px 0 12px';
+    screen.appendChild(chartLabel);
+
+    screen.appendChild(buildMoodChart(dailyScores, days));
+
+    const legend = el('div', 'legend');
+    legend.style.marginTop = '14px';
+    legend.innerHTML = `
+      <span><i class="legend-ic">⛈️</i> difficile</span>
+      <span><i class="legend-ic">☁️</i> neutre</span>
+      <span><i class="legend-ic">☀️</i> léger</span>
+    `;
+    screen.appendChild(legend);
+  }
+
+  function buildMoodChart(dailyScores, days) {
+    const w = 320, h = 140, pad = 16;
+    const n = dailyScores.length;
+    const stepX = (w - pad*2) / (n - 1);
+    const scoreToY = (s) => {
+      // score de -1 (bas) à 1 (haut) mappé sur la hauteur, null -> milieu pointillé
+      const clamped = Math.max(-1, Math.min(1, s));
+      return h/2 - clamped * ((h - pad*2)/2);
+    };
+
+    let pathPoints = [];
+    let dots = [];
+    dailyScores.forEach((s, i) => {
+      if (s === null) return;
+      const x = pad + i * stepX;
+      const y = scoreToY(s);
+      pathPoints.push(`${x},${y}`);
+      const color = s < -0.3 ? '#C98B6B' : s > 0.3 ? '#8A9A7E' : '#D9C9A8';
+      dots.push(`<circle cx="${x}" cy="${y}" r="3.5" fill="${color}" />`);
+    });
+
+    const pathD = pathPoints.length > 1 ? 'M' + pathPoints.join(' L') : '';
+
+    const svg = `
+      <svg viewBox="0 0 ${w} ${h}" class="mood-chart-svg" xmlns="http://www.w3.org/2000/svg">
+        <line x1="${pad}" y1="${h/2}" x2="${w-pad}" y2="${h/2}" stroke="#E4D9C8" stroke-width="1" stroke-dasharray="3,4" />
+        ${pathD ? `<path d="${pathD}" fill="none" stroke="#D97757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />` : ''}
+        ${dots.join('')}
+      </svg>
+    `;
+    const wrap = el('div', 'mood-chart');
+    wrap.innerHTML = svg;
+    return wrap;
+  }
+
   // ---------- ENTRY DETAIL ----------
   async function renderEntryDetail(content) {
     const top = el('div', 'topbar');
@@ -1307,12 +1735,17 @@ const App = (() => {
       sectionWrap.appendChild(titleEl);
 
       Object.entries(section.answers).forEach(([qid, val]) => {
-        if (!val || (Array.isArray(val) && !val.length)) return;
+        const isEmpty = val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
+        if (isEmpty) return;
         const block = el('div', 'entry-block');
         const qLabel = findQuestionLabel(qid);
+        let displayVal;
+        if (Array.isArray(val)) displayVal = val.join(', ');
+        else if (typeof val === 'number') displayVal = val + '%';
+        else displayVal = escapeHtml(val);
         block.innerHTML = `
           <div class="entry-q">${qLabel}</div>
-          <div class="entry-a">${Array.isArray(val) ? val.join(', ') : escapeHtml(val)}</div>
+          <div class="entry-a">${displayVal}</div>
         `;
         sectionWrap.appendChild(block);
       });
@@ -1323,7 +1756,7 @@ const App = (() => {
   }
 
   function findQuestionLabel(qid) {
-    const all = [...QUICK_FLOW, ...FULL_VOIX.steps, ...FULL_COURAGE.steps, ...FULL_REVEIL.steps, ...BILAN_STEPS];
+    const all = [...QUICK_FLOW, ...FULL_VOIX.steps, ...FULL_COURAGE.steps, ...FULL_REVEIL.steps, ...FULL_PENSEES.steps, ...BILAN_STEPS];
     const found = all.find(q => q.id === qid);
     return found ? found.text : qid;
   }
@@ -1335,7 +1768,21 @@ const App = (() => {
     content.appendChild(top);
 
     const screen = el('div', 'screen');
+    const r = state.reminderSettings;
+    const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
     screen.innerHTML = `
+      <div class="settings-row">
+        <div><div class="t">Rappel quotidien</div><div class="d">Une notification si tu n'as pas encore écrit aujourd'hui</div></div>
+        <label class="switch">
+          <input type="checkbox" id="set-reminder-toggle" ${r.enabled ? 'checked' : ''}>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="settings-row" id="reminder-time-row" style="${r.enabled ? '' : 'display:none;'}">
+        <div><div class="t">Heure du rappel</div><div class="d">À quel moment de la journée ?</div></div>
+        <input type="time" id="set-reminder-time" value="${timeStr}" class="time-input">
+      </div>
+      ${r.enabled ? `<p class="q-hint" style="margin-bottom:18px;">Le rappel fonctionne tant que l'app reste ouverte en arrière-plan. Si tu l'as complètement fermée, ouvre-la une fois dans la journée pour qu'il se déclenche.</p>` : ''}
       <div class="settings-row">
         <div><div class="t">Verrouiller maintenant</div><div class="d">Reviens à l'écran de mot de passe</div></div>
         <button class="btn btn-ghost btn-sm" id="set-lock">Verrouiller</button>
@@ -1350,15 +1797,49 @@ const App = (() => {
     `;
     content.appendChild(screen);
 
-    screen.querySelector('#set-lock').onclick = lockApp;
-    screen.querySelector('#set-wipe').onclick = async () => {
-      if (confirm('Effacer tout le journal ? Cette action est irréversible.')) {
-        await Store.deleteAll();
-        state.password = null;
-        state.entriesIndex = {};
-        state.screen = 'setup';
-        render();
+    const toggle = screen.querySelector('#set-reminder-toggle');
+    const timeRow = screen.querySelector('#reminder-time-row');
+    const timeInput = screen.querySelector('#set-reminder-time');
+
+    toggle.onchange = async () => {
+      if (toggle.checked) {
+        const perm = await Reminder.requestPermission();
+        if (perm !== 'granted') {
+          toggle.checked = false;
+          showToast(perm === 'unsupported' ? "Notifications non supportées sur cet appareil" : "Autorise les notifications pour activer le rappel");
+          return;
+        }
       }
+      state.reminderSettings.enabled = toggle.checked;
+      timeRow.style.display = toggle.checked ? '' : 'none';
+      await Store.setMeta('reminder', state.reminderSettings);
+      showToast(toggle.checked ? 'Rappel activé' : 'Rappel désactivé');
+    };
+
+    timeInput.onchange = async () => {
+      const [hh, mm] = timeInput.value.split(':').map(Number);
+      state.reminderSettings.hour = hh;
+      state.reminderSettings.minute = mm;
+      state.reminderSettings.lastFiredDate = null;
+      await Store.setMeta('reminder', state.reminderSettings);
+      showToast('Heure mise à jour : ' + timeInput.value);
+    };
+
+    screen.querySelector('#set-lock').onclick = lockApp;
+    screen.querySelector('#set-wipe').onclick = () => {
+      showConfirmModal(
+        'Effacer tout le journal ?',
+        'Cette action est irréversible : toutes les entrées et le mot de passe seront définitivement supprimés.',
+        async () => {
+          await Store.deleteAll();
+          state.password = null;
+          state.entriesIndex = {};
+          state.reminderSettings = { enabled: false, hour: 20, minute: 0, lastFiredDate: null };
+          state.screen = 'setup';
+          render();
+        },
+        'Effacer'
+      );
     };
   }
 
@@ -1368,6 +1849,7 @@ const App = (() => {
     const items = [
       { key:'home', ic:'✦', label:'Aujourd\'hui' },
       { key:'calendar', ic:'▦', label:'Calendrier' },
+      { key:'stats', ic:'📈', label:'Statistiques' },
       { key:'settings', ic:'⚙', label:'Réglages' }
     ];
     items.forEach(it => {
@@ -1380,6 +1862,26 @@ const App = (() => {
   }
 
   // ---------- HELPERS ----------
+  // ---------- CONFIRM MODAL (remplace window.confirm, peu fiable en PWA/APK) ----------
+  function showConfirmModal(title, message, onConfirm, confirmLabel) {
+    const overlay = el('div', 'modal-overlay');
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <h3 class="modal-title">${title}</h3>
+        <p class="modal-msg">${message}</p>
+        <div class="nav-row" style="margin-top:20px;">
+          <button class="btn btn-ghost btn-block" id="modal-cancel">Annuler</button>
+          <button class="btn btn-primary btn-block" id="modal-confirm">${confirmLabel || 'Quitter'}</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('#modal-cancel').onclick = close;
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('#modal-confirm').onclick = () => { close(); onConfirm(); };
+  }
+
   function el(tag, className) {
     const e = document.createElement(tag);
     if (className) e.className = className;
