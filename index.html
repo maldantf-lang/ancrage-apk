@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#241E1C">
+<title>Ancrage — Journal intime</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Comfortaa:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --ink:#241E1C;
+  --ink-soft:#4A413D;
+  --cream:#FBF6EF;
+  --paper:#F4EDE2;
+  --terracotta:#D97757;
+  --terracotta-deep:#B85C3F;
+  --sage:#8A9A7E;
+  --line:#E4D9C8;
+  --radius:18px;
+  --font-display:'Comfortaa', sans-serif;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+body{
+  font-family:'Inter', sans-serif;
+  background:var(--ink);
+  color:var(--cream);
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+}
+
+#app{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  background:var(--cream);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ---------- Typo générique ---------- */
+h1,h2,h3{
+  font-family:var(--font-display);
+  font-weight:700;
+  letter-spacing:-0.005em;
+  line-height:1.2;
+}
+p{ line-height:1.55; }
+.label{
+  font-size:0.72rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  font-weight:600;
+  color:var(--ink-soft);
+}
+
+/* ---------- Écrans utilitaires ---------- */
+.screen{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:28px 22px 100px;
+  animation:fadeIn .35s ease;
+}
+@keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+.btn{
+  font-family:'Inter', sans-serif;
+  font-weight:600;
+  font-size:0.95rem;
+  border:none;
+  border-radius:999px;
+  padding:15px 26px;
+  cursor:pointer;
+  transition:transform .15s ease, opacity .15s ease;
+}
+.btn:active{ transform:scale(0.97); }
+.btn-primary{ background:var(--terracotta); color:var(--cream); }
+.btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--line); }
+.btn-block{ width:100%; }
+.btn-sm{ padding:10px 18px; font-size:0.85rem; }
+
+input[type=password], input[type=text], textarea{
+  font-family:'Inter', sans-serif;
+  width:100%;
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  padding:14px 16px;
+  font-size:1rem;
+  background:var(--paper);
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s ease;
+}
+input:focus, textarea:focus{ border-color:var(--terracotta); }
+textarea{
+  font-family:'Fraunces', serif;
+  font-size:1.05rem;
+  resize:none;
+  line-height:1.5;
+}
+
+/* ---------- Lock screen ---------- */
+.lock-wrap{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  text-align:center;
+  gap:22px;
+}
+.lock-mark{
+  width:64px; height:64px;
+  border-radius:50%;
+  border:2px solid var(--terracotta);
+  display:flex; align-items:center; justify-content:center;
+}
+.lock-mark .dot{ width:14px; height:14px; border-radius:50%; background:var(--terracotta); }
+.lock-wrap h1{ font-size:1.7rem; }
+.lock-wrap p.sub{ color:var(--ink-soft); font-size:0.92rem; max-width:280px; }
+.lock-form{ width:100%; max-width:300px; display:flex; flex-direction:column; gap:12px; }
+.error-msg{ color:var(--terracotta-deep); font-size:0.85rem; min-height:1.2em; }
+
+/* ---------- Topbar ---------- */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 22px 4px;
+}
+.topbar h1{ font-size:1.3rem; }
+.icon-btn{
+  width:38px; height:38px;
+  border-radius:50%;
+  border:1.5px solid var(--line);
+  background:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  font-size:1.1rem;
+}
+
+/* ---------- Bottom nav ---------- */
+.bottom-nav{
+  position:fixed;
+  bottom:0; left:0; right:0;
+  max-width:480px;
+  margin:0 auto;
+  background:var(--cream);
+  border-top:1px solid var(--line);
+  display:flex;
+  padding:10px 18px calc(10px + env(safe-area-inset-bottom));
+  gap:6px;
+}
+.nav-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  background:none;
+  border:none;
+  padding:8px 4px;
+  cursor:pointer;
+  color:var(--ink-soft);
+  font-family:'Inter', sans-serif;
+  font-size:0.68rem;
+  font-weight:600;
+}
+.nav-btn .ic{ font-size:1.25rem; }
+.nav-btn.active{ color:var(--terracotta-deep); }
+
+/* ---------- Home / Aujourd'hui ---------- */
+.streak-card{
+  background:var(--ink);
+  color:var(--cream);
+  border-radius:var(--radius);
+  padding:20px;
+  margin:14px 0 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.streak-card .num{ font-family:'Fraunces',serif; font-size:2.1rem; font-weight:600; color:var(--terracotta); }
+.streak-card .txt{ font-size:0.78rem; color:#CFC4B8; max-width:140px; }
+
+.mode-card{
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:14px;
+  cursor:pointer;
+  border:1.5px solid var(--line);
+  background:var(--paper);
+  transition:transform .15s ease;
+}
+.mode-card:active{ transform:scale(0.985); }
+.mode-card.featured{
+  background:linear-gradient(135deg, var(--terracotta), var(--terracotta-deep));
+  border:none;
+  color:var(--cream);
+}
+.mode-card .tag{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; font-weight:700; opacity:0.75; }
+.mode-card h3{ font-size:1.15rem; margin:6px 0 4px; }
+.mode-card p{ font-size:0.85rem; opacity:0.85; }
+.mode-card.done{ opacity:0.55; }
+.mode-card .check{ float:right; font-size:1.1rem; }
+
+/* ---------- Question flow ---------- */
+.progress-dots{ display:flex; gap:6px; margin-bottom:22px; }
+.progress-dots span{ height:4px; flex:1; background:var(--line); border-radius:2px; overflow:hidden; }
+.progress-dots span i{ display:block; height:100%; background:var(--terracotta); width:0%; transition:width .3s ease; }
+
+.q-block{ flex:1; display:flex; flex-direction:column; }
+.q-eyebrow{ color:var(--terracotta-deep); font-weight:700; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
+.q-text{ font-size:1.4rem; margin-bottom:18px; }
+.q-hint{ color:var(--ink-soft); font-size:0.85rem; margin-bottom:14px; line-height:1.5; }
+.q-block textarea{ flex:1; min-height:160px; }
+
+.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.chip{
+  border:1.5px solid var(--line);
+  background:var(--paper);
+  border-radius:999px;
+  padding:9px 15px;
+  font-size:0.85rem;
+  cursor:pointer;
+  font-weight:500;
+}
+.chip.selected{ background:var(--terracotta); border-color:var(--terracotta); color:var(--cream); }
+
+.slider-wrap{ padding:18px 4px; }
+.slider-value{
+  font-family:var(--font-display);
+  font-size:2.4rem;
+  font-weight:700;
+  color:var(--terracotta-deep);
+  text-align:center;
+  margin-bottom:20px;
+}
+.slider-input{
+  width:100%;
+  height:8px;
+  border-radius:999px;
+  appearance:none;
+  -webkit-appearance:none;
+  background:linear-gradient(90deg, var(--sage), var(--terracotta));
+  outline:none;
+  cursor:pointer;
+}
+.slider-input::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+  width:26px; height:26px;
+  border-radius:50%;
+  background:var(--cream);
+  border:3px solid var(--terracotta-deep);
+  box-shadow:0 2px 8px rgba(0,0,0,0.18);
+  cursor:pointer;
+}
+.slider-input::-moz-range-thumb{
+  width:26px; height:26px;
+  border-radius:50%;
+  background:var(--cream);
+  border:3px solid var(--terracotta-deep);
+  box-shadow:0 2px 8px rgba(0,0,0,0.18);
+  cursor:pointer;
+}
+.slider-scale{
+  display:flex; justify-content:space-between;
+  font-size:0.75rem; color:var(--ink-soft);
+  margin-top:10px; font-weight:500;
+}
+
+.nav-row{ display:flex; gap:10px; margin-top:18px; }
+.nav-row .btn{ flex:1; }
+
+/* ---------- Calendrier ---------- */
+.cal-header{ display:flex; align-items:center; justify-content:space-between; margin:18px 0 16px; }
+.cal-header h2{ font-size:1.15rem; }
+.cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:7px; }
+.cal-dow{ text-align:center; font-size:0.68rem; color:var(--ink-soft); font-weight:600; padding-bottom:4px; }
+.cal-cell{
+  aspect-ratio:1;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.82rem;
+  position:relative;
+  cursor:default;
+  color:var(--ink-soft);
+}
+.cal-cell.empty{ visibility:hidden; }
+.cal-cell.has-entry{
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  color:var(--ink);
+  font-weight:600;
+  cursor:pointer;
+  flex-direction:column;
+  gap:0;
+}
+.cal-cell .cal-day-num{ font-size:0.74rem; line-height:1; }
+.cal-cell .cal-weather{ font-size:0.95rem; line-height:1; margin-top:1px; }
+.cal-cell.has-entry.mood-low{ background:#F3E3DC; border-color:#E0BFAE; }
+.cal-cell.has-entry.mood-mid{ background:#F0EAE0; border-color:var(--line); }
+.cal-cell.has-entry.mood-high{ background:#E9EFE4; border-color:#CBD9C0; }
+.cal-cell.today{ box-shadow:0 0 0 2px var(--ink); }
+
+.legend{ display:flex; gap:14px; margin-top:18px; font-size:0.75rem; color:var(--ink-soft); }
+.legend span{ display:flex; align-items:center; gap:5px; }
+.legend .legend-ic{ font-style:normal; font-size:0.95rem; }
+
+/* ---------- Entrée détail ---------- */
+.entry-detail{ display:flex; flex-direction:column; gap:18px; }
+.entry-q{ font-size:0.95rem; font-weight:600; color:var(--ink-soft); margin-bottom:4px; }
+.entry-a{ font-family:'Fraunces', serif; font-size:1.05rem; white-space:pre-wrap; }
+.entry-block{ padding-bottom:14px; border-bottom:1px solid var(--line); }
+.entry-block:last-child{ border-bottom:none; }
+
+/* ---------- Empty states ---------- */
+.empty-state{ text-align:center; padding:50px 20px; color:var(--ink-soft); }
+.empty-state .ic{ font-size:2.2rem; margin-bottom:10px; display:block; }
+
+/* ---------- Settings ---------- */
+.settings-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 0; border-bottom:1px solid var(--line);
+}
+.settings-row:last-child{ border-bottom:none; }
+.settings-row .t{ font-weight:600; font-size:0.95rem; }
+.settings-row .d{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; max-width:210px; }
+
+.switch{ position:relative; display:inline-block; width:46px; height:27px; flex-shrink:0; }
+.switch input{ opacity:0; width:0; height:0; }
+.switch-track{
+  position:absolute; inset:0; border-radius:999px;
+  background:var(--line); cursor:pointer; transition:background .2s ease;
+}
+.switch-thumb{
+  position:absolute; top:3px; left:3px; width:21px; height:21px;
+  border-radius:50%; background:var(--cream); transition:transform .2s ease;
+  box-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.switch input:checked + .switch-track{ background:var(--sage); }
+.switch input:checked + .switch-track .switch-thumb{ transform:translateX(19px); }
+
+.time-input{
+  width:auto; padding:9px 12px; font-size:0.95rem;
+  font-weight:600; color:var(--ink); border-radius:10px;
+  border:1.5px solid var(--line); background:var(--paper);
+  font-family:'Inter', sans-serif;
+}
+
+/* ---------- Stats ---------- */
+.stats-summary{ display:flex; gap:12px; margin:14px 0; }
+.stat-card{
+  flex:1; background:var(--paper); border:1.5px solid var(--line);
+  border-radius:var(--radius); padding:18px 14px; text-align:center;
+}
+.stat-num{ font-family:var(--font-display); font-size:1.8rem; font-weight:700; color:var(--terracotta-deep); }
+.stat-label{ font-size:0.72rem; color:var(--ink-soft); margin-top:4px; line-height:1.3; font-weight:500; }
+
+.mood-highlight{
+  background:linear-gradient(135deg, #9CB090, var(--sage));
+  border-radius:var(--radius); padding:16px 18px; color:var(--cream);
+}
+.mood-highlight .label{ color:#E4ECDE; }
+.mood-highlight-val{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; margin-top:4px; }
+
+.mood-chart{ background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius); padding:14px 10px; }
+.mood-chart-svg{ width:100%; height:auto; display:block; }
+
+.toast{
+  position:fixed; bottom:96px; left:50%; transform:translateX(-50%);
+  background:var(--ink); color:var(--cream);
+  padding:11px 20px; border-radius:999px; font-size:0.85rem;
+  z-index:50; opacity:0; transition:opacity .25s ease;
+  pointer-events:none;
+}
+.toast.show{ opacity:1; }
+
+/* ---------- Respiration ---------- */
+.mode-card.breath-card{
+  background:linear-gradient(135deg, #9CB090, var(--sage));
+  border:none;
+  color:var(--cream);
+}
+.mode-card.breath-card p{ opacity:0.9; }
+
+.breathing-screen{
+  align-items:center;
+  justify-content:center;
+  padding-top:30px;
+  text-align:center;
+  background:linear-gradient(180deg, var(--cream) 0%, #F1ECE1 100%);
+}
+.breath-tagline{
+  font-family:var(--font-display);
+  font-size:1rem;
+  font-weight:500;
+  color:var(--ink-soft);
+  max-width:280px;
+  margin:0 auto 28px;
+  line-height:1.6;
+}
+.wave-stage{
+  position:relative;
+  width:100%;
+  max-width:300px;
+  height:160px;
+  margin:0 auto;
+  border-radius:28px;
+  overflow:hidden;
+  background:linear-gradient(180deg, #F1ECE1 0%, #EAE3D4 100%);
+  transition:background 1.2s ease;
+}
+.wave-svg{ width:100%; height:100%; display:block; }
+.wave-svg path{
+  fill:none;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke:#C9BBA0;
+  transition:stroke 1s ease;
+}
+.wave-center{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  font-family:var(--font-display);
+  color:var(--ink-soft);
+}
+.wave-center span:first-child{ font-size:1.2rem; font-weight:600; }
+.wave-center .breath-count{ font-size:1.7rem; font-weight:700; margin-top:4px; opacity:0.9; }
+
+.wave-stage.idle .wave-svg path{ stroke:#D6CFC2; }
+.wave-stage.idle .wave-center{ color:var(--ink-soft); }
+
+/* Inspire : bleu doux et pastel */
+.wave-stage.inspire{ background:linear-gradient(180deg, #E4EFF6 0%, #D6E6EF 100%); }
+.wave-stage.inspire .wave-svg path{ stroke:#7FA8C9; }
+.wave-stage.inspire .wave-center{ color:#3E6E8E; }
+
+/* Bloque : lavande douce, suspendue */
+.wave-stage.bloque{ background:linear-gradient(180deg, #ECE7F3 0%, #E0D8ED 100%); }
+.wave-stage.bloque .wave-svg path{ stroke:#A99BC4; }
+.wave-stage.bloque .wave-center{ color:#6E5C8A; }
+
+/* Expire : abricot doux, vague qui s'apaise */
+.wave-stage.expire{ background:linear-gradient(180deg, #F7EBDF 0%, #F1DEC8 100%); }
+.wave-stage.expire .wave-svg path{ stroke:#D9A07E; }
+.wave-stage.expire .wave-center{ color:#A9744F; }
+
+.breath-legend{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  margin-top:22px;
+  font-size:0.78rem;
+  color:var(--ink-soft);
+  font-weight:500;
+}
+.breath-legend span{ display:flex; align-items:center; gap:6px; }
+.breath-legend i{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+
+/* Compteur de série, affiché sous la vague */
+.breath-rounds{ display:flex; justify-content:center; gap:10px; margin-top:26px; }
+.breath-round-dot{
+  width:11px; height:11px; border-radius:50%;
+  background:var(--line);
+  transition:background .3s ease, transform .3s ease;
+}
+.breath-round-dot.active{ background:var(--sage); transform:scale(1.3); }
+.breath-round-dot.done{ background:#C7B9A6; }
+.breath-round-label{
+  font-family:var(--font-display);
+  font-size:0.85rem;
+  font-weight:600;
+  color:var(--ink-soft);
+  margin-top:12px;
+}
+
+/* ---------- Modale de confirmation ---------- */
+.modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(36,30,28,0.5);
+  display:flex; align-items:center; justify-content:center;
+  z-index:100;
+  padding:24px;
+  animation:fadeIn .2s ease;
+}
+.modal-card{
+  background:var(--cream);
+  border-radius:var(--radius);
+  padding:24px 22px;
+  max-width:340px;
+  width:100%;
+  box-shadow:0 24px 60px -20px rgba(0,0,0,0.35);
+}
+.modal-title{
+  font-family:var(--font-display);
+  font-size:1.2rem;
+  margin-bottom:8px;
+}
+.modal-msg{
+  font-size:0.9rem;
+  color:var(--ink-soft);
+  line-height:1.5;
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>// ============ CRYPTO : chiffrement local AES-GCM dérivé du mot de passe ============
+const Crypto = (() => {
+  const enc = new TextEncoder();
+  const dec = new TextDecoder();
+
+  async function deriveKey(password, saltBytes) {
+    const baseKey = await crypto.subtle.importKey(
+      'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: saltBytes, iterations: 150000, hash: 'SHA-256' },
+      baseKey,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  function bufToB64(buf) {
+    return btoa(String.fromCharCode(...new Uint8Array(buf)));
+  }
+  function b64ToBuf(b64) {
+    return Uint8Array.from(atob(b64), c => c.charCodeAt(0)).buffer;
+  }
+
+  async function encrypt(password, plainObj, existingSaltB64) {
+    const salt = existingSaltB64 ? new Uint8Array(b64ToBuf(existingSaltB64)) : crypto.getRandomValues(new Uint8Array(16));
+    const key = await deriveKey(password, salt);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const plaintext = enc.encode(JSON.stringify(plainObj));
+    const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext);
+    return {
+      salt: bufToB64(salt),
+      iv: bufToB64(iv),
+      data: bufToB64(cipher)
+    };
+  }
+
+  async function decrypt(password, payload) {
+    const salt = new Uint8Array(b64ToBuf(payload.salt));
+    const iv = new Uint8Array(b64ToBuf(payload.iv));
+    const key = await deriveKey(password, salt);
+    const plainBuf = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv }, key, b64ToBuf(payload.data)
+    );
+    return JSON.parse(dec.decode(plainBuf));
+  }
+
+  // Vérification rapide du mot de passe via un "témoin" chiffré stocké séparément
+  async function makeVerifier(password) {
+    return encrypt(password, { ok: true, ts: Date.now() });
+  }
+  async function checkVerifier(password, verifierPayload) {
+    try {
+      const res = await decrypt(password, verifierPayload);
+      return res && res.ok === true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  return { encrypt, decrypt, makeVerifier, checkVerifier };
+})();
+
+
+// ============ STORAGE : IndexedDB local, aucune donnée ne quitte l'appareil ============
+const Store = (() => {
+  const DB_NAME = 'ancrage-db';
+  const DB_VERSION = 1;
+  let dbPromise = null;
+
+  function openDB() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('entries')) {
+          db.createObjectStore('entries', { keyPath: 'date' }); // date = 'YYYY-MM-DD'
+        }
+        if (!db.objectStoreNames.contains('meta')) {
+          db.createObjectStore('meta', { keyPath: 'key' });
+        }
+      };
+      req.onsuccess = (e) => resolve(e.target.result);
+      req.onerror = (e) => reject(e.target.error);
+    });
+    return dbPromise;
+  }
+
+  async function setMeta(key, value) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('meta', 'readwrite');
+      tx.objectStore('meta').put({ key, value });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  async function getMeta(key) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('meta', 'readonly');
+      const req = tx.objectStore('meta').get(key);
+      req.onsuccess = () => resolve(req.result ? req.result.value : null);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function putEntry(dateKey, encryptedPayload) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('entries', 'readwrite');
+      tx.objectStore('entries').put({ date: dateKey, payload: encryptedPayload });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  async function getEntry(dateKey) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('entries', 'readonly');
+      const req = tx.objectStore('entries').get(dateKey);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function getAllEntries() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('entries', 'readonly');
+      const req = tx.objectStore('entries').getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function deleteAll() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(['entries', 'meta'], 'readwrite');
+      tx.objectStore('entries').clear();
+      tx.objectStore('meta').clear();
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  return { setMeta, getMeta, putEntry, getEntry, getAllEntries, deleteAll };
+})();
+
+
+// ============ REMINDER : notification locale quotidienne, aucun serveur ============
+const Reminder = (() => {
+  let checkInterval = null;
+
+  async function requestPermission() {
+    if (!('Notification' in window)) return 'unsupported';
+    if (Notification.permission === 'granted') return 'granted';
+    if (Notification.permission === 'denied') return 'denied';
+    return await Notification.requestPermission();
+  }
+
+  function fireNotification() {
+    const reg = navigator.serviceWorker && navigator.serviceWorker.ready;
+    const body = "Deux minutes pour faire le point sur ta journée.";
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then(r => {
+        r.showNotification('Ancrage', {
+          body,
+          icon: 'icon-192.png',
+          badge: 'icon-192.png',
+          tag: 'ancrage-daily'
+        });
+      });
+    } else if (Notification.permission === 'granted') {
+      new Notification('Ancrage', { body, icon: 'icon-192.png' });
+    }
+  }
+
+  function todayAt(hh, mm) {
+    const d = new Date();
+    d.setHours(hh, mm, 0, 0);
+    return d;
+  }
+
+  // Vérifie chaque minute si l'heure de rappel est atteinte et si aucune entrée n'existe encore aujourd'hui
+  function startWatcher(getSettings, hasEntryToday) {
+    stopWatcher();
+    checkInterval = setInterval(() => {
+      const settings = getSettings();
+      if (!settings || !settings.enabled) return;
+      const now = new Date();
+      const target = todayAt(settings.hour, settings.minute);
+      const diffMs = now - target;
+      // fenêtre de tolérance de 60s autour de l'heure cible
+      if (diffMs >= 0 && diffMs < 60000) {
+        const lastFired = settings.lastFiredDate;
+        const todayStr = now.toISOString().slice(0,10);
+        if (lastFired !== todayStr && !hasEntryToday()) {
+          fireNotification();
+          settings.lastFiredDate = todayStr;
+          Store.setMeta('reminder', settings);
+        }
+      }
+    }, 30000);
+  }
+
+  function stopWatcher() {
+    if (checkInterval) clearInterval(checkInterval);
+    checkInterval = null;
+  }
+
+  return { requestPermission, startWatcher, stopWatcher, fireNotification };
+})();
+
+
+// ============ CONTENU : synthèse des 3 exercices (Comitys) ============
+
+// Parcours rapide quotidien (synthèse des 3 PDF en 4 questions, ~2 min)
+const QUICK_FLOW = [
+  {
+    id: 'reveil_humeur',
+    eyebrow: "Au réveil",
+    text: "Comment je me sens depuis ce matin ?",
+    type: 'chips',
+    options: ['Stressé·e', 'Motivé·e', 'En colère', 'Joyeux·se', 'Paisible', 'Déçu·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Ravi·e'],
+    multi: true
+  },
+  {
+    id: 'besoin_jour',
+    eyebrow: "Au réveil",
+    text: "De quoi ai-je besoin aujourd'hui pour bien commencer ?",
+    type: 'text',
+    hint: "Un besoin simple, concret : du calme, du mouvement, parler à quelqu'un…"
+  },
+  {
+    id: 'voix_malveillante',
+    eyebrow: "La petite voix",
+    text: "Une phrase que je me suis dite aujourd'hui et qui m'a fait du mal ?",
+    type: 'text',
+    hint: "Si rien ne vient, tant mieux — tu peux laisser vide ou écrire \"rien aujourd'hui\"."
+  },
+  {
+    id: 'courage_jour',
+    eyebrow: "Acte de courage",
+    text: "Qu'ai-je fait aujourd'hui, même petit, qui demandait du courage ?",
+    type: 'text',
+    hint: "Personne n'a besoin de l'avoir vu pour que ça compte."
+  }
+];
+
+// Parcours complet #1 — La petite voix malveillante (synthèse fidèle du PDF)
+const FULL_VOIX = {
+  key: 'voix_malveillante_full',
+  title: "La petite voix malveillante",
+  tag: "Exercice complet",
+  objective: "Devenir bienveillant·e pour soi-même",
+  intro: "Dire du mal de moi, je le fais souvent, parfois sans m'en rendre compte. Je prends le temps d'écouter cette voix, non pour qu'elle prenne le pouvoir, mais pour la nuancer et apprendre à la faire taire.",
+  steps: [
+    { id: 'v1', text: "Je repère et j'écris trois phrases malveillantes que je me dis à moi-même.", type:'text', hint:"Jugement, dénigrement… celles qui reviennent souvent." },
+    { id: 'v2', text: "Je questionne, nuance, transforme chacune de ces phrases.", type:'text', hint:"Est-ce vraiment vrai ? Que dirais-je à un·e ami·e dans la même situation ?" },
+    { id: 'v3', text: "J'écris trois phrases bienveillantes sur ce que je suis.", type:'text' }
+  ],
+  bilan: true
+};
+
+// Parcours complet #2 — Les actes de courage
+const FULL_COURAGE = {
+  key: 'actes_courage_full',
+  title: "Les actes de courage",
+  tag: "Exercice complet",
+  objective: "Identifier ses actes de courage, distinguer héroïsme et courage",
+  intro: "Confondant courage et héroïsme, je peux croire à tort n'être pas courageux·se. Pourtant j'ai déjà pratiqué des actes de courage.",
+  steps: [
+    { id:'c1', text:"Je cite une personne que je trouve courageuse (vivante, décédée, proche ou lointaine).", type:'text' },
+    { id:'c2', text:"Être courageux·se, pour moi, c'est…", type:'text' },
+    { id:'c3', text:"J'identifie deux moments de ma vie où j'ai fait preuve de courage, même si personne ne l'a vu.", type:'text', hint:"Ex : m'adapter à une nouvelle vie, traverser un deuil, accepter une limite, m'éloigner d'un danger, renouer avec quelqu'un de cher…" },
+    { id:'c4', text:"J'ai été capable de… alors que…", type:'text', hint:"Complète en lien avec les deux situations ci-dessus." }
+  ],
+  bilan: true
+};
+
+// Parcours complet #3 — Au réveil
+const FULL_REVEIL = {
+  key: 'au_reveil_full',
+  title: "Au réveil",
+  tag: "Exercice complet",
+  objective: "Être à l'écoute de ses besoins",
+  intro: "Être à l'écoute de ses besoins profonds n'est pas naturel, c'est un apprentissage. La première étape est l'identification de nos états émotionnels.",
+  steps: [
+    { id:'r1', text:"Comment me suis-je senti·e ce matin au réveil ?", type:'chips',
+      options:['Stressé·e','Motivé·e','En colère','Joyeux·se','Paisible','Déçu·e','Inquiet·ète','Découragé·e','Agité·e','Ravi·e'], multi:true },
+    { id:'r2', text:"Est-ce que je me réveille souvent avec ces mêmes sentiments, ou ce matin était-il particulier ?", type:'text' },
+    { id:'r3', text:"Les sentiments que j'éprouve au réveil sont-ils agréables ? Pourquoi ?", type:'text' },
+    { id:'r4', text:"Comment est-ce que j'aime commencer ma journée ? De quoi ai-je besoin ?", type:'text' },
+    { id:'r5', text:"Que pourrais-je faire pour me sentir mieux quand je commence ma journée ?", type:'text' }
+  ],
+  bilan: true
+};
+
+const BILAN_STEPS = [
+  { id:'bilan_vecu', text:"Comment ai-je vécu cet exercice ?", type:'text' },
+  { id:'bilan_sens', text:"Comment je me sens ?", type:'text' },
+  { id:'bilan_appris', text:"Qu'ai-je appris ? Compris ? Que puis-je en garder pour moi ?", type:'text' }
+];
+
+// Exercice de respiration anti-stress (6-6-6, 3 séries)
+const BREATHING = {
+  key: 'respiration',
+  title: "Respiration anti-stress",
+  tag: "1 minute",
+  objective: "Calmer le système nerveux en relançant une respiration profonde",
+  phases: [
+    { label: 'Inspire', seconds: 6 },
+    { label: 'Bloque', seconds: 6 },
+    { label: 'Expire', seconds: 6 }
+  ],
+  rounds: 3
+};
+
+// Parcours complet #4 — Remettre en question les pensées négatives (restructuration cognitive)
+const FULL_PENSEES = {
+  key: 'pensees_negatives_full',
+  title: "Remettre en question mes pensées",
+  tag: "Exercice complet · 10 min",
+  objective: "Prendre du recul sur une pensée qui fait mal, en s'appuyant sur les faits",
+  intro: "Quand une émotion forte nous submerge, une pensée automatique en est souvent à l'origine — pas toujours vraie, même si elle en a l'air. Cet exercice aide à la déposer, l'examiner, et construire une vision plus équilibrée.",
+  steps: [
+    { id:'p1', text:"Je décris la situation.", type:'text', hint:"Quoi ? Où ? Quand ? Avec qui ?" },
+    { id:'p2', text:"Quelles émotions est-ce que je ressens ?", type:'chips',
+      options:['Colère','Tristesse','Anxiété','Honte','Dégoût','Peur','Culpabilité','Déception','Fierté','Soulagement'], multi:true },
+    { id:'p3', text:"À quelle intensité je ressens l'émotion la plus forte ?", type:'slider', hint:"0% = à peine perceptible, 100% = la plus forte intensité possible." },
+    { id:'p4', text:"Quelles pensées traversaient mon esprit juste avant de me sentir ainsi ?", type:'text',
+      hint:"Qu'est-ce que ça signifie pour moi, mon futur, ma vie ? Que craignais-je ? Quelle est la pire chose qui puisse arriver ? Comment je pense être perçu·e ?" },
+    { id:'p5', text:"Parmi ces pensées, laquelle porte la plus grande charge émotionnelle ? J'écris cette \"pensée chaude\".", type:'text' },
+    { id:'p6', text:"À quel point je crois en cette pensée chaude ?", type:'slider', hint:"0% = je n'y crois pas du tout, 100% = j'y crois complètement." },
+    { id:'p7', text:"Quels faits soutiennent cette pensée ?", type:'text', hint:"Des faits, pas des interprétations ni de la lecture de pensée." },
+    { id:'p8', text:"Quels faits la contredisent ?", type:'text',
+      hint:"Ai-je déjà vécu une situation qui montre que cette pensée n'est pas toujours vraie ? Que dirais-je à un·e ami·e qui pensait ça ? Que me dirait-on à moi ?" },
+    { id:'p9', text:"En tenant compte des deux côtés, quelle est ma pensée alternative, plus équilibrée ?", type:'text',
+      hint:"Essaie de relier les faits pour et contre avec un \"et\" plutôt qu'un \"mais\"." },
+    { id:'p10', text:"Maintenant, à quelle intensité je ressens cette émotion ?", type:'slider', hint:"Compare avec ton score de départ." },
+    { id:'p11', text:"Quel petit pas puis-je faire ?", type:'text', hint:"Soit pour changer la situation, soit pour réagir différemment la prochaine fois." }
+  ],
+  bilan: true
+};
+
+const FULL_EXERCISES = [FULL_VOIX, FULL_COURAGE, FULL_REVEIL, FULL_PENSEES];
+
+
+// ============ APP : état global + rendu ============
+const App = (() => {
+  const root = document.getElementById('app');
+  let state = {
+    screen: 'loading',      // loading | setup | lock | home | flow | calendar | entry | settings
+    password: null,         // gardé en mémoire seulement le temps de la session
+    flow: null,             // { kind:'quick'|'full', exerciseKey?, steps:[], idx:0, answers:{} }
+    todayKey: dateKey(new Date()),
+    entriesIndex: {},       // { 'YYYY-MM-DD': {payload} } -- chiffré, chargé une fois
+    viewMonth: new Date(),  // mois affiché dans le calendrier
+    selectedEntryDate: null,
+    toastTimer: null,
+    reminderSettings: { enabled: false, hour: 20, minute: 0, lastFiredDate: null }
+  };
+
+  function dateKey(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+
+  function showToast(msg) {
+    let t = document.querySelector('.toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.className = 'toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(state.toastTimer);
+    state.toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ---------- BOOTSTRAP ----------
+  async function init() {
+    if ('serviceWorker' in navigator) {
+      try { await navigator.serviceWorker.register('sw.js'); } catch(e) {}
+    }
+    const savedReminder = await Store.getMeta('reminder');
+    if (savedReminder) state.reminderSettings = savedReminder;
+    Reminder.startWatcher(() => state.reminderSettings, () => !!state.entriesIndex[state.todayKey]);
+
+    const verifier = await Store.getMeta('verifier');
+    if (!verifier) {
+      state.screen = 'setup';
+    } else {
+      state.screen = 'lock';
+    }
+    render();
+  }
+
+  // ---------- SETUP (première utilisation) ----------
+  async function handleSetup(password, confirm) {
+    const errEl = document.getElementById('setup-error');
+    if (password.length < 4) { errEl.textContent = "Choisis au moins 4 caractères."; return; }
+    if (password !== confirm) { errEl.textContent = "Les deux mots de passe ne correspondent pas."; return; }
+    const verifier = await Crypto.makeVerifier(password);
+    await Store.setMeta('verifier', verifier);
+    state.password = password;
+    await loadEntriesIndex();
+    state.screen = 'home';
+    render();
+  }
+
+  // ---------- LOCK ----------
+  async function handleUnlock(password) {
+    const errEl = document.getElementById('lock-error');
+    const verifier = await Store.getMeta('verifier');
+    const ok = await Crypto.checkVerifier(password, verifier);
+    if (!ok) { errEl.textContent = "Mot de passe incorrect."; return; }
+    state.password = password;
+    await loadEntriesIndex();
+    state.screen = 'home';
+    render();
+  }
+
+  function lockApp() {
+    state.password = null;
+    state.entriesIndex = {};
+    state.screen = 'lock';
+    render();
+  }
+
+  // ---------- DATA ----------
+  async function loadEntriesIndex() {
+    const all = await Store.getAllEntries();
+    state.entriesIndex = {};
+    all.forEach(e => { state.entriesIndex[e.date] = e.payload; });
+  }
+
+  async function decryptEntry(dateKeyStr) {
+    const payload = state.entriesIndex[dateKeyStr];
+    if (!payload) return null;
+    try {
+      return await Crypto.decrypt(state.password, payload);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  async function saveCurrentFlow() {
+    const f = state.flow;
+    const existing = (await decryptEntry(state.todayKey)) || { date: state.todayKey, sections: [] };
+    const newSection = {
+      kind: f.kind,
+      title: f.title,
+      mood: f.mood || null,
+      answers: f.answers,
+      ts: Date.now()
+    };
+    existing.sections = existing.sections || [];
+    existing.sections.push(newSection);
+    existing.date = state.todayKey;
+    const encrypted = await Crypto.encrypt(state.password, existing, state.entriesIndex[state.todayKey]?.salt);
+    await Store.putEntry(state.todayKey, encrypted);
+    state.entriesIndex[state.todayKey] = encrypted;
+  }
+
+  function moodScore(moodLabels) {
+    if (!moodLabels || !moodLabels.length) return null;
+    const low = ['Stressé·e','En colère','Déçu·e','Inquiet·ète','Découragé·e','Agité·e','Colère','Tristesse','Anxiété','Honte','Dégoût','Peur','Culpabilité','Déception'];
+    const high = ['Motivé·e','Joyeux·se','Paisible','Ravi·e','Fierté','Soulagement'];
+    let score = 0;
+    moodLabels.forEach(m => { if (low.includes(m)) score -= 1; if (high.includes(m)) score += 1; });
+    return score;
+  }
+
+  // ---------- FLOW ENGINE ----------
+  function startQuickFlow() {
+    state.flow = {
+      kind: 'quick',
+      title: 'Aujourd\'hui',
+      steps: QUICK_FLOW,
+      idx: 0,
+      answers: {},
+      mood: null
+    };
+    state.screen = 'flow';
+    render();
+  }
+
+  function startFullFlow(exerciseKey) {
+    const ex = FULL_EXERCISES.find(e => e.key === exerciseKey);
+    if (!ex) return;
+    state.flow = {
+      kind: 'full',
+      exerciseKey,
+      title: ex.title,
+      objective: ex.objective,
+      intro: ex.intro,
+      steps: [...ex.steps, ...BILAN_STEPS],
+      idx: -1, // -1 = écran d'intro
+      answers: {}
+    };
+    state.screen = 'flow';
+    render();
+  }
+
+  function currentStep() {
+    return state.flow.steps[state.flow.idx];
+  }
+
+  function flowNext(value) {
+    const step = currentStep();
+    if (step) state.flow.answers[step.id] = value;
+    if (step && step.type === 'chips') {
+      const moodSteps = ['reveil_humeur', 'r1', 'p2'];
+      if (moodSteps.includes(step.id)) state.flow.mood = value;
+    }
+    if (state.flow.idx + 1 >= state.flow.steps.length) {
+      finishFlow();
+    } else {
+      state.flow.idx += 1;
+      render();
+    }
+  }
+
+  function flowBack() {
+    if (state.flow.idx <= (state.flow.kind === 'full' ? -1 : 0)) return;
+    state.flow.idx -= 1;
+    render();
+  }
+
+  async function finishFlow() {
+    await saveCurrentFlow();
+    showToast('Entrée enregistrée');
+    state.flow = null;
+    state.screen = 'home';
+    render();
+  }
+
+  // ---------- BREATHING ----------
+  let breathTimer = null;
+  function startBreathing() {
+    state.screen = 'breathing';
+    render();
+  }
+
+  function stopBreathing() {
+    clearInterval(breathTimer);
+    breathTimer = null;
+  }
+
+  function renderBreathing(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<button class="icon-btn" id="breath-close">✕</button><span class="label">Respiration</span><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen breathing-screen');
+    screen.innerHTML = `
+      <div class="breath-intro" id="breath-intro">
+        <p class="breath-tagline">Pose ton téléphone à plat, installe-toi confortablement, et laisse ton souffle ralentir tout doucement.</p>
+        <div class="wave-stage idle">
+          <svg class="wave-svg" id="wave-svg" viewBox="0 0 320 160" preserveAspectRatio="none">
+            <path id="wave-path" d="" />
+          </svg>
+          <div class="wave-center">
+            <span id="breath-label">On y va, en douceur</span>
+          </div>
+        </div>
+        <div class="breath-legend">
+          <span><i style="background:#7FA8C9"></i> Inspire</span>
+          <span><i style="background:#A99BC4"></i> Bloque</span>
+          <span><i style="background:#D9A07E"></i> Expire</span>
+        </div>
+        <div class="nav-row" style="margin-top:30px;">
+          <button class="btn btn-primary btn-block" id="breath-start">Commencer</button>
+        </div>
+      </div>
+    `;
+    content.appendChild(screen);
+    drawWave(screen.querySelector('#wave-path'), 0);
+
+    top.querySelector('#breath-close').addEventListener('click', () => {
+      stopWaveLoop();
+      stopBreathing();
+      state.screen = 'home';
+      render();
+    });
+
+    screen.querySelector('#breath-start').onclick = () => runBreathingSequence(screen);
+  }
+
+  // Dessine une vague sinusoïdale douce. amplitude: 0 (plate) à 1 (pleine)
+  function drawWave(pathEl, amplitude, phaseOffset, wavelength) {
+    if (!pathEl || !pathEl.isConnected) { stopWaveLoop(); return; }
+    const w = 320, h = 160, midY = h / 2;
+    const maxAmp = 34;
+    const amp = maxAmp * amplitude;
+    const wl = wavelength || 160;
+    const points = [];
+    for (let x = -20; x <= w + 20; x += 8) {
+      const y = midY + Math.sin((x / wl) * Math.PI * 2 + (phaseOffset || 0)) * amp;
+      points.push(`${x},${y.toFixed(1)}`);
+    }
+    pathEl.setAttribute('d', 'M' + points.join(' L'));
+  }
+
+  let waveAnimFrame = null;
+  let waveState = { amplitude: 0, targetAmplitude: 0, phase: 0, lerpRate: 0.04, wavelength: 160, targetWavelength: 160 };
+
+  function startWaveLoop(pathEl) {
+    stopWaveLoop();
+    function tick() {
+      // chaque phase a sa propre vitesse d'approche -> une vraie texture de mouvement par phase
+      waveState.amplitude += (waveState.targetAmplitude - waveState.amplitude) * waveState.lerpRate;
+      waveState.wavelength += (waveState.targetWavelength - waveState.wavelength) * waveState.lerpRate;
+      // la houle avance plus vite quand l'amplitude est grande (vivant), plus doucement quand elle est plate
+      const speed = 0.018 + waveState.amplitude / 34 * 0.03;
+      waveState.phase += speed;
+      drawWave(pathEl, waveState.amplitude, waveState.phase, waveState.wavelength);
+      waveAnimFrame = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function stopWaveLoop() {
+    if (waveAnimFrame) cancelAnimationFrame(waveAnimFrame);
+    waveAnimFrame = null;
+  }
+
+  function runBreathingSequence(screen) {
+    const phases = BREATHING.phases;
+    const totalRounds = BREATHING.rounds;
+    let round = 1, phaseIdx = 0, secondsLeft = phases[0].seconds;
+
+    const intro = screen.querySelector('#breath-intro');
+    intro.innerHTML = `
+      <div class="wave-stage" id="wave-stage">
+        <svg class="wave-svg" id="wave-svg" viewBox="0 0 320 160" preserveAspectRatio="none">
+          <path id="wave-path" d="" />
+        </svg>
+        <div class="wave-center">
+          <span id="breath-label">${phases[0].label}</span>
+          <span class="breath-count" id="breath-count">${secondsLeft}</span>
+        </div>
+      </div>
+      <div class="breath-rounds" id="breath-rounds">
+        ${Array.from({length: totalRounds}).map((_,i)=>`<span class="breath-round-dot${i===0?' active':''}"></span>`).join('')}
+      </div>
+      <div class="breath-round-label" id="breath-round-label">Série 1 sur ${totalRounds}</div>
+    `;
+    const stage = screen.querySelector('#wave-stage');
+    const wavePath = screen.querySelector('#wave-path');
+    const label = screen.querySelector('#breath-label');
+    const count = screen.querySelector('#breath-count');
+    const roundLabel = screen.querySelector('#breath-round-label');
+    const roundDots = screen.querySelectorAll('.breath-round-dot');
+
+    function updateRoundDots() {
+      roundDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === round - 1);
+        dot.classList.toggle('done', i < round - 1);
+      });
+      roundLabel.textContent = `Série ${round} sur ${totalRounds}`;
+    }
+
+    function applyPhaseClass() {
+      stage.classList.remove('inspire','bloque','expire');
+      const cls = phases[phaseIdx].label === 'Inspire' ? 'inspire' : phases[phaseIdx].label === 'Bloque' ? 'bloque' : 'expire';
+      stage.classList.add(cls);
+      // chaque phase a sa propre texture : inspire monte avec énergie, bloque se stabilise, expire s'étire en douceur
+      if (cls === 'inspire') {
+        waveState.targetAmplitude = 1;
+        waveState.lerpRate = 0.05;
+        waveState.targetWavelength = 130;
+      } else if (cls === 'bloque') {
+        waveState.targetAmplitude = 0.92;
+        waveState.lerpRate = 0.025;
+        waveState.targetWavelength = 150;
+      } else {
+        waveState.targetAmplitude = 0.1;
+        waveState.lerpRate = 0.018;
+        waveState.targetWavelength = 210;
+      }
+    }
+    applyPhaseClass();
+    startWaveLoop(wavePath);
+
+    breathTimer = setInterval(() => {
+      secondsLeft -= 1;
+      if (secondsLeft <= 0) {
+        phaseIdx += 1;
+        if (phaseIdx >= phases.length) {
+          phaseIdx = 0;
+          round += 1;
+          if (round > totalRounds) {
+            stopBreathing();
+            finishBreathing(screen);
+            return;
+          }
+          updateRoundDots();
+        }
+        secondsLeft = phases[phaseIdx].seconds;
+        label.textContent = phases[phaseIdx].label;
+        applyPhaseClass();
+      }
+      count.textContent = secondsLeft;
+    }, 1000);
+  }
+
+  function finishBreathing(screen) {
+    stopWaveLoop();
+    waveState = { amplitude: 0, targetAmplitude: 0, phase: 0 };
+    screen.querySelector('#breath-intro').innerHTML = `
+      <div class="wave-stage idle">
+        <svg class="wave-svg" id="wave-done-svg" viewBox="0 0 320 160" preserveAspectRatio="none">
+          <path id="wave-done-path" d="" />
+        </svg>
+        <div class="wave-center"><span>✓</span></div>
+      </div>
+      <p class="breath-tagline" style="margin-top:22px;">Bien joué. Prends un instant avant de reprendre ta journée.</p>
+      <div class="nav-row" style="margin-top:24px;">
+        <button class="btn btn-ghost btn-block" id="breath-again">Refaire</button>
+        <button class="btn btn-primary btn-block" id="breath-done">Terminer</button>
+      </div>
+    `;
+    drawWave(screen.querySelector('#wave-done-path'), 0.08);
+    screen.querySelector('#breath-again').onclick = () => runBreathingSequence(screen);
+    screen.querySelector('#breath-done').onclick = () => { stopWaveLoop(); state.screen = 'home'; render(); };
+  }
+
+  // ---------- RENDER ROOT ----------
+  function render() {
+    root.innerHTML = '';
+    if (state.screen === 'loading') return;
+    if (state.screen === 'setup') return renderSetup();
+    if (state.screen === 'lock') return renderLock();
+
+    const content = document.createElement('div');
+    content.style.flex = '1';
+    content.style.display = 'flex';
+    content.style.flexDirection = 'column';
+
+    if (state.screen === 'home') renderHome(content);
+    if (state.screen === 'flow') renderFlow(content);
+    if (state.screen === 'breathing') renderBreathing(content);
+    if (state.screen === 'calendar') renderCalendar(content);
+    if (state.screen === 'stats') renderStats(content);
+    if (state.screen === 'entry') renderEntryDetail(content);
+    if (state.screen === 'settings') renderSettings(content);
+
+    root.appendChild(content);
+
+    if (['home','calendar','stats','settings'].includes(state.screen)) {
+      root.appendChild(renderBottomNav());
+    }
+  }
+
+  // ---------- SETUP SCREEN ----------
+  function renderSetup() {
+    const wrap = el('div', 'lock-wrap');
+    wrap.innerHTML = `
+      <div class="lock-mark"><div class="dot"></div></div>
+      <h1>Bienvenue dans Ancrage</h1>
+      <p class="sub">Ton journal reste sur cet appareil, chiffré par un mot de passe que toi seul·e connais. Personne d'autre — pas même nous — ne peut le lire.</p>
+      <div class="lock-form">
+        <input type="password" id="setup-pw" placeholder="Choisis un mot de passe" autocomplete="new-password">
+        <input type="password" id="setup-pw2" placeholder="Confirme le mot de passe" autocomplete="new-password">
+        <div class="error-msg" id="setup-error"></div>
+        <button class="btn btn-primary btn-block" id="setup-go">Créer mon journal</button>
+      </div>
+    `;
+    root.appendChild(wrap);
+    document.getElementById('setup-go').onclick = () => {
+      handleSetup(document.getElementById('setup-pw').value, document.getElementById('setup-pw2').value);
+    };
+  }
+
+  // ---------- LOCK SCREEN ----------
+  function renderLock() {
+    const wrap = el('div', 'lock-wrap');
+    wrap.innerHTML = `
+      <div class="lock-mark"><div class="dot"></div></div>
+      <h1>Ancrage</h1>
+      <p class="sub">Entre ton mot de passe pour ouvrir ton journal.</p>
+      <div class="lock-form">
+        <input type="password" id="lock-pw" placeholder="Mot de passe" autocomplete="current-password">
+        <div class="error-msg" id="lock-error"></div>
+        <button class="btn btn-primary btn-block" id="lock-go">Ouvrir</button>
+      </div>
+    `;
+    root.appendChild(wrap);
+    const submit = () => handleUnlock(document.getElementById('lock-pw').value);
+    document.getElementById('lock-go').onclick = submit;
+    document.getElementById('lock-pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+  }
+
+  // ---------- HOME ----------
+  function renderHome(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Bonjour</h1><button class="icon-btn" id="lock-icon">🔒</button>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    screen.style.paddingTop = '6px';
+
+    const streak = computeStreak();
+    const streakCard = el('div', 'streak-card');
+    streakCard.innerHTML = `
+      <div><div class="num">${streak}</div><div class="label" style="color:#CFC4B8;">jour${streak>1?'s':''} de suite</div></div>
+      <div class="txt">Reviens chaque jour, même deux minutes suffisent.</div>
+    `;
+    screen.appendChild(streakCard);
+
+    const todayDone = !!state.entriesIndex[state.todayKey];
+
+    const quick = el('div', 'mode-card featured');
+    quick.innerHTML = `
+      <span class="tag">2 minutes</span>
+      <h3>Le point du jour ${todayDone ? '<span class="check">✓</span>' : ''}</h3>
+      <p>Humeur, besoin, petite voix, courage — un instantané rapide de ta journée.</p>
+    `;
+    quick.onclick = startQuickFlow;
+    screen.appendChild(quick);
+
+    const breathCard = el('div', 'mode-card breath-card');
+    breathCard.innerHTML = `<h3>🌬️ ${BREATHING.title}</h3><p>${BREATHING.objective}</p>`;
+    breathCard.onclick = startBreathing;
+    screen.appendChild(breathCard);
+
+    const labelEl = el('div', 'label');
+    labelEl.textContent = 'Exercices complets';
+    labelEl.style.margin = '8px 0 10px';
+    screen.appendChild(labelEl);
+
+    FULL_EXERCISES.forEach(ex => {
+      const card = el('div', 'mode-card');
+      card.innerHTML = `<h3>${ex.title}</h3><p>${ex.objective}</p>`;
+      card.onclick = () => startFullFlow(ex.key);
+      screen.appendChild(card);
+    });
+
+    content.appendChild(screen);
+    top.querySelector('#lock-icon').onclick = lockApp;
+  }
+
+  function computeStreak() {
+    let count = 0;
+    let d = new Date();
+    while (true) {
+      const k = dateKey(d);
+      if (state.entriesIndex[k]) {
+        count++;
+        d.setDate(d.getDate() - 1);
+      } else {
+        if (k === state.todayKey) { d.setDate(d.getDate() - 1); continue; }
+        break;
+      }
+    }
+    return count;
+  }
+
+  // ---------- FLOW SCREEN ----------
+  function renderFlow(content) {
+    const f = state.flow;
+    const top = el('div', 'topbar');
+    top.innerHTML = `<button class="icon-btn" id="flow-close">✕</button><span class="label">${f.title}</span><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+
+    // Intro screen for full exercises
+    if (f.kind === 'full' && f.idx === -1) {
+      const ex = FULL_EXERCISES.find(e => e.key === f.exerciseKey);
+      screen.innerHTML = `
+        <div class="q-block">
+          <div class="q-eyebrow">${ex.tag}</div>
+          <h2 style="font-size:1.6rem; margin-bottom:14px;">${ex.title}</h2>
+          <p class="q-hint" style="font-size:0.95rem; margin-bottom:8px;"><strong>Objectif :</strong> ${ex.objective}</p>
+          <p class="q-hint">${ex.intro}</p>
+        </div>
+        <div class="nav-row"><button class="btn btn-primary btn-block" id="flow-start">Commencer</button></div>
+      `;
+      content.appendChild(screen);
+      top.querySelector('#flow-close').addEventListener('click', () => { state.flow=null; state.screen='home'; render(); });
+      screen.querySelector('#flow-start').onclick = () => { f.idx = 0; render(); };
+      return;
+    }
+
+    const step = currentStep();
+    const total = f.steps.length;
+    const dots = el('div', 'progress-dots');
+    for (let i=0;i<total;i++){
+      const seg = document.createElement('span');
+      const fillPct = i < f.idx ? 100 : (i === f.idx ? 100 : 0);
+      seg.innerHTML = `<i style="width:${i<=f.idx?100:0}%"></i>`;
+      dots.appendChild(seg);
+    }
+    screen.appendChild(dots);
+
+    const qBlock = el('div', 'q-block');
+    qBlock.innerHTML = `
+      ${step.eyebrow ? `<div class="q-eyebrow">${step.eyebrow}</div>` : ''}
+      <div class="q-text">${step.text}</div>
+      ${step.hint ? `<div class="q-hint">${step.hint}</div>` : ''}
+    `;
+
+    let getValue;
+    if (step.type === 'chips') {
+      const chipsWrap = el('div', 'chips');
+      const selected = new Set(f.answers[step.id] || []);
+      step.options.forEach(opt => {
+        const chip = el('div', 'chip');
+        chip.textContent = opt;
+        if (selected.has(opt)) chip.classList.add('selected');
+        chip.onclick = () => {
+          if (selected.has(opt)) selected.delete(opt); else selected.add(opt);
+          chip.classList.toggle('selected');
+        };
+        chipsWrap.appendChild(chip);
+      });
+      qBlock.appendChild(chipsWrap);
+      getValue = () => Array.from(selected);
+    } else if (step.type === 'slider') {
+      const initial = f.answers[step.id] !== undefined ? f.answers[step.id] : 50;
+      const sliderWrap = el('div', 'slider-wrap');
+      sliderWrap.innerHTML = `
+        <div class="slider-value" id="slider-value">${initial}%</div>
+        <input type="range" min="0" max="100" step="5" value="${initial}" class="slider-input" id="slider-input">
+        <div class="slider-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+      `;
+      qBlock.appendChild(sliderWrap);
+      const input = sliderWrap.querySelector('#slider-input');
+      const valueLabel = sliderWrap.querySelector('#slider-value');
+      input.addEventListener('input', () => { valueLabel.textContent = input.value + '%'; });
+      getValue = () => parseInt(input.value, 10);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.placeholder = 'Écris librement ici…';
+      ta.value = f.answers[step.id] || '';
+      qBlock.appendChild(ta);
+      getValue = () => ta.value.trim();
+    }
+
+    screen.appendChild(qBlock);
+
+    const navRow = el('div', 'nav-row');
+    const isFirst = f.kind === 'full' ? false : f.idx === 0;
+    if (!(f.kind==='quick' && f.idx===0)) {
+      const backBtn = el('button', 'btn btn-ghost');
+      backBtn.textContent = 'Retour';
+      backBtn.onclick = flowBack;
+      navRow.appendChild(backBtn);
+    }
+    const nextBtn = el('button', 'btn btn-primary');
+    nextBtn.textContent = (f.idx === total - 1) ? 'Terminer' : 'Continuer';
+    nextBtn.onclick = () => flowNext(getValue());
+    navRow.appendChild(nextBtn);
+    screen.appendChild(navRow);
+
+    content.appendChild(screen);
+    top.querySelector('#flow-close').addEventListener('click', () => {
+      showConfirmModal(
+        'Quitter sans terminer ?',
+        "Tes réponses ne seront pas enregistrées.",
+        () => { stopBreathing(); state.flow = null; state.screen = 'home'; render(); }
+      );
+    });
+  }
+
+  // ---------- CALENDAR ----------
+  function renderCalendar(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Calendrier</h1><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    const monthDate = state.viewMonth;
+    const monthLabel = monthDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+    const header = el('div', 'cal-header');
+    header.innerHTML = `
+      <button class="icon-btn" id="cal-prev">←</button>
+      <h2>${capitalize(monthLabel)}</h2>
+      <button class="icon-btn" id="cal-next">→</button>
+    `;
+    screen.appendChild(header);
+
+    const grid = el('div', 'cal-grid');
+    ['L','M','M','J','V','S','D'].forEach(d => {
+      const dow = el('div', 'cal-dow'); dow.textContent = d; grid.appendChild(dow);
+    });
+
+    const year = monthDate.getFullYear(), month = monthDate.getMonth();
+    const firstDay = new Date(year, month, 1);
+    let startOffset = (firstDay.getDay() + 6) % 7; // lundi = 0
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+
+    for (let i=0;i<startOffset;i++) grid.appendChild(el('div','cal-cell empty'));
+
+    for (let day=1; day<=daysInMonth; day++) {
+      const dStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+      const cell = el('div', 'cal-cell');
+      cell.textContent = day;
+      if (dStr === state.todayKey) cell.classList.add('today');
+      if (state.entriesIndex[dStr]) {
+        cell.classList.add('has-entry');
+        cell.onclick = () => { state.selectedEntryDate = dStr; state.screen = 'entry'; render(); };
+      }
+      grid.appendChild(cell);
+    }
+    screen.appendChild(grid);
+
+    const legend = el('div', 'legend');
+    legend.innerHTML = `
+      <span><i class="legend-ic">⛈️</i> orageux</span>
+      <span><i class="legend-ic">☁️</i> nuageux</span>
+      <span><i class="legend-ic">☀️</i> ensoleillé</span>
+    `;
+    screen.appendChild(legend);
+
+    content.appendChild(screen);
+
+    top.querySelector('#cal-prev') && null;
+    header.querySelector('#cal-prev').onclick = () => { state.viewMonth = new Date(year, month-1, 1); render(); };
+    header.querySelector('#cal-next').onclick = () => { state.viewMonth = new Date(year, month+1, 1); render(); };
+
+    // appliquer la couleur d'humeur a posteriori (nécessite déchiffrement async léger)
+    colorMoodCells(grid, year, month);
+  }
+
+  async function colorMoodCells(grid, year, month) {
+    const cells = grid.querySelectorAll('.cal-cell.has-entry');
+    for (const cell of cells) {
+      const day = parseInt(cell.textContent.trim().split('\n')[0], 10);
+      const dStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+      const entry = await decryptEntry(dStr);
+      if (!entry || !entry.sections) continue;
+      let scores = entry.sections.map(s => moodScore(s.mood)).filter(s => s !== null);
+      cell.classList.remove('mood-low','mood-mid','mood-high');
+      let weatherIcon = '☁️';
+      let moodCls = 'mood-mid';
+      if (scores.length) {
+        const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
+        if (avg < -0.3) { moodCls = 'mood-low'; weatherIcon = '⛈️'; }
+        else if (avg > 0.3) { moodCls = 'mood-high'; weatherIcon = '☀️'; }
+        else { moodCls = 'mood-mid'; weatherIcon = '☁️'; }
+      }
+      cell.classList.add(moodCls);
+      cell.innerHTML = `<span class="cal-day-num">${day}</span><span class="cal-weather">${weatherIcon}</span>`;
+    }
+  }
+
+  // ---------- STATS ----------
+  async function renderStats(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Statistiques</h1><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    screen.innerHTML = `<p class="q-hint">Analyse en cours…</p>`;
+    content.appendChild(screen);
+
+    const allDates = Object.keys(state.entriesIndex).sort();
+    if (!allDates.length) {
+      screen.innerHTML = `<div class="empty-state"><span class="ic">📈</span>Écris ta première entrée pour voir tes statistiques apparaître ici.</div>`;
+      return;
+    }
+
+    // 30 derniers jours glissants
+    const days = [];
+    const today = new Date();
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      days.push(dateKey(d));
+    }
+
+    const dailyScores = [];
+    let writtenCount = 0;
+    const moodTally = {};
+
+    for (const dStr of days) {
+      const entry = state.entriesIndex[dStr] ? await decryptEntry(dStr) : null;
+      if (entry && entry.sections && entry.sections.length) {
+        writtenCount++;
+        const scores = entry.sections.map(s => moodScore(s.mood)).filter(s => s !== null);
+        entry.sections.forEach(s => (s.mood || []).forEach(m => { moodTally[m] = (moodTally[m]||0) + 1; }));
+        dailyScores.push(scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null);
+      } else {
+        dailyScores.push(null);
+      }
+    }
+
+    const validScores = dailyScores.filter(s => s !== null);
+    const avgScore = validScores.length ? validScores.reduce((a,b)=>a+b,0)/validScores.length : 0;
+    const firstHalf = validScores.slice(0, Math.floor(validScores.length/2));
+    const secondHalf = validScores.slice(Math.floor(validScores.length/2));
+    const avgFirst = firstHalf.length ? firstHalf.reduce((a,b)=>a+b,0)/firstHalf.length : 0;
+    const avgSecond = secondHalf.length ? secondHalf.reduce((a,b)=>a+b,0)/secondHalf.length : 0;
+    const trend = avgSecond - avgFirst;
+
+    let topMood = null, topMoodCount = 0;
+    Object.entries(moodTally).forEach(([m,c]) => { if (c > topMoodCount) { topMood = m; topMoodCount = c; } });
+
+    screen.innerHTML = '';
+
+    // Cartes résumé
+    const summaryGrid = el('div', 'stats-summary');
+    summaryGrid.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-num">${writtenCount}</div>
+        <div class="stat-label">jours écrits<br>sur 30</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${trend > 0.15 ? '↗' : trend < -0.15 ? '↘' : '→'}</div>
+        <div class="stat-label">${trend > 0.15 ? 'en amélioration' : trend < -0.15 ? 'en baisse' : 'stable'}</div>
+      </div>
+    `;
+    screen.appendChild(summaryGrid);
+
+    if (topMood) {
+      const moodCard = el('div', 'mood-highlight');
+      moodCard.innerHTML = `<span class="label">Ressenti le plus fréquent</span><div class="mood-highlight-val">${topMood}</div>`;
+      screen.appendChild(moodCard);
+    }
+
+    // Graphique
+    const chartLabel = el('div', 'label');
+    chartLabel.textContent = '30 derniers jours';
+    chartLabel.style.margin = '24px 0 12px';
+    screen.appendChild(chartLabel);
+
+    screen.appendChild(buildMoodChart(dailyScores, days));
+
+    const legend = el('div', 'legend');
+    legend.style.marginTop = '14px';
+    legend.innerHTML = `
+      <span><i class="legend-ic">⛈️</i> difficile</span>
+      <span><i class="legend-ic">☁️</i> neutre</span>
+      <span><i class="legend-ic">☀️</i> léger</span>
+    `;
+    screen.appendChild(legend);
+  }
+
+  function buildMoodChart(dailyScores, days) {
+    const w = 320, h = 140, pad = 16;
+    const n = dailyScores.length;
+    const stepX = (w - pad*2) / (n - 1);
+    const scoreToY = (s) => {
+      // score de -1 (bas) à 1 (haut) mappé sur la hauteur, null -> milieu pointillé
+      const clamped = Math.max(-1, Math.min(1, s));
+      return h/2 - clamped * ((h - pad*2)/2);
+    };
+
+    let pathPoints = [];
+    let dots = [];
+    dailyScores.forEach((s, i) => {
+      if (s === null) return;
+      const x = pad + i * stepX;
+      const y = scoreToY(s);
+      pathPoints.push(`${x},${y}`);
+      const color = s < -0.3 ? '#C98B6B' : s > 0.3 ? '#8A9A7E' : '#D9C9A8';
+      dots.push(`<circle cx="${x}" cy="${y}" r="3.5" fill="${color}" />`);
+    });
+
+    const pathD = pathPoints.length > 1 ? 'M' + pathPoints.join(' L') : '';
+
+    const svg = `
+      <svg viewBox="0 0 ${w} ${h}" class="mood-chart-svg" xmlns="http://www.w3.org/2000/svg">
+        <line x1="${pad}" y1="${h/2}" x2="${w-pad}" y2="${h/2}" stroke="#E4D9C8" stroke-width="1" stroke-dasharray="3,4" />
+        ${pathD ? `<path d="${pathD}" fill="none" stroke="#D97757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />` : ''}
+        ${dots.join('')}
+      </svg>
+    `;
+    const wrap = el('div', 'mood-chart');
+    wrap.innerHTML = svg;
+    return wrap;
+  }
+
+  // ---------- ENTRY DETAIL ----------
+  async function renderEntryDetail(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<button class="icon-btn" id="entry-back">←</button><h1 style="font-size:1.1rem;">${formatDateLong(state.selectedEntryDate)}</h1><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    screen.innerHTML = `<p class="q-hint">Déchiffrement…</p>`;
+    content.appendChild(screen);
+    top.querySelector('#entry-back').onclick = () => { state.screen = 'calendar'; render(); };
+
+    const entry = await decryptEntry(state.selectedEntryDate);
+    screen.innerHTML = '';
+    if (!entry || !entry.sections || !entry.sections.length) {
+      screen.innerHTML = `<div class="empty-state"><span class="ic">📭</span>Aucune entrée lisible pour ce jour.</div>`;
+      return;
+    }
+
+    const detail = el('div', 'entry-detail');
+    entry.sections.forEach(section => {
+      const sectionWrap = el('div', '');
+      const titleEl = el('div', 'label');
+      titleEl.style.marginBottom = '10px';
+      titleEl.textContent = section.title || (section.kind === 'quick' ? 'Le point du jour' : 'Exercice');
+      sectionWrap.appendChild(titleEl);
+
+      Object.entries(section.answers).forEach(([qid, val]) => {
+        const isEmpty = val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
+        if (isEmpty) return;
+        const block = el('div', 'entry-block');
+        const qLabel = findQuestionLabel(qid);
+        let displayVal;
+        if (Array.isArray(val)) displayVal = val.join(', ');
+        else if (typeof val === 'number') displayVal = val + '%';
+        else displayVal = escapeHtml(val);
+        block.innerHTML = `
+          <div class="entry-q">${qLabel}</div>
+          <div class="entry-a">${displayVal}</div>
+        `;
+        sectionWrap.appendChild(block);
+      });
+      detail.appendChild(sectionWrap);
+    });
+
+    screen.appendChild(detail);
+  }
+
+  function findQuestionLabel(qid) {
+    const all = [...QUICK_FLOW, ...FULL_VOIX.steps, ...FULL_COURAGE.steps, ...FULL_REVEIL.steps, ...FULL_PENSEES.steps, ...BILAN_STEPS];
+    const found = all.find(q => q.id === qid);
+    return found ? found.text : qid;
+  }
+
+  // ---------- SETTINGS ----------
+  function renderSettings(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Réglages</h1><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    const r = state.reminderSettings;
+    const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
+    screen.innerHTML = `
+      <div class="settings-row">
+        <div><div class="t">Rappel quotidien</div><div class="d">Une notification si tu n'as pas encore écrit aujourd'hui</div></div>
+        <label class="switch">
+          <input type="checkbox" id="set-reminder-toggle" ${r.enabled ? 'checked' : ''}>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="settings-row" id="reminder-time-row" style="${r.enabled ? '' : 'display:none;'}">
+        <div><div class="t">Heure du rappel</div><div class="d">À quel moment de la journée ?</div></div>
+        <input type="time" id="set-reminder-time" value="${timeStr}" class="time-input">
+      </div>
+      ${r.enabled ? `<p class="q-hint" style="margin-bottom:18px;">Le rappel fonctionne tant que l'app reste ouverte en arrière-plan. Si tu l'as complètement fermée, ouvre-la une fois dans la journée pour qu'il se déclenche.</p>` : ''}
+      <div class="settings-row">
+        <div><div class="t">Verrouiller maintenant</div><div class="d">Reviens à l'écran de mot de passe</div></div>
+        <button class="btn btn-ghost btn-sm" id="set-lock">Verrouiller</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="t">Stockage</div><div class="d">100% local sur cet appareil, chiffré AES-256. Rien n'est envoyé en ligne.</div></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="t">Tout effacer</div><div class="d">Supprime définitivement toutes les entrées et le mot de passe.</div></div>
+        <button class="btn btn-ghost btn-sm" id="set-wipe" style="color:#B85C3F; border-color:#B85C3F;">Effacer</button>
+      </div>
+    `;
+    content.appendChild(screen);
+
+    const toggle = screen.querySelector('#set-reminder-toggle');
+    const timeRow = screen.querySelector('#reminder-time-row');
+    const timeInput = screen.querySelector('#set-reminder-time');
+
+    toggle.onchange = async () => {
+      if (toggle.checked) {
+        const perm = await Reminder.requestPermission();
+        if (perm !== 'granted') {
+          toggle.checked = false;
+          showToast(perm === 'unsupported' ? "Notifications non supportées sur cet appareil" : "Autorise les notifications pour activer le rappel");
+          return;
+        }
+      }
+      state.reminderSettings.enabled = toggle.checked;
+      timeRow.style.display = toggle.checked ? '' : 'none';
+      await Store.setMeta('reminder', state.reminderSettings);
+      showToast(toggle.checked ? 'Rappel activé' : 'Rappel désactivé');
+    };
+
+    timeInput.onchange = async () => {
+      const [hh, mm] = timeInput.value.split(':').map(Number);
+      state.reminderSettings.hour = hh;
+      state.reminderSettings.minute = mm;
+      state.reminderSettings.lastFiredDate = null;
+      await Store.setMeta('reminder', state.reminderSettings);
+      showToast('Heure mise à jour : ' + timeInput.value);
+    };
+
+    screen.querySelector('#set-lock').onclick = lockApp;
+    screen.querySelector('#set-wipe').onclick = () => {
+      showConfirmModal(
+        'Effacer tout le journal ?',
+        'Cette action est irréversible : toutes les entrées et le mot de passe seront définitivement supprimés.',
+        async () => {
+          await Store.deleteAll();
+          state.password = null;
+          state.entriesIndex = {};
+          state.reminderSettings = { enabled: false, hour: 20, minute: 0, lastFiredDate: null };
+          state.screen = 'setup';
+          render();
+        },
+        'Effacer'
+      );
+    };
+  }
+
+  // ---------- BOTTOM NAV ----------
+  function renderBottomNav() {
+    const nav = el('div', 'bottom-nav');
+    const items = [
+      { key:'home', ic:'✦', label:'Aujourd\'hui' },
+      { key:'calendar', ic:'▦', label:'Calendrier' },
+      { key:'stats', ic:'📈', label:'Statistiques' },
+      { key:'settings', ic:'⚙', label:'Réglages' }
+    ];
+    items.forEach(it => {
+      const btn = el('button', 'nav-btn' + (state.screen===it.key ? ' active':''));
+      btn.innerHTML = `<span class="ic">${it.ic}</span>${it.label}`;
+      btn.onclick = () => { state.screen = it.key; render(); };
+      nav.appendChild(btn);
+    });
+    return nav;
+  }
+
+  // ---------- HELPERS ----------
+  // ---------- CONFIRM MODAL (remplace window.confirm, peu fiable en PWA/APK) ----------
+  function showConfirmModal(title, message, onConfirm, confirmLabel) {
+    const overlay = el('div', 'modal-overlay');
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <h3 class="modal-title">${title}</h3>
+        <p class="modal-msg">${message}</p>
+        <div class="nav-row" style="margin-top:20px;">
+          <button class="btn btn-ghost btn-block" id="modal-cancel">Annuler</button>
+          <button class="btn btn-primary btn-block" id="modal-confirm">${confirmLabel || 'Quitter'}</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('#modal-cancel').onclick = close;
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('#modal-confirm').onclick = () => { close(); onConfirm(); };
+  }
+
+  function el(tag, className) {
+    const e = document.createElement(tag);
+    if (className) e.className = className;
+    return e;
+  }
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function formatDateLong(dStr) {
+    const [y,m,d] = dStr.split('-').map(Number);
+    return new Date(y, m-1, d).toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  }
+
+  return { init };
+})();
+
+document.addEventListener('DOMContentLoaded', App.init);
+</script>
+</body>
+</html>
