@@ -1,0 +1,14 @@
+{
+  "name": "Ancrage — Journal intime",
+  "short_name": "Ancrage",
+  "description": "Journal quotidien local et chiffré pour mieux se comprendre",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#241E1C",
+  "theme_color": "#241E1C",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
