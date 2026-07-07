@@ -518,6 +518,57 @@ textarea{
   color:var(--ink-soft);
   line-height:1.5;
 }
+
+/* ---------- SOS flottant ---------- */
+.sos-fab{
+  position:fixed;
+  right:calc(50% - 240px + 18px);
+  bottom:96px;
+  width:54px; height:54px;
+  border-radius:50%;
+  border:none;
+  background:linear-gradient(135deg, #9CB090, var(--sage));
+  color:var(--cream);
+  font-size:1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px -8px rgba(138,154,126,0.6);
+  cursor:pointer;
+  z-index:40;
+}
+.sos-fab:active{ transform:scale(0.94); }
+@media (max-width:516px){
+  .sos-fab{ right:18px; }
+}
+
+/* ---------- Carte ancrage (accueil) ---------- */
+.mode-card.anchor-card{
+  background:linear-gradient(135deg, #E0C9A6, #D9A07E);
+  border:none;
+  color:var(--ink);
+}
+.mode-card.anchor-card p{ opacity:0.85; }
+
+/* ---------- Écran ancrage ---------- */
+.anchor-item{
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  margin-bottom:12px;
+}
+.anchor-item-text{
+  font-family:var(--font-display);
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.4;
+}
+.anchor-item-date{
+  font-size:0.72rem;
+  color:var(--ink-soft);
+  margin-top:8px;
+  text-transform:capitalize;
+}
 </style>
 </head>
 <body>
@@ -747,37 +798,76 @@ const Reminder = (() => {
 // ============ CONTENU : synthèse des 3 exercices (Comitys) ============
 
 // Parcours rapide quotidien (synthèse des 3 PDF en 4 questions, ~2 min)
-const QUICK_FLOW = [
-  {
-    id: 'reveil_humeur',
-    eyebrow: "Au réveil",
-    text: "Comment je me sens depuis ce matin ?",
-    type: 'chips',
-    options: ['Stressé·e', 'Motivé·e', 'En colère', 'Joyeux·se', 'Paisible', 'Déçu·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Ravi·e'],
-    multi: true
-  },
-  {
-    id: 'besoin_jour',
-    eyebrow: "Au réveil",
-    text: "De quoi ai-je besoin aujourd'hui pour bien commencer ?",
-    type: 'text',
-    hint: "Un besoin simple, concret : du calme, du mouvement, parler à quelqu'un…"
-  },
-  {
-    id: 'voix_malveillante',
-    eyebrow: "La petite voix",
-    text: "Une phrase que je me suis dite aujourd'hui et qui m'a fait du mal ?",
-    type: 'text',
-    hint: "Si rien ne vient, tant mieux — tu peux laisser vide ou écrire \"rien aujourd'hui\"."
-  },
-  {
-    id: 'courage_jour',
-    eyebrow: "Acte de courage",
-    text: "Qu'ai-je fait aujourd'hui, même petit, qui demandait du courage ?",
-    type: 'text',
-    hint: "Personne n'a besoin de l'avoir vu pour que ça compte."
+// Le matin : tourné vers l'intention du jour. Le soir : tourné vers le bilan de la journée vécue.
+function getQuickFlow(hour) {
+  const isEvening = hour >= 17 || hour < 4;
+  if (isEvening) {
+    return [
+      {
+        id: 'reveil_humeur',
+        eyebrow: "Bilan du jour",
+        text: "Comment je me sens en repensant à ma journée ?",
+        type: 'chips',
+        options: ['Motivé·e', 'Joyeux·se', 'Paisible', 'Confiant·e', 'Reconnaissant·e', 'Fier·ère', 'Stressé·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Triste', 'En colère'],
+        multi: true
+      },
+      {
+        id: 'besoin_jour',
+        eyebrow: "Gratitude",
+        text: "Qu'est-ce qui m'a fait du bien aujourd'hui ?",
+        type: 'text',
+        hint: "Un moment, une personne, une petite victoire — même minuscule."
+      },
+      {
+        id: 'voix_malveillante',
+        eyebrow: "La petite voix",
+        text: "Une pensée dure envers moi-même aujourd'hui — et comment je la reformule avec bienveillance ?",
+        type: 'text',
+        hint: "Si rien ne vient, tant mieux — tu peux laisser vide ou écrire \"rien aujourd'hui\"."
+      },
+      {
+        id: 'courage_jour',
+        eyebrow: "Fierté du jour",
+        text: "Qu'ai-je fait aujourd'hui, même petit, qui demandait du courage ?",
+        type: 'text',
+        hint: "Personne n'a besoin de l'avoir vu pour que ça compte."
+      }
+    ];
   }
-];
+  return [
+    {
+      id: 'reveil_humeur',
+      eyebrow: "Au réveil",
+      text: "Comment je me sens depuis ce matin ?",
+      type: 'chips',
+      options: ['Motivé·e', 'Joyeux·se', 'Paisible', 'Confiant·e', 'Reconnaissant·e', 'Fier·ère', 'Stressé·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Triste', 'En colère'],
+      multi: true
+    },
+    {
+      id: 'besoin_jour',
+      eyebrow: "Au réveil",
+      text: "De quoi ai-je besoin aujourd'hui pour bien commencer ?",
+      type: 'text',
+      hint: "Un besoin simple, concret : du calme, du mouvement, parler à quelqu'un…"
+    },
+    {
+      id: 'voix_malveillante',
+      eyebrow: "La petite voix",
+      text: "Une phrase que je me suis dite récemment et qui m'a fait du mal — et sa version bienveillante ?",
+      type: 'text',
+      hint: "Si rien ne vient, tant mieux — tu peux laisser vide ou écrire \"rien aujourd'hui\"."
+    },
+    {
+      id: 'courage_jour',
+      eyebrow: "Intention du jour",
+      text: "De quoi suis-je capable aujourd'hui, même si ça demande du courage ?",
+      type: 'text',
+      hint: "Une intention simple, à ta portée."
+    }
+  ];
+}
+// Alias statique conservé pour compat (findQuestionLabel etc.) : questions identiques matin/soir, seuls eyebrow/text changent
+const QUICK_FLOW = getQuickFlow(9);
 
 // Parcours complet #1 — La petite voix malveillante (synthèse fidèle du PDF)
 const FULL_VOIX = {
@@ -1006,10 +1096,12 @@ const App = (() => {
 
   // ---------- FLOW ENGINE ----------
   function startQuickFlow() {
+    const hour = new Date().getHours();
+    const isEvening = hour >= 17 || hour < 4;
     state.flow = {
       kind: 'quick',
-      title: 'Aujourd\'hui',
-      steps: QUICK_FLOW,
+      title: isEvening ? 'Bilan du jour' : 'Aujourd\'hui',
+      steps: getQuickFlow(hour),
       idx: 0,
       answers: {},
       mood: null
@@ -1061,11 +1153,38 @@ const App = (() => {
   }
 
   async function finishFlow() {
+    const finishedFlow = state.flow;
     await saveCurrentFlow();
     showToast('Entrée enregistrée');
     state.flow = null;
     state.screen = 'home';
     render();
+    if (finishedFlow.kind === 'quick') maybeSuggestExercise(finishedFlow);
+  }
+
+  // Suggère un exercice pertinent si les réponses signalent du stress/mal-être
+  function maybeSuggestExercise(flow) {
+    const score = moodScore(flow.mood);
+    const answersText = Object.values(flow.answers).filter(v => typeof v === 'string').join(' ').toLowerCase();
+    const distressWords = ['stress','anxi','peur','mal','triste','seul','fatigu','honte','colère','difficile','angoiss'];
+    const textFlag = distressWords.some(w => answersText.includes(w));
+    if (score === null || (score >= 0 && !textFlag)) return;
+
+    let suggestion;
+    if (score !== null && score <= -2) {
+      suggestion = { label: 'Respirer 2 minutes', action: () => { state.screen = 'breathing'; render(); } };
+    } else if (answersText.includes('anxi') || answersText.includes('stress') || answersText.includes('peur')) {
+      suggestion = { label: 'Faire l\'exercice "Remettre en question mes pensées"', action: () => startFullFlow('pensees_negatives_full') };
+    } else {
+      suggestion = { label: 'Faire l\'exercice "La petite voix malveillante"', action: () => startFullFlow('voix_malveillante_full') };
+    }
+
+    showConfirmModal(
+      'Une journée un peu difficile ?',
+      "Tu veux prendre un moment pour souffler ou creuser un peu plus ?",
+      suggestion.action,
+      suggestion.label
+    );
   }
 
   // ---------- BREATHING ----------
@@ -1276,14 +1395,25 @@ const App = (() => {
     if (state.screen === 'breathing') renderBreathing(content);
     if (state.screen === 'calendar') renderCalendar(content);
     if (state.screen === 'stats') renderStats(content);
+    if (state.screen === 'anchor') renderAnchor(content);
     if (state.screen === 'entry') renderEntryDetail(content);
     if (state.screen === 'settings') renderSettings(content);
 
     root.appendChild(content);
 
-    if (['home','calendar','stats','settings'].includes(state.screen)) {
+    if (['home','calendar','stats','settings','anchor'].includes(state.screen)) {
       root.appendChild(renderBottomNav());
+      root.appendChild(renderSOSButton());
     }
+  }
+
+  // ---------- SOS FLOTTANT ----------
+  function renderSOSButton() {
+    const btn = el('button', 'sos-fab');
+    btn.innerHTML = `🌬️`;
+    btn.title = 'Respirer maintenant';
+    btn.onclick = () => { state.screen = 'breathing'; render(); };
+    return btn;
   }
 
   // ---------- SETUP SCREEN ----------
@@ -1343,12 +1473,14 @@ const App = (() => {
     screen.appendChild(streakCard);
 
     const todayDone = !!state.entriesIndex[state.todayKey];
+    const hour = new Date().getHours();
+    const isEvening = hour >= 17 || hour < 4;
 
     const quick = el('div', 'mode-card featured');
     quick.innerHTML = `
       <span class="tag">2 minutes</span>
-      <h3>Le point du jour ${todayDone ? '<span class="check">✓</span>' : ''}</h3>
-      <p>Humeur, besoin, petite voix, courage — un instantané rapide de ta journée.</p>
+      <h3>${isEvening ? 'Le bilan du jour' : 'Le point du jour'} ${todayDone ? '<span class="check">✓</span>' : ''}</h3>
+      <p>${isEvening ? "Humeur, ressenti, petite voix, courage — reviens sur ta journée." : "Humeur, besoin, petite voix, courage — un instantané rapide de ta journée."}</p>
     `;
     quick.onclick = startQuickFlow;
     screen.appendChild(quick);
@@ -1357,6 +1489,11 @@ const App = (() => {
     breathCard.innerHTML = `<h3>🌬️ ${BREATHING.title}</h3><p>${BREATHING.objective}</p>`;
     breathCard.onclick = startBreathing;
     screen.appendChild(breathCard);
+
+    const anchorCard = el('div', 'mode-card anchor-card');
+    anchorCard.innerHTML = `<h3>🌟 Mon ancrage</h3><p>Relis tes phrases bienveillantes et tes actes de courage passés.</p>`;
+    anchorCard.onclick = () => { state.screen = 'anchor'; render(); };
+    screen.appendChild(anchorCard);
 
     const labelEl = el('div', 'label');
     labelEl.textContent = 'Exercices complets';
@@ -1706,6 +1843,55 @@ const App = (() => {
     const wrap = el('div', 'mood-chart');
     wrap.innerHTML = svg;
     return wrap;
+  }
+
+  // ---------- ANCRAGE DE CONFIANCE ----------
+  // IDs des questions dont les réponses nourrissent la confiance en soi
+  const ANCHOR_QUESTION_IDS = ['v3', 'courage_jour', 'c2', 'c3', 'c4', 'p9'];
+
+  async function renderAnchor(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Mon ancrage</h1><span style="width:38px;"></span>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    screen.innerHTML = `<p class="q-hint">Rassemblement de tes forces…</p>`;
+    content.appendChild(screen);
+
+    const allDates = Object.keys(state.entriesIndex).sort().reverse();
+    const items = [];
+    for (const dStr of allDates) {
+      const entry = await decryptEntry(dStr);
+      if (!entry || !entry.sections) continue;
+      entry.sections.forEach(section => {
+        ANCHOR_QUESTION_IDS.forEach(qid => {
+          const val = section.answers && section.answers[qid];
+          if (val && typeof val === 'string' && val.trim().length > 2) {
+            items.push({ date: dStr, text: val.trim() });
+          }
+        });
+      });
+    }
+
+    screen.innerHTML = '';
+    if (!items.length) {
+      screen.innerHTML = `<div class="empty-state"><span class="ic">🌟</span>Tes phrases bienveillantes et actes de courage apparaîtront ici au fil de tes entrées.<br><br>Essaie "La petite voix malveillante" ou "Les actes de courage" pour commencer.</div>`;
+      return;
+    }
+
+    const intro = el('p', 'q-hint');
+    intro.style.marginBottom = '18px';
+    intro.textContent = "Tout ce que tu as écrit sur toi-même, quand tu étais bienveillant·e ou courageux·se. Relis ça quand tu doutes.";
+    screen.appendChild(intro);
+
+    items.forEach(item => {
+      const card = el('div', 'anchor-item');
+      card.innerHTML = `
+        <div class="anchor-item-text">"${escapeHtml(item.text)}"</div>
+        <div class="anchor-item-date">${formatDateLong(item.date)}</div>
+      `;
+      screen.appendChild(card);
+    });
   }
 
   // ---------- ENTRY DETAIL ----------
