@@ -318,11 +318,75 @@ textarea{
 .legend .legend-ic{ font-style:normal; font-size:0.95rem; }
 
 /* ---------- Entrée détail ---------- */
-.entry-detail{ display:flex; flex-direction:column; gap:18px; }
-.entry-q{ font-size:0.95rem; font-weight:600; color:var(--ink-soft); margin-bottom:4px; }
-.entry-a{ font-family:'Fraunces', serif; font-size:1.05rem; white-space:pre-wrap; }
-.entry-block{ padding-bottom:14px; border-bottom:1px solid var(--line); }
-.entry-block:last-child{ border-bottom:none; }
+.entry-detail{ display:flex; flex-direction:column; gap:16px; }
+
+.entry-section{
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 18px 6px;
+}
+.entry-section-quick{ border-left:4px solid var(--terracotta); }
+.entry-section-full{ border-left:4px solid var(--sage); }
+
+.entry-section-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.entry-section-icon{ font-size:1rem; }
+.entry-section-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1rem;
+  color:var(--ink);
+  flex:1;
+}
+.entry-section-time{
+  font-size:0.72rem;
+  color:var(--ink-soft);
+  font-weight:600;
+  background:var(--cream);
+  padding:3px 9px;
+  border-radius:999px;
+}
+
+.entry-block{ padding-bottom:16px; margin-bottom:16px; border-bottom:1px solid var(--line); }
+.entry-block:last-child{ border-bottom:none; margin-bottom:6px; padding-bottom:12px; }
+
+.entry-q{
+  font-size:0.82rem;
+  font-weight:600;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+  line-height:1.4;
+}
+.entry-a{
+  font-family:var(--font-display);
+  font-size:1.05rem;
+  font-weight:500;
+  color:var(--ink);
+  white-space:pre-wrap;
+  line-height:1.5;
+}
+.entry-a-number{
+  font-size:1.6rem;
+  font-weight:700;
+  color:var(--terracotta-deep);
+}
+
+.entry-mood-chips{ display:flex; flex-wrap:wrap; gap:6px; }
+.entry-mood-chip{
+  background:var(--terracotta);
+  color:var(--cream);
+  font-size:0.78rem;
+  font-weight:600;
+  padding:5px 12px;
+  border-radius:999px;
+}
 
 /* ---------- Empty states ---------- */
 .empty-state{ text-align:center; padding:50px 20px; color:var(--ink-soft); }
@@ -797,77 +861,103 @@ const Reminder = (() => {
 
 // ============ CONTENU : synthèse des 3 exercices (Comitys) ============
 
-// Parcours rapide quotidien (synthèse des 3 PDF en 4 questions, ~2 min)
-// Le matin : tourné vers l'intention du jour. Le soir : tourné vers le bilan de la journée vécue.
-function getQuickFlow(hour) {
+// Parcours rapide quotidien (synthèse des PDF + TCC estime de soi, 4 questions écrites max, ~2 min)
+// Q1 humeur (chips) - Q2 adaptative selon l'humeur - Q3 en rotation (jour pair/impair) - Q4 courage/intention
+
+const POSITIVE_MOODS = ['Motivé·e','Joyeux·se','Paisible','Confiant·e','Reconnaissant·e','Fier·ère'];
+
+function getQuickFlow(hour, dayOfYear, previousMood) {
   const isEvening = hour >= 17 || hour < 4;
-  if (isEvening) {
-    return [
-      {
-        id: 'reveil_humeur',
-        eyebrow: "Bilan du jour",
-        text: "Comment je me sens en repensant à ma journée ?",
-        type: 'chips',
-        options: ['Motivé·e', 'Joyeux·se', 'Paisible', 'Confiant·e', 'Reconnaissant·e', 'Fier·ère', 'Stressé·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Triste', 'En colère'],
-        multi: true
-      },
-      {
-        id: 'besoin_jour',
-        eyebrow: "Gratitude",
-        text: "Qu'est-ce qui m'a fait du bien aujourd'hui ?",
-        type: 'text',
-        hint: "Un moment, une personne, une petite victoire — même minuscule."
-      },
-      {
-        id: 'voix_malveillante',
-        eyebrow: "La petite voix",
-        text: "Une pensée dure envers moi-même aujourd'hui — et comment je la reformule avec bienveillance ?",
-        type: 'text',
-        hint: "Si rien ne vient, tant mieux — tu peux laisser vide ou écrire \"rien aujourd'hui\"."
-      },
-      {
-        id: 'courage_jour',
-        eyebrow: "Fierté du jour",
-        text: "Qu'ai-je fait aujourd'hui, même petit, qui demandait du courage ?",
-        type: 'text',
-        hint: "Personne n'a besoin de l'avoir vu pour que ça compte."
-      }
-    ];
-  }
-  return [
-    {
-      id: 'reveil_humeur',
-      eyebrow: "Au réveil",
-      text: "Comment je me sens depuis ce matin ?",
-      type: 'chips',
-      options: ['Motivé·e', 'Joyeux·se', 'Paisible', 'Confiant·e', 'Reconnaissant·e', 'Fier·ère', 'Stressé·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Triste', 'En colère'],
-      multi: true
-    },
-    {
-      id: 'besoin_jour',
-      eyebrow: "Au réveil",
-      text: "De quoi ai-je besoin aujourd'hui pour bien commencer ?",
+  const eyebrowBase = isEvening ? "Bilan du jour" : "Au réveil";
+
+  // Q2 s'adapte à l'humeur cochée en Q1 (si déjà répondue dans cette session)
+  let q2;
+  const hasPositive = previousMood && previousMood.some(m => POSITIVE_MOODS.includes(m));
+  const hasNegative = previousMood && previousMood.some(m => !POSITIVE_MOODS.includes(m));
+  if (previousMood && previousMood.length && hasPositive && !hasNegative) {
+    q2 = {
+      id: 'humeur_pourquoi',
+      eyebrow: eyebrowBase,
+      text: isEvening ? "Qu'est-ce qui explique que cette journée se soit bien passée ?" : "Qu'est-ce qui explique que je me sente bien ce matin ?",
       type: 'text',
-      hint: "Un besoin simple, concret : du calme, du mouvement, parler à quelqu'un…"
-    },
+      hint: "Un événement, une personne, une décision que j'ai prise…"
+    };
+  } else if (previousMood && previousMood.length && hasNegative) {
+    q2 = {
+      id: 'humeur_pourquoi',
+      eyebrow: eyebrowBase,
+      text: "Pourquoi je me sens comme ça, et de quoi ai-je besoin maintenant ?",
+      type: 'text',
+      hint: "Ce qui a le plus pesé, et un besoin simple pour aller mieux."
+    };
+  } else {
+    // pas encore de réponse à l'humeur (première génération avant sélection) : formulation neutre par défaut
+    q2 = {
+      id: 'humeur_pourquoi',
+      eyebrow: eyebrowBase,
+      text: "Pourquoi je me sens comme ça ?",
+      type: 'text',
+      hint: "Ce qui a le plus influencé ce ressenti."
+    };
+  }
+
+  // Q3 en rotation sur 3 jours : petite voix -> 3 réussites -> force incarnée
+  const rotationIndex = (dayOfYear || 0) % 3;
+  const q3Variants = [
     {
       id: 'voix_malveillante',
       eyebrow: "La petite voix",
-      text: "Une phrase que je me suis dite récemment et qui m'a fait du mal — et sa version bienveillante ?",
+      text: isEvening
+        ? "Une pensée dure envers moi-même aujourd'hui — et comment je la reformule avec bienveillance ?"
+        : "Une phrase que je me suis dite récemment et qui m'a fait du mal — et sa version bienveillante ?",
       type: 'text',
       hint: "Si rien ne vient, tant mieux — tu peux laisser vide ou écrire \"rien aujourd'hui\"."
     },
     {
-      id: 'courage_jour',
-      eyebrow: "Intention du jour",
-      text: "De quoi suis-je capable aujourd'hui, même si ça demande du courage ?",
+      id: 'trois_reussites',
+      eyebrow: "Mes réussites",
+      text: "Quelles sont 3 petites réussites d'aujourd'hui, même minimes ?",
       type: 'text',
-      hint: "Une intention simple, à ta portée."
+      hint: "Un mail envoyé, un appel difficile passé, un moment de calme trouvé — tout compte."
+    },
+    {
+      id: 'force_incarnee',
+      eyebrow: "Meilleure version de moi",
+      text: "Aujourd'hui, quand ai-je agi comme la personne que je veux devenir ?",
+      type: 'text',
+      hint: "Un moment, même bref, où j'ai incarné une qualité qui compte pour moi."
+    }
+  ];
+  const q3 = q3Variants[rotationIndex];
+
+  return [
+    {
+      id: 'reveil_humeur',
+      eyebrow: eyebrowBase,
+      text: isEvening ? "Comment je me sens en repensant à ma journée ?" : "Comment je me sens depuis ce matin ?",
+      type: 'chips',
+      options: ['Motivé·e', 'Joyeux·se', 'Paisible', 'Confiant·e', 'Reconnaissant·e', 'Fier·ère', 'Stressé·e', 'Inquiet·ète', 'Découragé·e', 'Agité·e', 'Triste', 'En colère', 'Fatigué·e'],
+      multi: true
+    },
+    q2,
+    q3,
+    {
+      id: 'courage_jour',
+      eyebrow: isEvening ? "Fierté du jour" : "Intention du jour",
+      text: isEvening ? "Qu'ai-je fait aujourd'hui, même petit, qui demandait du courage ?" : "De quoi suis-je capable aujourd'hui, même si ça demande du courage ?",
+      type: 'text',
+      hint: isEvening ? "Personne n'a besoin de l'avoir vu pour que ça compte." : "Une intention simple, à ta portée."
     }
   ];
 }
-// Alias statique conservé pour compat (findQuestionLabel etc.) : questions identiques matin/soir, seuls eyebrow/text changent
-const QUICK_FLOW = getQuickFlow(9);
+// Alias statique conservé pour compat (findQuestionLabel etc.) : toutes variantes possibles de Q2/Q3 doivent y être représentées
+const QUICK_FLOW = [
+  ...getQuickFlow(9, 0, []),
+  ...getQuickFlow(9, 1, ['Motivé·e']).filter(q => q.id === 'trois_reussites'),
+  ...getQuickFlow(9, 2, ['Motivé·e']).filter(q => q.id === 'force_incarnee'),
+  ...getQuickFlow(9, 0, ['Motivé·e']).filter(q => q.id === 'humeur_pourquoi'),
+  ...getQuickFlow(9, 0, ['Stressé·e']).filter(q => q.id === 'humeur_pourquoi')
+];
 
 // Parcours complet #1 — La petite voix malveillante (synthèse fidèle du PDF)
 const FULL_VOIX = {
@@ -1095,16 +1185,26 @@ const App = (() => {
   }
 
   // ---------- FLOW ENGINE ----------
+  function getDayOfYear(d) {
+    const start = new Date(d.getFullYear(), 0, 0);
+    const diff = d - start;
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
+  }
+
   function startQuickFlow() {
-    const hour = new Date().getHours();
+    const now = new Date();
+    const hour = now.getHours();
     const isEvening = hour >= 17 || hour < 4;
+    const dayOfYear = getDayOfYear(now);
     state.flow = {
       kind: 'quick',
       title: isEvening ? 'Bilan du jour' : 'Aujourd\'hui',
-      steps: getQuickFlow(hour),
+      steps: getQuickFlow(hour, dayOfYear, []),
       idx: 0,
       answers: {},
-      mood: null
+      mood: null,
+      _hour: hour,
+      _dayOfYear: dayOfYear
     };
     state.screen = 'flow';
     render();
@@ -1137,6 +1237,12 @@ const App = (() => {
     if (step && step.type === 'chips') {
       const moodSteps = ['reveil_humeur', 'r1', 'p2'];
       if (moodSteps.includes(step.id)) state.flow.mood = value;
+    }
+    // Après la réponse à l'humeur du point du jour, on régénère la question suivante (Q2) selon l'émotion choisie
+    if (state.flow.kind === 'quick' && step && step.id === 'reveil_humeur') {
+      const regenerated = getQuickFlow(state.flow._hour, state.flow._dayOfYear, value);
+      // on ne remplace que la question adaptative (index 1), le reste garde son texte déjà affiché
+      state.flow.steps[1] = regenerated[1];
     }
     if (state.flow.idx + 1 >= state.flow.steps.length) {
       finishFlow();
@@ -1913,29 +2019,49 @@ const App = (() => {
     }
 
     const detail = el('div', 'entry-detail');
-    entry.sections.forEach(section => {
-      const sectionWrap = el('div', '');
-      const titleEl = el('div', 'label');
-      titleEl.style.marginBottom = '10px';
-      titleEl.textContent = section.title || (section.kind === 'quick' ? 'Le point du jour' : 'Exercice');
-      sectionWrap.appendChild(titleEl);
+    const multipleSection = entry.sections.length > 1;
+
+    entry.sections.forEach((section, sIdx) => {
+      const isQuick = section.kind === 'quick';
+      const sectionCard = el('div', 'entry-section' + (isQuick ? ' entry-section-quick' : ' entry-section-full'));
+
+      const headerRow = el('div', 'entry-section-header');
+      const timeStr = section.ts ? new Date(section.ts).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }) : '';
+      headerRow.innerHTML = `
+        <span class="entry-section-icon">${isQuick ? '✦' : '🌿'}</span>
+        <span class="entry-section-title">${section.title || (isQuick ? 'Le point du jour' : 'Exercice')}</span>
+        ${timeStr ? `<span class="entry-section-time">${timeStr}</span>` : ''}
+      `;
+      sectionCard.appendChild(headerRow);
 
       Object.entries(section.answers).forEach(([qid, val]) => {
         const isEmpty = val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
         if (isEmpty) return;
         const block = el('div', 'entry-block');
         const qLabel = findQuestionLabel(qid);
-        let displayVal;
-        if (Array.isArray(val)) displayVal = val.join(', ');
-        else if (typeof val === 'number') displayVal = val + '%';
-        else displayVal = escapeHtml(val);
-        block.innerHTML = `
-          <div class="entry-q">${qLabel}</div>
-          <div class="entry-a">${displayVal}</div>
-        `;
-        sectionWrap.appendChild(block);
+
+        if (Array.isArray(val)) {
+          // réponses à choix multiples (ex: humeur) affichées comme des badges plutôt qu'une liste à virgules
+          const chipsHtml = val.map(v => `<span class="entry-mood-chip">${escapeHtml(v)}</span>`).join('');
+          block.innerHTML = `
+            <div class="entry-q">${qLabel}</div>
+            <div class="entry-mood-chips">${chipsHtml}</div>
+          `;
+        } else if (typeof val === 'number') {
+          block.innerHTML = `
+            <div class="entry-q">${qLabel}</div>
+            <div class="entry-a entry-a-number">${val}%</div>
+          `;
+        } else {
+          block.innerHTML = `
+            <div class="entry-q">${qLabel}</div>
+            <div class="entry-a">${escapeHtml(val)}</div>
+          `;
+        }
+        sectionCard.appendChild(block);
       });
-      detail.appendChild(sectionWrap);
+
+      detail.appendChild(sectionCard);
     });
 
     screen.appendChild(detail);
