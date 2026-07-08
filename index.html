@@ -354,25 +354,28 @@ textarea{
   border-radius:999px;
 }
 
-.entry-block{ padding-bottom:16px; margin-bottom:16px; border-bottom:1px solid var(--line); }
+.entry-block{ padding-bottom:18px; margin-bottom:18px; border-bottom:1px solid var(--line); }
 .entry-block:last-child{ border-bottom:none; margin-bottom:6px; padding-bottom:12px; }
 
 .entry-q{
-  font-size:0.82rem;
-  font-weight:600;
-  color:var(--ink-soft);
-  margin-bottom:6px;
+  font-size:0.8rem;
+  font-weight:700;
+  color:var(--terracotta-deep);
+  margin-bottom:8px;
   line-height:1.4;
+  text-transform:uppercase;
+  letter-spacing:0.02em;
 }
 .entry-a{
-  font-family:var(--font-display);
+  font-family:'Fraunces', serif;
   font-size:1.05rem;
-  font-weight:500;
+  font-weight:400;
   color:var(--ink);
   white-space:pre-wrap;
-  line-height:1.5;
+  line-height:1.65;
 }
 .entry-a-number{
+  font-family:var(--font-display);
   font-size:1.6rem;
   font-weight:700;
   color:var(--terracotta-deep);
@@ -1198,7 +1201,7 @@ const App = (() => {
     const dayOfYear = getDayOfYear(now);
     state.flow = {
       kind: 'quick',
-      title: isEvening ? 'Bilan du jour' : 'Aujourd\'hui',
+      title: isEvening ? 'Bilan du jour' : 'Le point du jour',
       steps: getQuickFlow(hour, dayOfYear, []),
       idx: 0,
       answers: {},
@@ -2067,10 +2070,19 @@ const App = (() => {
     screen.appendChild(detail);
   }
 
+  // Anciens IDs de questions qui n'existent plus dans le contenu actuel, mais qui peuvent apparaître
+  // dans des entrées enregistrées avant une mise à jour de l'app. On garde leur libellé d'origine
+  // pour que ces entrées passées restent lisibles.
+  const LEGACY_QUESTION_LABELS = {
+    'besoin_jour': "De quoi ai-je besoin aujourd'hui ?"
+  };
+
   function findQuestionLabel(qid) {
     const all = [...QUICK_FLOW, ...FULL_VOIX.steps, ...FULL_COURAGE.steps, ...FULL_REVEIL.steps, ...FULL_PENSEES.steps, ...BILAN_STEPS];
     const found = all.find(q => q.id === qid);
-    return found ? found.text : qid;
+    if (found) return found.text;
+    if (LEGACY_QUESTION_LABELS[qid]) return LEGACY_QUESTION_LABELS[qid];
+    return qid;
   }
 
   // ---------- SETTINGS ----------
