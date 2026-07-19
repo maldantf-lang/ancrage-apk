@@ -8,21 +8,21 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+<style>@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-  --ink:#12142A;
-  --ink-soft:#5A5C7A;
-  --cream:#F4F4F9;
-  --paper:#E8E8F2;
-  --terracotta:#E08A5B;
-  --terracotta-deep:#C96F42;
-  --sage:#5C5B99;
-  --line:#D6D6E8;
-  --deep:#22214A;
-  --nightviolet:#2B2A4A;
-  --radius:18px;
-  --font-display:'Fraunces', serif;
+  --ink:#1C1B29;
+  --ink-soft:#68637A;
+  --cream:#EDE9E3;
+  --paper:#E1DCD3;
+  --terracotta:#B4634A;
+  --terracotta-deep:#964D38;
+  --sage:#8B7FA8;
+  --line:#D3CCC0;
+  --deep:#26243A;
+  --nightviolet:#332F4D;
+  --radius:14px;
+  --font-display:'Newsreader', serif;
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
@@ -103,7 +103,7 @@ input[type=password], input[type=text], textarea{
 }
 input:focus, textarea:focus{ border-color:var(--terracotta); }
 textarea{
-  font-family:'Fraunces', serif;
+  font-family:var(--font-display);
   font-size:1.05rem;
   resize:none;
   line-height:1.5;
@@ -160,25 +160,25 @@ textarea{
   background:var(--cream);
   border-top:1px solid var(--line);
   display:flex;
-  padding:10px 18px calc(10px + env(safe-area-inset-bottom));
-  gap:6px;
+  padding:10px 10px calc(10px + env(safe-area-inset-bottom));
+  gap:2px;
 }
 .nav-btn{
   flex:1;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:4px;
+  gap:3px;
   background:none;
   border:none;
-  padding:8px 4px;
+  padding:8px 2px;
   cursor:pointer;
   color:var(--ink-soft);
   font-family:'Inter', sans-serif;
-  font-size:0.68rem;
+  font-size:0.62rem;
   font-weight:600;
 }
-.nav-btn .ic{ font-size:1.25rem; }
+.nav-btn .ic{ font-size:1.15rem; }
 .nav-btn.active{ color:var(--terracotta-deep); }
 
 /* ---------- Home / Aujourd'hui ---------- */
@@ -192,7 +192,7 @@ textarea{
   align-items:center;
   justify-content:space-between;
 }
-.streak-card .num{ font-family:'Fraunces',serif; font-size:2.1rem; font-weight:600; color:var(--terracotta); }
+.streak-card .num{ font-family:var(--font-display); font-size:2.1rem; font-weight:600; color:var(--terracotta); }
 .streak-card .txt{ font-size:0.78rem; color:#B3B3D9; max-width:140px; }
 
 .mode-card{
@@ -206,8 +206,9 @@ textarea{
 }
 .mode-card:active{ transform:scale(0.985); }
 .mode-card.featured{
-  background:linear-gradient(135deg, var(--deep), var(--nightviolet));
+  background:var(--deep);
   border:none;
+  border-left:3px solid var(--terracotta);
   color:var(--cream);
 }
 .mode-card .tag{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; font-weight:700; opacity:0.75; }
@@ -218,8 +219,8 @@ textarea{
 
 /* ---------- Question flow ---------- */
 .progress-dots{ display:flex; gap:6px; margin-bottom:22px; }
-.progress-dots span{ height:4px; flex:1; background:var(--line); border-radius:2px; overflow:hidden; }
-.progress-dots span i{ display:block; height:100%; background:#8785C4; width:0%; transition:width .3s ease; }
+.progress-dots span{ height:5px; flex:1; background:rgba(128,128,160,0.35); border-radius:3px; overflow:hidden; }
+.progress-dots span i{ display:block; height:100%; background:#A6A4E0; width:0%; transition:width .3s ease; box-shadow:0 0 6px rgba(166,164,224,0.5); }
 
 .q-block{ flex:1; display:flex; flex-direction:column; }
 .q-eyebrow{ color:var(--terracotta-deep); font-weight:700; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
@@ -356,6 +357,25 @@ textarea{
   padding:3px 9px;
   border-radius:999px;
 }
+.entry-edit-btn{
+  width:30px; height:30px;
+  font-size:0.9rem;
+  flex-shrink:0;
+}
+.entry-edit-textarea{
+  width:100%;
+  min-height:90px;
+  font-family:var(--font-display);
+  font-size:1rem;
+  border:1.5px solid var(--terracotta);
+  border-radius:12px;
+  padding:12px 14px;
+  background:var(--cream);
+  color:var(--ink);
+  resize:vertical;
+  line-height:1.5;
+}
+.entry-edit-textarea:focus{ outline:none; }
 
 .entry-block{ padding-bottom:18px; margin-bottom:18px; border-bottom:1px solid var(--line); }
 .entry-block:last-child{ border-bottom:none; margin-bottom:6px; padding-bottom:12px; }
@@ -370,7 +390,7 @@ textarea{
   letter-spacing:0.02em;
 }
 .entry-a{
-  font-family:'Fraunces', serif;
+  font-family:var(--font-display);
   font-size:1.05rem;
   font-weight:400;
   color:var(--ink);
@@ -430,6 +450,7 @@ textarea{
 
 /* ---------- Stats ---------- */
 .stats-summary{ display:flex; gap:12px; margin:14px 0; }
+.habits-stats-summary{ display:flex; gap:12px; margin:0 0 16px; }
 .stat-card{
   flex:1; background:var(--paper); border:1.5px solid var(--line);
   border-radius:var(--radius); padding:18px 14px; text-align:center;
@@ -438,7 +459,7 @@ textarea{
 .stat-label{ font-size:0.72rem; color:var(--ink-soft); margin-top:4px; line-height:1.3; font-weight:500; }
 
 .mood-highlight{
-  background:linear-gradient(135deg, #7A79B8, var(--sage));
+  background:#5F5B94;
   border-radius:var(--radius); padding:16px 18px; color:var(--cream);
 }
 .mood-highlight .label{ color:#DEDEF5; }
@@ -446,6 +467,50 @@ textarea{
 
 .mood-chart{ background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius); padding:14px 10px; }
 .mood-chart-svg{ width:100%; height:auto; display:block; }
+
+/* ---------- Objectifs d'habitudes (écran Suivi) ---------- */
+.habit-stat-card{
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:12px;
+}
+.habit-stat-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.habit-stat-icon{
+  width:36px; height:36px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem;
+  flex-shrink:0;
+}
+.habit-stat-info{ flex:1; min-width:0; }
+.habit-stat-name{ font-family:var(--font-display); font-weight:600; font-size:0.92rem; }
+.habit-stat-sub{ font-size:0.7rem; color:var(--ink-soft); margin-top:2px; line-height:1.3; }
+.habit-stat-rate{ font-family:var(--font-display); font-size:1.15rem; font-weight:700; flex-shrink:0; }
+
+.habit-stat-bar-track{
+  height:6px;
+  background:var(--line);
+  border-radius:3px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+.habit-stat-bar-fill{ height:100%; border-radius:3px; transition:width .5s ease; }
+
+.habit-stat-dots{ display:flex; flex-wrap:wrap; gap:3px; }
+.habit-stat-dot{
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--line);
+}
+.habit-stat-dot.done{ background:var(--dot-color, var(--terracotta)); }
+.habit-stat-dot.na{ background:transparent; border:1px dashed var(--line); }
 
 .toast{
   position:fixed; bottom:96px; left:50%; transform:translateX(-50%);
@@ -458,8 +523,9 @@ textarea{
 
 /* ---------- Respiration ---------- */
 .mode-card.breath-card{
-  background:linear-gradient(135deg, #43417A, var(--sage));
+  background:#3D3A5C;
   border:none;
+  border-left:3px solid var(--sage);
   color:var(--cream);
 }
 .mode-card.breath-card p{ opacity:0.9; }
@@ -599,6 +665,44 @@ textarea{
   line-height:1.5;
 }
 
+.suggestion-exercise{
+  background:var(--deep);
+  border-radius:12px;
+  padding:16px 18px;
+  margin:18px 0 20px;
+  border-left:3px solid var(--terracotta);
+}
+.suggestion-exercise-title{
+  font-family:var(--font-display);
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--cream);
+  margin-bottom:10px;
+  line-height:1.35;
+}
+.suggestion-exercise-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,0.12);
+}
+.suggestion-benefit{
+  font-size:0.78rem;
+  color:#C9C6DE;
+  line-height:1.3;
+}
+.suggestion-duration{
+  font-size:0.72rem;
+  font-weight:700;
+  color:var(--terracotta);
+  white-space:nowrap;
+  background:rgba(180,99,74,0.15);
+  padding:3px 10px;
+  border-radius:999px;
+}
+
 /* ---------- SOS flottant ---------- */
 .sos-fab{
   position:fixed;
@@ -622,8 +726,9 @@ textarea{
 
 /* ---------- Carte ancrage (accueil) ---------- */
 .mode-card.anchor-card{
-  background:linear-gradient(135deg, #6B5FA8, #4A3F80);
+  background:#514876;
   border:none;
+  border-left:3px solid #8B7FA8;
   color:var(--cream);
 }
 .mode-card.anchor-card p{ opacity:0.88; }
@@ -649,6 +754,178 @@ textarea{
   margin-top:8px;
   text-transform:capitalize;
 }
+
+/* ---------- Carte d'accès Habitudes (accueil) ---------- */
+.mode-card.habits-card{
+  background:#3D3A5C;
+  border:none;
+  border-left:3px solid #6B7A99;
+  color:var(--cream);
+}
+.mode-card.habits-card p{ opacity:0.9; }
+
+/* ---------- Écran Habitudes ---------- */
+.overview-card{
+  background:var(--deep);
+  border-radius:var(--radius);
+  padding:22px 18px;
+  margin:14px 0 20px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.rings-wrap{ position:relative; width:100px; height:100px; flex-shrink:0; }
+.rings-wrap svg{ width:100%; height:100%; transform:rotate(-90deg); }
+.ring-bg{ fill:none; stroke:rgba(255,255,255,0.08); stroke-width:6; }
+.ring-fg{ fill:none; stroke-linecap:round; stroke-width:6; transition:stroke-dashoffset .6s ease; }
+.rings-center{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  color:var(--cream);
+}
+.rings-center .num{ font-family:var(--font-display); font-size:1.5rem; font-weight:600; }
+.rings-center .lbl{ font-size:0.6rem; color:#B8B4D6; text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+
+.overview-legend{ display:flex; flex-direction:column; gap:8px; flex:1; min-width:0; }
+.legend-item{ display:flex; align-items:center; gap:7px; font-size:0.76rem; color:#D8D5EC; }
+.legend-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.legend-item .count{ margin-left:auto; font-weight:600; color:var(--cream); font-size:0.72rem; }
+
+.section-label-habits{
+  font-size:0.72rem;
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  font-weight:600;
+  color:var(--ink-soft);
+  margin:18px 0 10px;
+}
+
+.habit-card{
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  padding:14px 14px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.habit-icon{
+  width:38px; height:38px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+.habit-info{ flex:1; min-width:0; }
+.habit-name{ font-family:var(--font-display); font-weight:600; font-size:0.95rem; margin-bottom:2px; }
+.habit-streak{ font-size:0.72rem; color:var(--ink-soft); }
+.habit-streak b{ color:var(--ink); }
+
+.habit-week{ display:flex; gap:3px; flex-shrink:0; }
+.week-dot{ width:8px; height:8px; border-radius:50%; background:var(--line); }
+.week-dot.done{ background:var(--dot-color, var(--terracotta)); }
+
+.habit-check{
+  width:30px; height:30px;
+  border-radius:50%;
+  border:1.5px solid var(--line);
+  background:transparent;
+  flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.85rem;
+  color:transparent;
+  cursor:pointer;
+}
+.habit-check.checked{
+  background:var(--check-color, var(--terracotta));
+  border-color:transparent;
+  color:var(--cream);
+}
+
+.habit-edit-icon{
+  width:26px; height:26px;
+  border-radius:50%;
+  border:none;
+  background:transparent;
+  color:var(--ink-soft);
+  font-size:0.85rem;
+  flex-shrink:0;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.habit-edit-icon:active{ background:var(--line); }
+
+.habit-freq-label{
+  display:block;
+  font-size:0.72rem;
+  font-weight:600;
+  color:var(--ink-soft);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  margin:14px 0 6px;
+}
+.habit-freq-select{
+  width:100%;
+  padding:10px 12px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  font-family:'IBM Plex Sans', sans-serif;
+  font-size:0.9rem;
+  background:var(--cream);
+  color:var(--ink);
+}
+.habit-freq-select:focus{ outline:none; border-color:var(--terracotta); }
+.habit-delete-btn{ color:#A85C5C; border-color:#A85C5C; }
+
+.habit-suggestions{ display:flex; gap:8px; flex-wrap:wrap; }
+.habit-suggestion-chip{
+  background:var(--paper);
+  border:1.5px dashed var(--line);
+  border-radius:999px;
+  padding:8px 16px;
+  font-size:0.8rem;
+  color:var(--ink-soft);
+  cursor:pointer;
+}
+
+.custom-habit-colors{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+.custom-color-dot{
+  width:28px; height:28px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid transparent;
+}
+.custom-color-dot.selected{ border-color:var(--ink); }
+
+#custom-habit-name{
+  width:100%;
+  padding:11px 14px;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  font-family:'IBM Plex Sans', sans-serif;
+  font-size:0.95rem;
+  background:var(--cream);
+  color:var(--ink);
+}
+#custom-habit-name:focus{ outline:none; border-color:var(--terracotta); }
+
+/* ---------- Points d'habitude dans le calendrier ---------- */
+.cal-habit-dots{ display:flex; gap:2px; justify-content:center; margin-top:1px; }
+.cal-habit-dot{ width:4px; height:4px; border-radius:50%; }
+
+/* ---------- Section habitudes dans le détail de jour ---------- */
+.entry-section-habits{ border-left:3px solid #6B7A99; }
+.habit-detail-row{
+  display:flex; align-items:center; gap:10px;
+  padding:8px 0;
+  font-size:0.88rem;
+}
+.habit-detail-row .dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.habit-detail-row .name{ flex:1; }
+.habit-detail-row .status{ font-size:0.75rem; font-weight:600; }
+.habit-detail-row .status.done{ color:#5C7A6B; }
+.habit-detail-row .status.missed{ color:var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -721,9 +998,11 @@ const Crypto = (() => {
 
 
 // ============ STORAGE : IndexedDB local, aucune donnée ne quitte l'appareil ============
+
+
 const Store = (() => {
   const DB_NAME = 'ancrage-db';
-  const DB_VERSION = 1;
+  const DB_VERSION = 2; // v2 : ajout de l'object store 'habits' (tracker d'habitudes)
   let dbPromise = null;
 
   function openDB() {
@@ -732,11 +1011,17 @@ const Store = (() => {
       const req = indexedDB.open(DB_NAME, DB_VERSION);
       req.onupgradeneeded = (e) => {
         const db = e.target.result;
+        // Ces créations sont non-destructives : elles ne touchent jamais aux object stores
+        // existants ('entries', 'meta'), donc les utilisateurs qui migrent depuis la v1
+        // gardent toutes leurs entrées journal intactes.
         if (!db.objectStoreNames.contains('entries')) {
           db.createObjectStore('entries', { keyPath: 'date' }); // date = 'YYYY-MM-DD'
         }
         if (!db.objectStoreNames.contains('meta')) {
           db.createObjectStore('meta', { keyPath: 'key' });
+        }
+        if (!db.objectStoreNames.contains('habits')) {
+          db.createObjectStore('habits', { keyPath: 'date' }); // date = 'YYYY-MM-DD', payload chiffré des coches du jour
         }
       };
       req.onsuccess = (e) => resolve(e.target.result);
@@ -798,19 +1083,43 @@ const Store = (() => {
   async function deleteAll() {
     const db = await openDB();
     return new Promise((resolve, reject) => {
-      const tx = db.transaction(['entries', 'meta'], 'readwrite');
+      const tx = db.transaction(['entries', 'meta', 'habits'], 'readwrite');
       tx.objectStore('entries').clear();
       tx.objectStore('meta').clear();
+      tx.objectStore('habits').clear();
       tx.oncomplete = () => resolve();
       tx.onerror = () => reject(tx.error);
     });
   }
 
-  return { setMeta, getMeta, putEntry, getEntry, getAllEntries, deleteAll };
+  // ---------- Coches d'habitudes par jour (payload chiffré, même principe que 'entries') ----------
+  async function putHabitDay(dateKey, encryptedPayload) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('habits', 'readwrite');
+      tx.objectStore('habits').put({ date: dateKey, payload: encryptedPayload });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  async function getAllHabitDays() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('habits', 'readonly');
+      const req = tx.objectStore('habits').getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  return { setMeta, getMeta, putEntry, getEntry, getAllEntries, deleteAll, putHabitDay, getAllHabitDays };
 })();
 
 
 // ============ REMINDER : notification locale quotidienne, aucun serveur ============
+
+
 const Reminder = (() => {
   let checkInterval = null;
 
@@ -881,6 +1190,8 @@ const Reminder = (() => {
 // Q1 humeur (chips) - Q2 adaptative selon l'humeur - Q3 en rotation (jour pair/impair) - Q4 courage/intention
 
 const POSITIVE_MOODS = ['Motivé·e','Joyeux·se','Paisible','Confiant·e','Reconnaissant·e','Fier·ère'];
+
+
 
 function getQuickFlow(hour, dayOfYear, previousMood) {
   const isEvening = hour >= 17 || hour < 4;
@@ -980,6 +1291,7 @@ const FULL_VOIX = {
   key: 'voix_malveillante_full',
   title: "La petite voix malveillante",
   tag: "Exercice complet",
+  duration: "5 min",
   objective: "Devenir bienveillant·e pour soi-même",
   intro: "Dire du mal de moi, je le fais souvent, parfois sans m'en rendre compte. Je prends le temps d'écouter cette voix, non pour qu'elle prenne le pouvoir, mais pour la nuancer et apprendre à la faire taire.",
   steps: [
@@ -995,6 +1307,7 @@ const FULL_COURAGE = {
   key: 'actes_courage_full',
   title: "Les actes de courage",
   tag: "Exercice complet",
+  duration: "6 min",
   objective: "Identifier ses actes de courage, distinguer héroïsme et courage",
   intro: "Confondant courage et héroïsme, je peux croire à tort n'être pas courageux·se. Pourtant j'ai déjà pratiqué des actes de courage.",
   steps: [
@@ -1011,6 +1324,7 @@ const FULL_REVEIL = {
   key: 'au_reveil_full',
   title: "Au réveil",
   tag: "Exercice complet",
+  duration: "7 min",
   objective: "Être à l'écoute de ses besoins",
   intro: "Être à l'écoute de ses besoins profonds n'est pas naturel, c'est un apprentissage. La première étape est l'identification de nos états émotionnels.",
   steps: [
@@ -1035,6 +1349,7 @@ const BREATHING = {
   key: 'respiration',
   title: "Respiration anti-stress",
   tag: "1 minute",
+  duration: "1 min",
   objective: "Calmer le système nerveux en relançant une respiration profonde",
   phases: [
     { label: 'Inspire', seconds: 6 },
@@ -1049,6 +1364,7 @@ const FULL_PENSEES = {
   key: 'pensees_negatives_full',
   title: "Remettre en question mes pensées",
   tag: "Exercice complet · 10 min",
+  duration: "10 min",
   objective: "Prendre du recul sur une pensée qui fait mal, en s'appuyant sur les faits",
   intro: "Quand une émotion forte nous submerge, une pensée automatique en est souvent à l'origine — pas toujours vraie, même si elle en a l'air. Cet exercice aide à la déposer, l'examiner, et construire une vision plus équilibrée.",
   steps: [
@@ -1073,8 +1389,41 @@ const FULL_PENSEES = {
 
 const FULL_EXERCISES = [FULL_VOIX, FULL_COURAGE, FULL_REVEIL, FULL_PENSEES];
 
+// ============ HABITUDES : catégories par défaut, l'utilisateur peut en ajouter/retirer ============
+// Couleurs reprises de la maquette validée : chaque catégorie a une teinte discrète et non saturée,
+// cohérente avec l'identité bleu-violet de l'app. Le sevrage (tabac) garde une teinte sourde plutôt
+// qu'un vert "victoire" trop net, pour rester honnête sur la difficulté d'une dépendance.
+// frequency: nombre de fois par semaine visé (7 = quotidien, 1 à 6 = X fois par semaine)
+const DEFAULT_HABITS = [
+  { id: 'habit_sport', name: 'Activité physique', category: 'sport', icon: '🏃', color: '#5C7A6B', frequency: 3 },
+  { id: 'habit_medit', name: 'Méditation', category: 'meditation', icon: '◈', color: '#6B7A99', frequency: 7 },
+  { id: 'habit_tabac', name: 'Journée sans tabac', category: 'tabac', icon: '◐', color: '#A85C5C', frequency: 7 },
+  { id: 'habit_alim', name: 'Repas équilibré', category: 'alimentation', icon: '◇', color: '#8B6F52', frequency: 7 },
+  { id: 'habit_comport', name: 'Limiter les écrans le soir', category: 'comportement', icon: '⟡', color: '#7A6B99', frequency: 7 }
+];
+
+// Suggestions proposées en plus des habitudes par défaut, pour compléter son suivi sans tout personnaliser
+const HABIT_SUGGESTIONS = [
+  { id: 'habit_sommeil', name: 'Sommeil', category: 'sommeil', icon: '☾', color: '#5C6B99', frequency: 7 },
+  { id: 'habit_social', name: 'Social', category: 'social', icon: '◇', color: '#997A6B', frequency: 2 }
+];
+
+// Options de fréquence proposées à l'utilisateur (label affiché, valeur = nb de fois par semaine)
+const FREQUENCY_OPTIONS = [
+  { value: 7, label: '1x par jour' },
+  { value: 1, label: '1x par semaine' },
+  { value: 2, label: '2x par semaine' },
+  { value: 3, label: '3x par semaine' },
+  { value: 4, label: '4x par semaine' },
+  { value: 5, label: '5x par semaine' }
+];
+
+
+
 
 // ============ APP : état global + rendu ============
+
+
 const App = (() => {
   const root = document.getElementById('app');
   let state = {
@@ -1086,7 +1435,12 @@ const App = (() => {
     viewMonth: new Date(),  // mois affiché dans le calendrier
     selectedEntryDate: null,
     toastTimer: null,
-    reminderSettings: { enabled: false, hour: 20, minute: 0, lastFiredDate: null }
+    reminderSettings: { enabled: false, hour: 20, minute: 0, lastFiredDate: null },
+    decryptedCache: {},      // { 'YYYY-MM-DD': entryObj } -- cache mémoire, jamais persisté sur disque
+    habitsList: [],          // [{id, name, category, icon, color}] -- définitions des habitudes suivies
+    habitsIndex: {},         // { 'YYYY-MM-DD': {payload} } -- chiffré, coches par jour
+    habitsDecryptedCache: {}, // { 'YYYY-MM-DD': {habitId: true} } -- cache mémoire des coches déchiffrées
+    habitsEnabled: true      // si false : tracker masqué partout, mais l'historique reste intact et réaffichable
   };
 
   function dateKey(d) {
@@ -1114,6 +1468,7 @@ const App = (() => {
     const savedReminder = await Store.getMeta('reminder');
     if (savedReminder) state.reminderSettings = savedReminder;
     Reminder.startWatcher(() => state.reminderSettings, () => !!state.entriesIndex[state.todayKey]);
+    startInactivityWatcher();
 
     const verifier = await Store.getMeta('verifier');
     if (!verifier) {
@@ -1122,6 +1477,28 @@ const App = (() => {
       state.screen = 'lock';
     }
     render();
+  }
+
+  // ---------- VERROUILLAGE AUTOMATIQUE PAR INACTIVITÉ ----------
+  const AUTO_LOCK_MS = 5 * 60 * 1000; // 5 minutes
+  let inactivityTimer = null;
+
+  function resetInactivityTimer() {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    if (!state.password) return; // rien à verrouiller si déjà verrouillé
+    inactivityTimer = setTimeout(() => {
+      if (state.password) lockApp();
+    }, AUTO_LOCK_MS);
+  }
+
+  function startInactivityWatcher() {
+    ['pointerdown', 'keydown', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, resetInactivityTimer, { passive: true });
+    });
+    // aussi au retour au premier plan (l'utilisateur a pu laisser l'app en arrière-plan longtemps)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') resetInactivityTimer();
+    });
   }
 
   // ---------- SETUP (première utilisation) ----------
@@ -1133,7 +1510,9 @@ const App = (() => {
     await Store.setMeta('verifier', verifier);
     state.password = password;
     await loadEntriesIndex();
+    await loadHabitsList(password);
     state.screen = 'home';
+    resetInactivityTimer();
     render();
   }
 
@@ -1145,13 +1524,19 @@ const App = (() => {
     if (!ok) { errEl.textContent = "Mot de passe incorrect."; return; }
     state.password = password;
     await loadEntriesIndex();
+    await loadHabitsList(password);
     state.screen = 'home';
+    resetInactivityTimer();
     render();
   }
 
   function lockApp() {
     state.password = null;
     state.entriesIndex = {};
+    state.decryptedCache = {};
+    state.habitsList = [];
+    state.habitsIndex = {};
+    state.habitsDecryptedCache = {};
     state.screen = 'lock';
     render();
   }
@@ -1163,11 +1548,74 @@ const App = (() => {
     all.forEach(e => { state.entriesIndex[e.date] = e.payload; });
   }
 
-  async function decryptEntry(dateKeyStr) {
-    const payload = state.entriesIndex[dateKeyStr];
-    if (!payload) return null;
+  // La liste des habitudes suivies est chiffrée comme le reste : un nom d'habitude personnalisé
+  // ("Prendre mon traitement", "Ne pas boire") peut être une information sensible en soi.
+  async function loadHabitsList(password) {
+    const stored = await Store.getMeta('habitsList');
+    if (stored) {
+      try {
+        state.habitsList = await Crypto.decrypt(password, stored);
+      } catch (e) {
+        state.habitsList = DEFAULT_HABITS;
+      }
+    } else {
+      state.habitsList = DEFAULT_HABITS.map(h => ({ ...h, createdAt: state.todayKey }));
+      await saveHabitsList();
+    }
+    const allDays = await Store.getAllHabitDays();
+    state.habitsIndex = {};
+    allDays.forEach(d => { state.habitsIndex[d.date] = d.payload; });
+
+    const enabledSetting = await Store.getMeta('habitsEnabled');
+    state.habitsEnabled = enabledSetting !== null ? enabledSetting : true;
+  }
+
+  async function saveHabitsList() {
+    const encrypted = await Crypto.encrypt(state.password, state.habitsList, (await Store.getMeta('habitsList'))?.salt);
+    await Store.setMeta('habitsList', encrypted);
+  }
+
+  // Déchiffre les coches d'un jour donné, avec cache mémoire (même principe que decryptEntry)
+  async function decryptHabitDay(dateKeyStr) {
+    if (state.habitsDecryptedCache[dateKeyStr] !== undefined) {
+      return state.habitsDecryptedCache[dateKeyStr];
+    }
+    const payload = state.habitsIndex[dateKeyStr];
+    if (!payload) { state.habitsDecryptedCache[dateKeyStr] = null; return null; }
     try {
-      return await Crypto.decrypt(state.password, payload);
+      const decrypted = await Crypto.decrypt(state.password, payload);
+      state.habitsDecryptedCache[dateKeyStr] = decrypted;
+      return decrypted;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Coche/décoche une habitude pour une date donnée (aujourd'hui par défaut)
+  async function toggleHabit(habitId, dateKeyStr) {
+    const dStr = dateKeyStr || state.todayKey;
+    const current = (await decryptHabitDay(dStr)) || {};
+    if (current[habitId]) delete current[habitId];
+    else current[habitId] = true;
+    const encrypted = await Crypto.encrypt(state.password, current, state.habitsIndex[dStr]?.salt);
+    await Store.putHabitDay(dStr, encrypted);
+    state.habitsIndex[dStr] = encrypted;
+    state.habitsDecryptedCache[dStr] = current;
+  }
+
+  // Déchiffre une entrée en passant par un cache mémoire (jamais persisté), pour éviter de
+  // redéchiffrer la même entrée à chaque ouverture du calendrier/stats/ancrage. Le cache est
+  // vidé au verrouillage et mis à jour à chaque écriture, donc il ne sert jamais de contenu périmé.
+  async function decryptEntry(dateKeyStr) {
+    if (state.decryptedCache[dateKeyStr] !== undefined) {
+      return state.decryptedCache[dateKeyStr];
+    }
+    const payload = state.entriesIndex[dateKeyStr];
+    if (!payload) { state.decryptedCache[dateKeyStr] = null; return null; }
+    try {
+      const decrypted = await Crypto.decrypt(state.password, payload);
+      state.decryptedCache[dateKeyStr] = decrypted;
+      return decrypted;
     } catch(e) {
       return null;
     }
@@ -1189,12 +1637,13 @@ const App = (() => {
     const encrypted = await Crypto.encrypt(state.password, existing, state.entriesIndex[state.todayKey]?.salt);
     await Store.putEntry(state.todayKey, encrypted);
     state.entriesIndex[state.todayKey] = encrypted;
+    state.decryptedCache[state.todayKey] = existing; // le cache reflète immédiatement la nouvelle écriture
   }
 
   function moodScore(moodLabels) {
     if (!moodLabels || !moodLabels.length) return null;
     const low = ['Stressé·e','En colère','Déçu·e','Inquiet·ète','Découragé·e','Agité·e','Colère','Tristesse','Anxiété','Honte','Dégoût','Peur','Culpabilité','Déception'];
-    const high = ['Motivé·e','Joyeux·se','Paisible','Ravi·e','Fierté','Soulagement'];
+    const high = ['Motivé·e','Joyeux·se','Paisible','Ravi·e','Fierté','Soulagement','Confiant·e'];
     let score = 0;
     moodLabels.forEach(m => { if (low.includes(m)) score -= 1; if (high.includes(m)) score += 1; });
     return score;
@@ -1284,29 +1733,53 @@ const App = (() => {
     if (finishedFlow.kind === 'quick') maybeSuggestExercise(finishedFlow);
   }
 
-  // Suggère un exercice pertinent si les réponses signalent du stress/mal-être
+  // Suggère un exercice pertinent si les réponses signalent clairement du stress/mal-être.
+  // Le trigger reste volontairement conservateur : seuls des mots de détresse suffisamment
+  // spécifiques comptent (on évite "mal" ou "difficile" seuls, trop fréquents en usage normal).
   function maybeSuggestExercise(flow) {
     const score = moodScore(flow.mood);
     const answersText = Object.values(flow.answers).filter(v => typeof v === 'string').join(' ').toLowerCase();
-    const distressWords = ['stress','anxi','peur','mal','triste','seul','fatigu','honte','colère','difficile','angoiss'];
+    const distressWords = ['stress', 'anxi', 'angoiss', 'panique', 'épuisé', 'épuisée', 'submergé', 'submergée', 'insomni'];
     const textFlag = distressWords.some(w => answersText.includes(w));
-    if (score === null || (score >= 0 && !textFlag)) return;
-
-    let suggestion;
-    if (score !== null && score <= -2) {
-      suggestion = { label: 'Respirer 2 minutes', action: () => { state.screen = 'breathing'; render(); } };
-    } else if (answersText.includes('anxi') || answersText.includes('stress') || answersText.includes('peur')) {
-      suggestion = { label: 'Faire l\'exercice "Remettre en question mes pensées"', action: () => startFullFlow('pensees_negatives_full') };
+    // on ne propose que si l'humeur cochée est clairement négative (score <= -2), pas juste "un peu"
+    if (score === null || score > -2) return;
+    if (score <= -3 && textFlag && (answersText.includes('anxi') || answersText.includes('angoiss') || answersText.includes('panique'))) {
+      showExerciseSuggestionModal(FULL_PENSEES, "Prendre du recul sur une pensée qui fait mal");
+    } else if (score <= -3) {
+      showExerciseSuggestionModal(BREATHING, "Calmer le système nerveux en 1 minute");
     } else {
-      suggestion = { label: 'Faire l\'exercice "La petite voix malveillante"', action: () => startFullFlow('voix_malveillante_full') };
+      showExerciseSuggestionModal(FULL_VOIX, "Devenir bienveillant·e envers toi-même");
     }
+  }
 
-    showConfirmModal(
-      'Une journée un peu difficile ?',
-      "Tu veux prendre un moment pour souffler ou creuser un peu plus ?",
-      suggestion.action,
-      suggestion.label
-    );
+  // Modale de suggestion d'exercice : carte verticale, bénéfice + durée en bas, action puis annuler séparés
+  function showExerciseSuggestionModal(exercise, benefit) {
+    const overlay = el('div', 'modal-overlay');
+    const isBreathing = exercise.key === 'respiration';
+    overlay.innerHTML = `
+      <div class="modal-card suggestion-card">
+        <h3 class="modal-title">Une journée un peu difficile ?</h3>
+        <p class="modal-msg">Tu peux prendre un moment pour souffler ou creuser un peu plus.</p>
+        <div class="suggestion-exercise">
+          <div class="suggestion-exercise-title">${exercise.title}</div>
+          <div class="suggestion-exercise-footer">
+            <span class="suggestion-benefit">${benefit}</span>
+            <span class="suggestion-duration">${exercise.duration || ''}</span>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" id="suggestion-go">${isBreathing ? 'Respirer maintenant' : 'Faire cet exercice'}</button>
+        <button class="btn btn-ghost btn-block" id="suggestion-cancel" style="margin-top:10px;">Annuler</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('#suggestion-cancel').onclick = close;
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.querySelector('#suggestion-go').onclick = () => {
+      close();
+      if (isBreathing) { state.screen = 'breathing'; render(); }
+      else startFullFlow(exercise.key);
+    };
   }
 
   // ---------- BREATHING ----------
@@ -1545,12 +2018,16 @@ const App = (() => {
     if (state.screen === 'calendar') renderCalendar(content);
     if (state.screen === 'stats') renderStats(content);
     if (state.screen === 'anchor') renderAnchor(content);
+    if (state.screen === 'habits') {
+      if (state.habitsEnabled) renderHabits(content);
+      else { state.screen = 'home'; return render(); }
+    }
     if (state.screen === 'entry') renderEntryDetail(content);
     if (state.screen === 'settings') renderSettings(content);
 
     root.appendChild(content);
 
-    if (['home','calendar','stats','settings','anchor'].includes(state.screen)) {
+    if (['home','calendar','stats','settings','anchor','habits'].includes(state.screen)) {
       root.appendChild(renderBottomNav());
       root.appendChild(renderSOSButton());
     }
@@ -1643,6 +2120,13 @@ const App = (() => {
     anchorCard.innerHTML = `<h3>🌟 Mon ancrage</h3><p>Relis tes phrases bienveillantes et tes actes de courage passés.</p>`;
     anchorCard.onclick = () => { state.screen = 'anchor'; render(); };
     screen.appendChild(anchorCard);
+
+    if (state.habitsEnabled && state.habitsList.length) {
+      const habitsCard = el('div', 'mode-card habits-card');
+      habitsCard.innerHTML = `<h3>◎ Mes habitudes</h3><p>Sport, méditation, sommeil… suis ce qui compte pour toi au quotidien.</p>`;
+      habitsCard.onclick = () => { state.screen = 'habits'; render(); };
+      screen.appendChild(habitsCard);
+    }
 
     const labelEl = el('div', 'label');
     labelEl.textContent = 'Exercices complets';
@@ -1819,7 +2303,9 @@ const App = (() => {
       const cell = el('div', 'cal-cell');
       cell.textContent = day;
       if (dStr === state.todayKey) cell.classList.add('today');
-      if (state.entriesIndex[dStr]) {
+      const hasJournalEntry = !!state.entriesIndex[dStr];
+      const hasHabitEntry = state.habitsEnabled && !!state.habitsIndex[dStr];
+      if (hasJournalEntry || hasHabitEntry) {
         cell.classList.add('has-entry');
         cell.onclick = () => { state.selectedEntryDate = dStr; state.screen = 'entry'; render(); };
       }
@@ -1835,14 +2321,21 @@ const App = (() => {
     `;
     screen.appendChild(legend);
 
+    if (state.habitsEnabled && state.habitsList.length) {
+      const habitLegend = el('p', 'q-hint');
+      habitLegend.style.marginTop = '12px';
+      habitLegend.textContent = "Les petits points sous chaque case indiquent les habitudes cochées ce jour-là.";
+      screen.appendChild(habitLegend);
+    }
+
     content.appendChild(screen);
 
     top.querySelector('#cal-prev') && null;
     header.querySelector('#cal-prev').onclick = () => { state.viewMonth = new Date(year, month-1, 1); render(); };
     header.querySelector('#cal-next').onclick = () => { state.viewMonth = new Date(year, month+1, 1); render(); };
 
-    // appliquer la couleur d'humeur a posteriori (nécessite déchiffrement async léger)
-    colorMoodCells(grid, year, month);
+    // appliquer la couleur d'humeur, puis les points d'habitude (qui dépendent de la structure posée par la première)
+    colorMoodCells(grid, year, month).then(() => addHabitDots(grid, year, month));
   }
 
   async function colorMoodCells(grid, year, month) {
@@ -1851,9 +2344,13 @@ const App = (() => {
       const day = parseInt(cell.textContent.trim().split('\n')[0], 10);
       const dStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
       const entry = await decryptEntry(dStr);
-      if (!entry || !entry.sections) continue;
-      let scores = entry.sections.map(s => moodScore(s.mood)).filter(s => s !== null);
       cell.classList.remove('mood-low','mood-mid','mood-high');
+      if (!entry || !entry.sections) {
+        // jour sans entrée journal (habitudes cochées seules) : garder juste le numéro, pas de météo
+        cell.innerHTML = `<span class="cal-day-num">${day}</span>`;
+        continue;
+      }
+      let scores = entry.sections.map(s => moodScore(s.mood)).filter(s => s !== null);
       let weatherIcon = '☁️';
       let moodCls = 'mood-mid';
       if (scores.length) {
@@ -1867,10 +2364,34 @@ const App = (() => {
     }
   }
 
+  // Ajoute les petits points de catégorie d'habitude sous chaque case, après que colorMoodCells
+  // ait posé la structure de base (numéro + météo éventuelle) — ne l'écrase jamais, ne fait qu'ajouter.
+  async function addHabitDots(grid, year, month) {
+    if (!state.habitsEnabled || !state.habitsList.length) return;
+    const cells = grid.querySelectorAll('.cal-cell.has-entry');
+    for (const cell of cells) {
+      const dayNumEl = cell.querySelector('.cal-day-num');
+      if (!dayNumEl) continue;
+      const day = parseInt(dayNumEl.textContent, 10);
+      const dStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+      const checks = await decryptHabitDay(dStr);
+      if (!checks) continue;
+      const doneHabits = state.habitsList.filter(h => checks[h.id]);
+      if (!doneHabits.length) continue;
+      const dotsWrap = el('div', 'cal-habit-dots');
+      doneHabits.slice(0, 4).forEach(h => {
+        const dot = el('span', 'cal-habit-dot');
+        dot.style.background = h.color;
+        dotsWrap.appendChild(dot);
+      });
+      cell.appendChild(dotsWrap);
+    }
+  }
+
   // ---------- STATS ----------
   async function renderStats(content) {
     const top = el('div', 'topbar');
-    top.innerHTML = `<h1>Statistiques</h1><span style="width:38px;"></span>`;
+    top.innerHTML = `<h1>Suivi</h1><span style="width:38px;"></span>`;
     content.appendChild(top);
 
     const screen = el('div', 'screen');
@@ -1878,7 +2399,8 @@ const App = (() => {
     content.appendChild(screen);
 
     const allDates = Object.keys(state.entriesIndex).sort();
-    if (!allDates.length) {
+    const hasAnyHabitData = state.habitsEnabled && Object.keys(state.habitsIndex).length > 0;
+    if (!allDates.length && !hasAnyHabitData) {
       screen.innerHTML = `<div class="empty-state"><span class="ic">📈</span>Écris ta première entrée pour voir tes statistiques apparaître ici.</div>`;
       return;
     }
@@ -1957,6 +2479,101 @@ const App = (() => {
       <span><i class="legend-ic">☀️</i> léger</span>
     `;
     screen.appendChild(legend);
+
+    if (state.habitsEnabled && state.habitsList.length) {
+      screen.appendChild(await buildHabitsStatsSection(days));
+    }
+  }
+
+  // Construit la section "Objectifs des 30 derniers jours" : pour chaque habitude, compare
+  // le nombre de jours réalisés à l'objectif attendu compte tenu de sa fréquence visée
+  // (une habitude à 3x/semaine vise ~13 jours sur 30, pas 30 — le taux de réussite est calculé
+  // par rapport à CET objectif, pas par rapport à "tous les jours").
+  async function buildHabitsStatsSection(days) {
+    const wrap = el('div', '');
+
+    const label = el('div', 'label');
+    label.textContent = 'Objectifs · 30 derniers jours';
+    label.style.margin = '26px 0 12px';
+    wrap.appendChild(label);
+
+    const dayCache = {};
+    for (const d of days) { dayCache[d] = (await decryptHabitDay(d)) || {}; }
+
+    // Résumé global : combien d'habitudes atteignent leur objectif, et la meilleure série en cours
+    let habitsOnTrack = 0;
+    let bestStreak = 0;
+    state.habitsList.forEach(habit => {
+      const relevantDays = habit.createdAt ? days.filter(d => d >= habit.createdAt) : days;
+      const doneCount = relevantDays.filter(d => dayCache[d][habit.id]).length;
+      const freq = habit.frequency || 7;
+      const target = Math.max(1, Math.round((freq / 7) * relevantDays.length));
+      if (doneCount >= target) habitsOnTrack++;
+
+      let streak = 0;
+      let d = new Date();
+      if (!dayCache[state.todayKey]?.[habit.id]) d.setDate(d.getDate() - 1);
+      while (true) {
+        const k = dateKey(d);
+        if (dayCache[k] && dayCache[k][habit.id]) { streak++; d.setDate(d.getDate() - 1); }
+        else break;
+      }
+      if (streak > bestStreak) bestStreak = streak;
+    });
+
+    if (state.habitsList.length) {
+      const summary = el('div', 'habits-stats-summary');
+      summary.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-num">${habitsOnTrack}/${state.habitsList.length}</div>
+          <div class="stat-label">objectifs<br>en bonne voie</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${bestStreak}</div>
+          <div class="stat-label">meilleure série<br>en cours (j.)</div>
+        </div>
+      `;
+      wrap.appendChild(summary);
+    }
+
+    state.habitsList.forEach(habit => {
+      // Ne compte l'objectif que sur les jours où l'habitude existait déjà, pour ne pas pénaliser
+      // injustement une habitude tout juste créée avec un objectif calculé sur des jours passés
+      // où elle n'existait pas encore.
+      const relevantDays = habit.createdAt ? days.filter(d => d >= habit.createdAt) : days;
+      const doneCount = relevantDays.filter(d => dayCache[d][habit.id]).length;
+      const freq = habit.frequency || 7;
+      const expectedTarget = Math.max(1, Math.round((freq / 7) * relevantDays.length));
+      const rate = expectedTarget > 0 ? Math.min(100, Math.round((doneCount / expectedTarget) * 100)) : 0;
+
+      const card = el('div', 'habit-stat-card');
+      const barColor = habit.color;
+
+      // mini-frise de 30 points : les jours avant la création de l'habitude restent neutres (non applicables)
+      const dotsHtml = days.map(d => {
+        const notYetCreated = habit.createdAt && d < habit.createdAt;
+        const done = !notYetCreated && dayCache[d][habit.id];
+        return `<span class="habit-stat-dot${done ? ' done' : ''}${notYetCreated ? ' na' : ''}" style="--dot-color:${barColor}"></span>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="habit-stat-header">
+          <span class="habit-stat-icon" style="background:${habit.color}22; color:${habit.color};">${habit.icon}</span>
+          <div class="habit-stat-info">
+            <div class="habit-stat-name">${escapeHtml(habit.name)}</div>
+            <div class="habit-stat-sub">${doneCount} fois sur un objectif de ${expectedTarget} (${FREQUENCY_OPTIONS.find(f=>f.value===freq)?.label || freq+'x/sem.'})</div>
+          </div>
+          <div class="habit-stat-rate" style="color:${habit.color}">${rate}%</div>
+        </div>
+        <div class="habit-stat-bar-track">
+          <div class="habit-stat-bar-fill" style="width:${rate}%; background:${barColor};"></div>
+        </div>
+        <div class="habit-stat-dots">${dotsHtml}</div>
+      `;
+      wrap.appendChild(card);
+    });
+
+    return wrap;
   }
 
   function buildMoodChart(dailyScores, days) {
@@ -1997,6 +2614,252 @@ const App = (() => {
   // ---------- ANCRAGE DE CONFIANCE ----------
   // IDs des questions dont les réponses nourrissent la confiance en soi
   const ANCHOR_QUESTION_IDS = ['v3', 'courage_jour', 'c2', 'c3', 'c4', 'p9'];
+
+  // ---------- HABITUDES ----------
+  function getLastNDays(n) {
+    const days = [];
+    const today = new Date();
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      days.push(dateKey(d));
+    }
+    return days;
+  }
+  function getLast7Days() { return getLastNDays(7); }
+
+  async function renderHabits(content) {
+    const top = el('div', 'topbar');
+    top.innerHTML = `<h1>Mes habitudes</h1><button class="icon-btn" id="habit-add-btn">+</button>`;
+    content.appendChild(top);
+
+    const screen = el('div', 'screen');
+    screen.innerHTML = `<p class="q-hint">Chargement…</p>`;
+    content.appendChild(screen);
+
+    const last7 = getLast7Days();
+    const dayCache = {};
+    for (const d of last7) { dayCache[d] = (await decryptHabitDay(d)) || {}; }
+    const todayChecks = dayCache[state.todayKey] || {};
+
+    screen.innerHTML = '';
+
+    if (!state.habitsList.length) {
+      screen.innerHTML = `<div class="empty-state"><span class="ic">◎</span>Ajoute une première habitude à suivre avec le bouton +.</div>`;
+    } else {
+      // Vue d'ensemble : anneaux concentriques, un par habitude (jusqu'à 3 affichées dans les anneaux)
+      screen.appendChild(buildHabitsOverview(state.habitsList, dayCache, last7));
+
+      const label = el('div', 'section-label-habits');
+      label.textContent = "Aujourd'hui";
+      screen.appendChild(label);
+
+      state.habitsList.forEach(habit => {
+        screen.appendChild(buildHabitCard(habit, dayCache, last7, todayChecks));
+      });
+    }
+
+    const addLabel = el('div', 'section-label-habits');
+    addLabel.style.marginTop = '22px';
+    addLabel.textContent = 'Ajouter une catégorie';
+    screen.appendChild(addLabel);
+
+    const suggestions = el('div', 'habit-suggestions');
+    const existingIds = new Set(state.habitsList.map(h => h.id));
+    HABIT_SUGGESTIONS.filter(s => !existingIds.has(s.id)).forEach(s => {
+      const chip = el('div', 'habit-suggestion-chip');
+      chip.textContent = '+ ' + s.name;
+      chip.onclick = async () => {
+        state.habitsList.push({ ...s, createdAt: state.todayKey });
+        await saveHabitsList();
+        render();
+      };
+      suggestions.appendChild(chip);
+    });
+    const customChip = el('div', 'habit-suggestion-chip');
+    customChip.textContent = '+ Personnalisé';
+    customChip.onclick = () => showCustomHabitModal();
+    suggestions.appendChild(customChip);
+    screen.appendChild(suggestions);
+
+    top.querySelector('#habit-add-btn').onclick = () => showCustomHabitModal();
+  }
+
+  function buildHabitsOverview(habits, dayCache, last7) {
+    const wrap = el('div', 'overview-card');
+    const shown = habits.slice(0, 3);
+    const radii = [48, 38, 28];
+    const circumferences = radii.map(r => 2 * Math.PI * r);
+
+    let ringsHtml = '';
+    shown.forEach((h, i) => {
+      const doneCount = last7.filter(d => dayCache[d] && dayCache[d][h.id]).length;
+      const ratio = doneCount / 7;
+      const circ = circumferences[i];
+      const offset = circ * (1 - ratio);
+      ringsHtml += `
+        <circle class="ring-bg" cx="55" cy="55" r="${radii[i]}"/>
+        <circle class="ring-fg" cx="55" cy="55" r="${radii[i]}" stroke="${h.color}" stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"/>
+      `;
+    });
+
+    const legendHtml = shown.map(h => {
+      const doneCount = last7.filter(d => dayCache[d] && dayCache[d][h.id]).length;
+      return `<div class="legend-item"><span class="legend-dot" style="background:${h.color}"></span>${h.name}<span class="count">${doneCount}/7 j</span></div>`;
+    }).join('');
+
+    wrap.innerHTML = `
+      <div class="rings-wrap">
+        <svg viewBox="0 0 110 110">${ringsHtml}</svg>
+        <div class="rings-center">
+          <span class="num">${habits.length}</span>
+          <span class="lbl">Suivi${habits.length>1?'s':''}</span>
+        </div>
+      </div>
+      <div class="overview-legend">${legendHtml}</div>
+    `;
+    return wrap;
+  }
+
+  function buildHabitCard(habit, dayCache, last7, todayChecks) {
+    const card = el('div', 'habit-card');
+    const isDoneToday = !!todayChecks[habit.id];
+    const freq = habit.frequency || 7;
+
+    // calcule le streak de jours consécutifs se terminant aujourd'hui (ou hier si pas encore fait aujourd'hui)
+    let streak = 0;
+    let d = new Date();
+    if (!isDoneToday) d.setDate(d.getDate() - 1);
+    while (true) {
+      const k = dateKey(d);
+      const dayData = dayCache[k] !== undefined ? dayCache[k] : null;
+      if (dayData && dayData[habit.id]) { streak++; d.setDate(d.getDate() - 1); }
+      else break;
+    }
+
+    const doneThisWeek = last7.filter(dStr => dayCache[dStr] && dayCache[dStr][habit.id]).length;
+
+    const weekDotsHtml = last7.map(dStr => {
+      const done = dayCache[dStr] && dayCache[dStr][habit.id];
+      return `<span class="week-dot${done ? ' done' : ''}" style="--dot-color:${habit.color}"></span>`;
+    }).join('');
+
+    // Pour une habitude quotidienne : le streak de jours consécutifs prime.
+    // Pour une fréquence réduite (1 à 6x/semaine) : la progression sur les 7 derniers jours est plus parlante.
+    const freqLabel = FREQUENCY_OPTIONS.find(f => f.value === freq)?.label || `${freq}x par semaine`;
+    let subtitleHtml;
+    if (freq >= 7) {
+      subtitleHtml = streak > 0 ? `<b>${streak} jour${streak>1?'s':''}</b> de suite` : "Reprends aujourd'hui";
+    } else {
+      subtitleHtml = `<b>${doneThisWeek}/${freq}</b> cette semaine · objectif ${freqLabel}`;
+    }
+
+    card.innerHTML = `
+      <div class="habit-icon" style="background:${habit.color}22; color:${habit.color};">${habit.icon}</div>
+      <div class="habit-info">
+        <div class="habit-name">${escapeHtml(habit.name)}</div>
+        <div class="habit-streak">${subtitleHtml}</div>
+      </div>
+      <div class="habit-week">${weekDotsHtml}</div>
+      <button class="habit-check${isDoneToday ? ' checked' : ''}" style="--check-color:${habit.color}">✓</button>
+      <button class="habit-edit-icon" title="Modifier">✎</button>
+    `;
+
+    card.querySelector('.habit-check').onclick = async () => {
+      await toggleHabit(habit.id, state.todayKey);
+      render();
+    };
+    card.querySelector('.habit-edit-icon').onclick = () => showCustomHabitModal(habit);
+
+    return card;
+  }
+
+  function showCustomHabitModal(existingHabit) {
+    const isEdit = !!existingHabit;
+    const overlay = el('div', 'modal-overlay');
+    const colors = ['#5C7A6B','#6B7A99','#A85C5C','#8B6F52','#7A6B99','#B4634A'];
+    const currentFreq = existingHabit?.frequency || 7;
+
+    const freqOptionsHtml = FREQUENCY_OPTIONS.map(f =>
+      `<option value="${f.value}" ${f.value === currentFreq ? 'selected' : ''}>${f.label}</option>`
+    ).join('');
+
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <h3 class="modal-title">${isEdit ? 'Modifier l\'habitude' : 'Nouvelle habitude'}</h3>
+        <input type="text" id="custom-habit-name" placeholder="Nom de l'habitude" value="${isEdit ? escapeHtml(existingHabit.name) : ''}" style="margin-top:14px;">
+        <label class="habit-freq-label">Fréquence visée</label>
+        <select id="custom-habit-freq" class="habit-freq-select">${freqOptionsHtml}</select>
+        <div class="custom-habit-colors" id="custom-habit-colors"></div>
+        <div class="nav-row" style="margin-top:20px;">
+          <button class="btn btn-ghost btn-block" id="custom-habit-cancel">Annuler</button>
+          <button class="btn btn-primary btn-block" id="custom-habit-save">${isEdit ? 'Enregistrer' : 'Ajouter'}</button>
+        </div>
+        ${isEdit ? `<button class="btn btn-ghost btn-block habit-delete-btn" id="custom-habit-delete" style="margin-top:10px;">Supprimer cette habitude</button>` : ''}
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    let selectedColor = existingHabit?.color || colors[0];
+    const colorsWrap = overlay.querySelector('#custom-habit-colors');
+    colors.forEach((c) => {
+      const dot = el('div', 'custom-color-dot' + (c === selectedColor ? ' selected' : ''));
+      dot.style.background = c;
+      dot.onclick = () => {
+        selectedColor = c;
+        colorsWrap.querySelectorAll('.custom-color-dot').forEach(d => d.classList.remove('selected'));
+        dot.classList.add('selected');
+      };
+      colorsWrap.appendChild(dot);
+    });
+
+    const close = () => overlay.remove();
+    overlay.querySelector('#custom-habit-cancel').onclick = close;
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    overlay.querySelector('#custom-habit-save').onclick = async () => {
+      const nameInput = overlay.querySelector('#custom-habit-name');
+      const name = nameInput.value.trim();
+      if (!name) { nameInput.focus(); return; }
+      const freq = parseInt(overlay.querySelector('#custom-habit-freq').value, 10);
+
+      if (isEdit) {
+        const idx = state.habitsList.findIndex(h => h.id === existingHabit.id);
+        if (idx !== -1) {
+          state.habitsList[idx] = { ...state.habitsList[idx], name, color: selectedColor, frequency: freq };
+        }
+      } else {
+        state.habitsList.push({
+          id: 'habit_custom_' + Date.now(),
+          name,
+          category: 'personnalise',
+          icon: '⟡',
+          color: selectedColor,
+          frequency: freq,
+          createdAt: state.todayKey
+        });
+      }
+      await saveHabitsList();
+      close();
+      render();
+    };
+
+    if (isEdit) {
+      overlay.querySelector('#custom-habit-delete').onclick = () => {
+        showConfirmModal(
+          'Supprimer cette habitude ?',
+          "L'historique des jours déjà cochés pour cette habitude restera dans tes données passées, mais elle n'apparaîtra plus dans ton suivi actif.",
+          async () => {
+            state.habitsList = state.habitsList.filter(h => h.id !== existingHabit.id);
+            await saveHabitsList();
+            close();
+            render();
+          },
+          'Supprimer'
+        );
+      };
+    }
+  }
 
   async function renderAnchor(content) {
     const top = el('div', 'topbar');
@@ -2055,59 +2918,126 @@ const App = (() => {
     top.querySelector('#entry-back').onclick = () => { state.screen = 'calendar'; render(); };
 
     const entry = await decryptEntry(state.selectedEntryDate);
+    const habitChecks = state.habitsEnabled ? await decryptHabitDay(state.selectedEntryDate) : null;
     screen.innerHTML = '';
-    if (!entry || !entry.sections || !entry.sections.length) {
+
+    const hasJournal = entry && entry.sections && entry.sections.length;
+    const hasHabits = state.habitsEnabled && habitChecks && Object.keys(habitChecks).length;
+
+    if (!hasJournal && !hasHabits) {
       screen.innerHTML = `<div class="empty-state"><span class="ic">📭</span>Aucune entrée lisible pour ce jour.</div>`;
       return;
     }
 
     const detail = el('div', 'entry-detail');
-    const multipleSection = entry.sections.length > 1;
 
+    if (hasJournal) {
     entry.sections.forEach((section, sIdx) => {
       const isQuick = section.kind === 'quick';
       const sectionCard = el('div', 'entry-section' + (isQuick ? ' entry-section-quick' : ' entry-section-full'));
+      let editing = false;
 
-      const headerRow = el('div', 'entry-section-header');
-      const timeStr = section.ts ? new Date(section.ts).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }) : '';
-      headerRow.innerHTML = `
-        <span class="entry-section-icon">${isQuick ? '✦' : '🌿'}</span>
-        <span class="entry-section-title">${section.title || (isQuick ? 'Le point du jour' : 'Exercice')}</span>
-        ${timeStr ? `<span class="entry-section-time">${timeStr}</span>` : ''}
-      `;
-      sectionCard.appendChild(headerRow);
+      function renderSectionBody() {
+        sectionCard.innerHTML = '';
+        const headerRow = el('div', 'entry-section-header');
+        const timeStr = section.ts ? new Date(section.ts).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }) : '';
+        headerRow.innerHTML = `
+          <span class="entry-section-icon">${isQuick ? '✦' : '🌿'}</span>
+          <span class="entry-section-title">${section.title || (isQuick ? 'Le point du jour' : 'Exercice')}</span>
+          ${timeStr ? `<span class="entry-section-time">${timeStr}</span>` : ''}
+          <button class="icon-btn entry-edit-btn" id="edit-btn-${sIdx}" title="${editing ? 'Annuler' : 'Modifier'}">${editing ? '✕' : '✎'}</button>
+        `;
+        sectionCard.appendChild(headerRow);
 
-      Object.entries(section.answers).forEach(([qid, val]) => {
-        const isEmpty = val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
-        if (isEmpty) return;
-        const block = el('div', 'entry-block');
-        const qLabel = findQuestionLabel(qid);
+        const editableInputs = {};
 
-        if (Array.isArray(val)) {
-          // réponses à choix multiples (ex: humeur) affichées comme des badges plutôt qu'une liste à virgules
-          const chipsHtml = val.map(v => `<span class="entry-mood-chip">${escapeHtml(v)}</span>`).join('');
-          block.innerHTML = `
-            <div class="entry-q">${qLabel}</div>
-            <div class="entry-mood-chips">${chipsHtml}</div>
-          `;
-        } else if (typeof val === 'number') {
-          block.innerHTML = `
-            <div class="entry-q">${qLabel}</div>
-            <div class="entry-a entry-a-number">${val}%</div>
-          `;
-        } else {
-          block.innerHTML = `
-            <div class="entry-q">${qLabel}</div>
-            <div class="entry-a">${escapeHtml(val)}</div>
-          `;
+        Object.entries(section.answers).forEach(([qid, val]) => {
+          const isEmpty = val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length);
+          if (isEmpty && !editing) return;
+          const block = el('div', 'entry-block');
+          const qLabel = findQuestionLabel(qid);
+
+          if (Array.isArray(val)) {
+            // les émotions (chips) restent en lecture seule même en mode édition, pour limiter la complexité
+            const chipsHtml = val.map(v => `<span class="entry-mood-chip">${escapeHtml(v)}</span>`).join('');
+            block.innerHTML = `<div class="entry-q">${qLabel}</div><div class="entry-mood-chips">${chipsHtml}</div>`;
+          } else if (typeof val === 'number') {
+            // les scores (sliders) restent aussi en lecture seule dans cette première version
+            block.innerHTML = `<div class="entry-q">${qLabel}</div><div class="entry-a entry-a-number">${val}%</div>`;
+          } else if (editing) {
+            block.innerHTML = `<div class="entry-q">${qLabel}</div>`;
+            const ta = document.createElement('textarea');
+            ta.className = 'entry-edit-textarea';
+            ta.value = val || '';
+            block.appendChild(ta);
+            editableInputs[qid] = ta;
+          } else {
+            block.innerHTML = `<div class="entry-q">${qLabel}</div><div class="entry-a">${escapeHtml(val)}</div>`;
+          }
+          sectionCard.appendChild(block);
+        });
+
+        if (editing) {
+          const saveBtn = document.createElement('button');
+          saveBtn.className = 'btn btn-primary btn-block';
+          saveBtn.textContent = 'Enregistrer les modifications';
+          saveBtn.style.marginTop = '10px';
+          saveBtn.onclick = async () => {
+            Object.entries(editableInputs).forEach(([qid, ta]) => {
+              section.answers[qid] = ta.value.trim();
+            });
+            await saveEditedEntry(entry);
+            editing = false;
+            renderSectionBody();
+            showToast('Modifications enregistrées');
+          };
+          sectionCard.appendChild(saveBtn);
         }
-        sectionCard.appendChild(block);
-      });
 
+        sectionCard.querySelector(`#edit-btn-${sIdx}`).onclick = () => {
+          editing = !editing;
+          renderSectionBody();
+        };
+      }
+
+      renderSectionBody();
       detail.appendChild(sectionCard);
     });
+    } // fin du if (hasJournal)
+
+    if (hasHabits) {
+      const habitSection = el('div', 'entry-section entry-section-habits');
+      const headerRow = el('div', 'entry-section-header');
+      headerRow.innerHTML = `
+        <span class="entry-section-icon">◎</span>
+        <span class="entry-section-title">Habitudes du jour</span>
+      `;
+      habitSection.appendChild(headerRow);
+
+      state.habitsList.forEach(habit => {
+        const done = !!habitChecks[habit.id];
+        const row = el('div', 'habit-detail-row');
+        row.innerHTML = `
+          <span class="dot" style="background:${habit.color}"></span>
+          <span class="name">${escapeHtml(habit.name)}</span>
+          <span class="status ${done ? 'done' : 'missed'}">${done ? '✓ Fait' : '— Non coché'}</span>
+        `;
+        habitSection.appendChild(row);
+      });
+
+      detail.appendChild(habitSection);
+    }
 
     screen.appendChild(detail);
+  }
+
+  // Réécrit l'entrée du jour sélectionné après une édition, en réutilisant le sel existant
+  // pour rester compatible avec le déchiffrement des autres champs déjà stockés.
+  async function saveEditedEntry(entry) {
+    const encrypted = await Crypto.encrypt(state.password, entry, state.entriesIndex[state.selectedEntryDate]?.salt);
+    await Store.putEntry(state.selectedEntryDate, encrypted);
+    state.entriesIndex[state.selectedEntryDate] = encrypted;
+    state.decryptedCache[state.selectedEntryDate] = entry;
   }
 
   // Anciens IDs de questions qui n'existent plus dans le contenu actuel, mais qui peuvent apparaître
@@ -2126,6 +3056,74 @@ const App = (() => {
   }
 
   // ---------- SETTINGS ----------
+  // ---------- EXPORT / IMPORT ----------
+  // L'export ne contient QUE des données déjà chiffrées (mêmes payloads que ceux stockés en
+  // local) : le fichier exporté reste protégé par le mot de passe, même s'il est intercepté.
+  async function handleExportData() {
+    const all = await Store.getAllEntries();
+    const verifier = await Store.getMeta('verifier');
+    const backup = {
+      app: 'ancrage',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      verifier,
+      entries: all
+    };
+    const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = `ancrage-sauvegarde-${dateStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Sauvegarde téléchargée');
+  }
+
+  async function handleImportData(file) {
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const backup = JSON.parse(text);
+      if (!backup || backup.app !== 'ancrage' || !Array.isArray(backup.entries)) {
+        showToast('Fichier de sauvegarde invalide');
+        return;
+      }
+      // vérifie que la sauvegarde correspond bien au mot de passe actuellement déverrouillé,
+      // pour éviter d'importer des entrées chiffrées avec une autre clé et illisibles ensuite
+      if (backup.verifier) {
+        const ok = await Crypto.checkVerifier(state.password, backup.verifier);
+        if (!ok) {
+          showConfirmModal(
+            'Mot de passe différent',
+            "Cette sauvegarde a été faite avec un autre mot de passe. Les entrées importées resteront illisibles avec ton mot de passe actuel. Importer quand même ?",
+            () => doImportEntries(backup.entries),
+            'Importer quand même'
+          );
+          return;
+        }
+      }
+      await doImportEntries(backup.entries);
+    } catch (e) {
+      showToast('Impossible de lire ce fichier');
+    }
+  }
+
+  async function doImportEntries(entries) {
+    let count = 0;
+    for (const e of entries) {
+      if (!e.date || !e.payload) continue;
+      await Store.putEntry(e.date, e.payload);
+      state.entriesIndex[e.date] = e.payload;
+      delete state.decryptedCache[e.date]; // forcer un redéchiffrement propre après import
+      count++;
+    }
+    showToast(`${count} entrée${count>1?'s':''} importée${count>1?'s':''}`);
+    render();
+  }
+
   function renderSettings(content) {
     const top = el('div', 'topbar');
     top.innerHTML = `<h1>Réglages</h1><span style="width:38px;"></span>`;
@@ -2148,11 +3146,27 @@ const App = (() => {
       </div>
       ${r.enabled ? `<p class="q-hint" style="margin-bottom:18px;">Le rappel fonctionne tant que l'app reste ouverte en arrière-plan. Si tu l'as complètement fermée, ouvre-la une fois dans la journée pour qu'il se déclenche.</p>` : ''}
       <div class="settings-row">
-        <div><div class="t">Verrouiller maintenant</div><div class="d">Reviens à l'écran de mot de passe</div></div>
+        <div><div class="t">Tracker d'habitudes</div><div class="d">Sport, méditation, sommeil… ${state.habitsEnabled ? "Désactive-le si tu ne veux plus le voir — ton historique reste intact et réapparaît si tu le réactives." : "Actuellement masqué. Ton historique passé est conservé et réapparaîtra si tu le réactives."}</div></div>
+        <label class="switch">
+          <input type="checkbox" id="set-habits-toggle" ${state.habitsEnabled ? 'checked' : ''}>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div><div class="t">Verrouiller maintenant</div><div class="d">Reviens à l'écran de mot de passe. L'app se verrouille aussi automatiquement après 5 minutes d'inactivité.</div></div>
         <button class="btn btn-ghost btn-sm" id="set-lock">Verrouiller</button>
       </div>
       <div class="settings-row">
         <div><div class="t">Stockage</div><div class="d">100% local sur cet appareil, chiffré AES-256. Rien n'est envoyé en ligne.</div></div>
+      </div>
+      <div class="settings-row">
+        <div><div class="t">Exporter mes données</div><div class="d">Télécharge une sauvegarde chiffrée (fichier .json) à garder en lieu sûr.</div></div>
+        <button class="btn btn-ghost btn-sm" id="set-export">Exporter</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="t">Importer une sauvegarde</div><div class="d">Restaure des entrées depuis un fichier exporté. Nécessite le même mot de passe.</div></div>
+        <button class="btn btn-ghost btn-sm" id="set-import">Importer</button>
+        <input type="file" id="set-import-file" accept=".json" style="display:none;">
       </div>
       <div class="settings-row">
         <div><div class="t">Tout effacer</div><div class="d">Supprime définitivement toutes les entrées et le mot de passe.</div></div>
@@ -2160,6 +3174,11 @@ const App = (() => {
       </div>
     `;
     content.appendChild(screen);
+
+    screen.querySelector('#set-export').onclick = handleExportData;
+    const importInput = screen.querySelector('#set-import-file');
+    screen.querySelector('#set-import').onclick = () => importInput.click();
+    importInput.onchange = (e) => handleImportData(e.target.files[0]);
 
     const toggle = screen.querySelector('#set-reminder-toggle');
     const timeRow = screen.querySelector('#reminder-time-row');
@@ -2189,6 +3208,13 @@ const App = (() => {
       showToast('Heure mise à jour : ' + timeInput.value);
     };
 
+    screen.querySelector('#set-habits-toggle').onchange = async (e) => {
+      state.habitsEnabled = e.target.checked;
+      await Store.setMeta('habitsEnabled', state.habitsEnabled);
+      showToast(state.habitsEnabled ? 'Tracker d\'habitudes activé' : 'Tracker d\'habitudes désactivé');
+      render();
+    };
+
     screen.querySelector('#set-lock').onclick = lockApp;
     screen.querySelector('#set-wipe').onclick = () => {
       showConfirmModal(
@@ -2198,6 +3224,10 @@ const App = (() => {
           await Store.deleteAll();
           state.password = null;
           state.entriesIndex = {};
+          state.decryptedCache = {};
+          state.habitsList = [];
+          state.habitsIndex = {};
+          state.habitsDecryptedCache = {};
           state.reminderSettings = { enabled: false, hour: 20, minute: 0, lastFiredDate: null };
           state.screen = 'setup';
           render();
@@ -2211,11 +3241,12 @@ const App = (() => {
   function renderBottomNav() {
     const nav = el('div', 'bottom-nav');
     const items = [
-      { key:'home', ic:'✦', label:'Aujourd\'hui' },
+      { key:'home', ic:'✎', label:'Journal' },
       { key:'calendar', ic:'▦', label:'Calendrier' },
-      { key:'stats', ic:'📈', label:'Statistiques' },
+      { key:'habits', ic:'◎', label:'Habitudes' },
+      { key:'stats', ic:'∿', label:'Suivi' },
       { key:'settings', ic:'⚙', label:'Réglages' }
-    ];
+    ].filter(it => it.key !== 'habits' || state.habitsEnabled);
     items.forEach(it => {
       const btn = el('button', 'nav-btn' + (state.screen===it.key ? ' active':''));
       btn.innerHTML = `<span class="ic">${it.ic}</span>${it.label}`;
