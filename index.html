@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#12142A">
+<meta name="color-scheme" content="dark">
 <title>Ancrage — Journal intime</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
@@ -12,7 +13,7 @@
 
 :root{
   --ink:#1C1B29;
-  --ink-soft:#68637A;
+  --ink-soft:#544F68;
   --cream:#EDE9E3;
   --paper:#E1DCD3;
   --terracotta:#B4634A;
@@ -27,11 +28,18 @@
 
 *{box-sizing:border-box; margin:0; padding:0;}
 
+html{
+  background:var(--ink);
+  color-scheme: dark;
+  height:100%;
+}
+
 body{
   font-family:'Inter', sans-serif;
   background:var(--ink);
   color:var(--cream);
   min-height:100vh;
+  min-height:100dvh;
   -webkit-tap-highlight-color:transparent;
   overscroll-behavior:none;
 }
@@ -40,6 +48,7 @@ body{
   max-width:480px;
   margin:0 auto;
   min-height:100vh;
+  min-height:100dvh;
   background:var(--cream);
   color:var(--ink);
   display:flex;
@@ -71,6 +80,7 @@ p{ line-height:1.55; }
   padding:28px 22px 100px;
   animation:fadeIn .35s ease;
 }
+.screen-settings{ padding-bottom:110px; }
 @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
 
 .btn{
@@ -85,7 +95,7 @@ p{ line-height:1.55; }
 }
 .btn:active{ transform:scale(0.97); }
 .btn-primary{ background:var(--terracotta); color:var(--ink); }
-.btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--line); }
+.btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--ink-soft); }
 .btn-block{ width:100%; }
 .btn-sm{ padding:10px 18px; font-size:0.85rem; }
 
@@ -420,12 +430,15 @@ textarea{
 
 /* ---------- Settings ---------- */
 .settings-row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px 0; border-bottom:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:16px 14px;
+  margin-bottom:10px;
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-radius:14px;
 }
-.settings-row:last-child{ border-bottom:none; }
-.settings-row .t{ font-weight:600; font-size:0.95rem; }
-.settings-row .d{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; max-width:210px; }
+.settings-row .t{ font-weight:700; font-size:0.95rem; color:var(--ink); }
+.settings-row .d{ font-size:0.78rem; color:var(--ink-soft); margin-top:3px; max-width:210px; line-height:1.4; }
 
 .switch{ position:relative; display:inline-block; width:46px; height:27px; flex-shrink:0; }
 .switch input{ opacity:0; width:0; height:0; }
@@ -2029,6 +2042,8 @@ const App = (() => {
 
     if (['home','calendar','stats','settings','anchor','habits'].includes(state.screen)) {
       root.appendChild(renderBottomNav());
+    }
+    if (['home','calendar','stats','anchor','habits'].includes(state.screen)) {
       root.appendChild(renderSOSButton());
     }
   }
@@ -3129,7 +3144,7 @@ const App = (() => {
     top.innerHTML = `<h1>Réglages</h1><span style="width:38px;"></span>`;
     content.appendChild(top);
 
-    const screen = el('div', 'screen');
+    const screen = el('div', 'screen screen-settings');
     const r = state.reminderSettings;
     const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
     screen.innerHTML = `
