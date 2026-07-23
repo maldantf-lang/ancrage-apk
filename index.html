@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#F2EBDE">
+<meta name="theme-color" content="#F7F6F3">
 <meta name="color-scheme" content="light">
 <title>Ancrage — Journal intime</title>
 <link rel="manifest" href="manifest.json">
@@ -12,26 +12,24 @@
 <style>@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-  --ink:#211C18;
-  --ink-soft:#635746;
-  --cream:#F2EBDE;
-  --paper:#E9DFCC;
-  --terracotta:#C99A6C;
-  --terracotta-deep:#A97A4C;
-  --sage:#8B9A87;
-  --line:#D6C9AE;
-  --deep:#2E2620;
-  --nightviolet:#3A2E22;
+  --ink:#3A3844;
+  --ink-soft:#5E5C6A;
+  --cream:#FAF8F5;
+  --paper:#F0EEE8;
+  --terracotta:#D8B896;
+  --terracotta-deep:#B08A62;
+  --sage:#A8BBAE;
+  --line:#E2DFD6;
   --radius:14px;
   --font-display:'Newsreader', serif;
-  --breath-inspire:#5C7A82;
-  --breath-bloque:#7A6A52;
-  --breath-expire:#C99A6C;
-  --habit-sport:#6B8A6B;
-  --habit-meditation:#6E7A93;
-  --habit-tabac:#A8695C;
-  --habit-alimentation:#8B6F52;
-  --habit-comportement:#8A7593;
+  --breath-inspire:#A3C0C7;
+  --breath-bloque:#C2B8C9;
+  --breath-expire:#D8B896;
+  --habit-sport:#A8BBAE;
+  --habit-meditation:#A3B3C7;
+  --habit-tabac:#D4A79E;
+  --habit-alimentation:#C7B79E;
+  --habit-comportement:#C2B8C9;
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
@@ -138,7 +136,7 @@ textarea{
   padding:32px;
   text-align:center;
   gap:22px;
-  background:linear-gradient(180deg, var(--cream) 0%, #EFE4D0 100%);
+  background:linear-gradient(180deg, var(--cream) 0%, #EEEBE3 100%);
 }
 .lock-mark{
   width:64px; height:64px;
@@ -332,9 +330,9 @@ textarea{
 }
 .cal-cell .cal-day-num{ font-size:0.74rem; line-height:1; }
 .cal-cell .cal-weather{ font-size:0.95rem; line-height:1; margin-top:1px; }
-.cal-cell.has-entry.mood-low{ background:#F3E1D4; border-color:#E3B78F; }
-.cal-cell.has-entry.mood-mid{ background:#EDE4D2; border-color:var(--line); }
-.cal-cell.has-entry.mood-high{ background:#DEE6D9; border-color:#B8C7AE; }
+.cal-cell.has-entry.mood-low{ background:#EFE3DA; border-color:#DDC5AE; }
+.cal-cell.has-entry.mood-mid{ background:var(--paper); border-color:var(--line); }
+.cal-cell.has-entry.mood-high{ background:#E2E8DE; border-color:#C7D4C2; }
 .cal-cell.today{ box-shadow:0 0 0 2px var(--ink); }
 
 .legend{ display:flex; gap:14px; margin-top:18px; font-size:0.75rem; color:var(--ink-soft); }
@@ -560,7 +558,7 @@ textarea{
   justify-content:center;
   padding-top:30px;
   text-align:center;
-  background:linear-gradient(180deg, var(--cream) 0%, #EFE3CE 100%);
+  background:linear-gradient(180deg, var(--cream) 0%, #E8E3D8 100%);
 }
 .breath-tagline{
   font-family:var(--font-display);
@@ -579,7 +577,7 @@ textarea{
   margin:0 auto;
   border-radius:28px;
   overflow:hidden;
-  background:linear-gradient(180deg, #EFE3CE 0%, #E5D5B8 100%);
+  background:linear-gradient(180deg, #E8E3D8 0%, #DDD5C4 100%);
   transition:background 1.2s ease;
 }
 .wave-svg{ width:100%; height:100%; display:block; }
@@ -616,19 +614,19 @@ textarea{
 .wave-stage.idle #wave-dot{ fill:#C9B99C; filter:none; }
 
 /* Inspire : vert-sauge apaisé, la fraîcheur d'un air qui entre sans être froid */
-.wave-stage.inspire{ background:linear-gradient(180deg, #DCE6D8 0%, #C7D9C0 100%); }
+.wave-stage.inspire{ background:linear-gradient(180deg, #E4EBE1 0%, #D5E0D0 100%); }
 .wave-stage.inspire .wave-svg path{ stroke:var(--breath-inspire); }
 .wave-stage.inspire .wave-center{ color:#3D5C48; }
 .wave-stage.inspire #wave-dot{ fill:var(--breath-inspire); filter:drop-shadow(0 0 6px rgba(92,122,130,0.6)); }
 
 /* Bloque : bois patiné, suspendu et stable */
-.wave-stage.bloque{ background:linear-gradient(180deg, #E4DAC7 0%, #D6C7AC 100%); }
+.wave-stage.bloque{ background:linear-gradient(180deg, #E9E3DA 0%, #DDD4C4 100%); }
 .wave-stage.bloque .wave-svg path{ stroke:var(--breath-bloque); }
 .wave-stage.bloque .wave-center{ color:#4A3E2C; }
 .wave-stage.bloque #wave-dot{ fill:var(--breath-bloque); filter:drop-shadow(0 0 6px rgba(122,106,82,0.6)); }
 
 /* Expire : ambre-bougie, la chaleur qui se diffuse au relâchement */
-.wave-stage.expire{ background:linear-gradient(180deg, #F2DEC0 0%, #E9CBA0 100%); }
+.wave-stage.expire{ background:linear-gradient(180deg, #EFE2CC 0%, #E5D2B3 100%); }
 .wave-stage.expire .wave-svg path{ stroke:var(--breath-expire); }
 .wave-stage.expire .wave-center{ color:#8A5C2F; }
 .wave-stage.expire #wave-dot{ fill:var(--breath-expire); filter:drop-shadow(0 0 6px rgba(201,154,108,0.6)); }
@@ -2644,7 +2642,7 @@ const App = (() => {
       const x = pad + i * stepX;
       const y = scoreToY(s);
       pathPoints.push(`${x},${y}`);
-      const color = s < -0.3 ? '#C96F42' : s > 0.3 ? '#6B8A6B' : '#C9B99C';
+      const color = s < -0.3 ? '#C79488' : s > 0.3 ? '#8FA396' : '#D4CFC3';
       dots.push(`<circle cx="${x}" cy="${y}" r="3.5" fill="${color}" />`);
     });
 
@@ -2653,7 +2651,7 @@ const App = (() => {
     const svg = `
       <svg viewBox="0 0 ${w} ${h}" class="mood-chart-svg" xmlns="http://www.w3.org/2000/svg">
         <line x1="${pad}" y1="${h/2}" x2="${w-pad}" y2="${h/2}" stroke="#D6C9AE" stroke-width="1" stroke-dasharray="3,4" />
-        ${pathD ? `<path d="${pathD}" fill="none" stroke="#A97A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />` : ''}
+        ${pathD ? `<path d="${pathD}" fill="none" stroke="#B8895C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />` : ''}
         ${dots.join('')}
       </svg>
     `;
@@ -2858,7 +2856,7 @@ const App = (() => {
   function showCustomHabitModal(existingHabit) {
     const isEdit = !!existingHabit;
     const overlay = el('div', 'modal-overlay');
-    const colors = ['#6B8A6B','#6E7A93','#A8695C','#8B6F52','#8A7593','#C99A6C'];
+    const colors = ['#8FA396','#8FA0B3','#C79488','#B3A088','#A399A8','#D4A574'];
     const currentFreq = existingHabit?.frequency || 7;
 
     const freqOptionsHtml = FREQUENCY_OPTIONS.map(f =>
@@ -3261,7 +3259,7 @@ const App = (() => {
       </div>
       <div class="settings-row">
         <div><div class="t">Tout effacer</div><div class="d">Supprime définitivement toutes les entrées et le mot de passe.</div></div>
-        <button class="btn btn-ghost btn-sm" id="set-wipe" style="color:#C96F42; border-color:#C96F42;">Effacer</button>
+        <button class="btn btn-ghost btn-sm" id="set-wipe" style="color:#9C6353; border-color:#9C6353;">Effacer</button>
       </div>
     `;
     content.appendChild(screen);
