@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#12142A">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#F2EBDE">
+<meta name="color-scheme" content="light">
 <title>Ancrage — Journal intime</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
@@ -12,25 +12,33 @@
 <style>@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-  --ink:#1C1B29;
-  --ink-soft:#544F68;
-  --cream:#EDE9E3;
-  --paper:#E1DCD3;
-  --terracotta:#B4634A;
-  --terracotta-deep:#964D38;
-  --sage:#8B7FA8;
-  --line:#D3CCC0;
-  --deep:#26243A;
-  --nightviolet:#332F4D;
+  --ink:#211C18;
+  --ink-soft:#635746;
+  --cream:#F2EBDE;
+  --paper:#E9DFCC;
+  --terracotta:#C99A6C;
+  --terracotta-deep:#A97A4C;
+  --sage:#8B9A87;
+  --line:#D6C9AE;
+  --deep:#2E2620;
+  --nightviolet:#3A2E22;
   --radius:14px;
   --font-display:'Newsreader', serif;
+  --breath-inspire:#5C7A82;
+  --breath-bloque:#7A6A52;
+  --breath-expire:#C99A6C;
+  --habit-sport:#6B8A6B;
+  --habit-meditation:#6E7A93;
+  --habit-tabac:#A8695C;
+  --habit-alimentation:#8B6F52;
+  --habit-comportement:#8A7593;
 }
 
 *{box-sizing:border-box; margin:0; padding:0;}
 
 html{
-  background:var(--ink);
-  color-scheme: dark;
+  background:var(--cream);
+  color-scheme: light;
   height:100%;
 }
 
@@ -79,6 +87,7 @@ p{ line-height:1.55; }
   flex-direction:column;
   padding:28px 22px 100px;
   animation:fadeIn .35s ease;
+  background:var(--cream);
 }
 .screen-settings{ padding-bottom:110px; }
 @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
@@ -129,7 +138,7 @@ textarea{
   padding:32px;
   text-align:center;
   gap:22px;
-  background:linear-gradient(180deg, var(--cream) 0%, #EEEEF4 100%);
+  background:linear-gradient(180deg, var(--cream) 0%, #EFE4D0 100%);
 }
 .lock-mark{
   width:64px; height:64px;
@@ -203,7 +212,7 @@ textarea{
   justify-content:space-between;
 }
 .streak-card .num{ font-family:var(--font-display); font-size:2.1rem; font-weight:600; color:var(--terracotta); }
-.streak-card .txt{ font-size:0.78rem; color:#B3B3D9; max-width:140px; }
+.streak-card .txt{ font-size:0.78rem; color:#D4C4AC; max-width:140px; }
 
 .mode-card{
   border-radius:var(--radius);
@@ -230,7 +239,7 @@ textarea{
 /* ---------- Question flow ---------- */
 .progress-dots{ display:flex; gap:6px; margin-bottom:22px; }
 .progress-dots span{ height:5px; flex:1; background:rgba(128,128,160,0.35); border-radius:3px; overflow:hidden; }
-.progress-dots span i{ display:block; height:100%; background:#A6A4E0; width:0%; transition:width .3s ease; box-shadow:0 0 6px rgba(166,164,224,0.5); }
+.progress-dots span i{ display:block; height:100%; background:var(--terracotta); width:0%; transition:width .3s ease; box-shadow:0 0 6px rgba(201,154,108,0.5); }
 
 .q-block{ flex:1; display:flex; flex-direction:column; }
 .q-eyebrow{ color:var(--terracotta-deep); font-weight:700; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; }
@@ -323,8 +332,8 @@ textarea{
 .cal-cell .cal-day-num{ font-size:0.74rem; line-height:1; }
 .cal-cell .cal-weather{ font-size:0.95rem; line-height:1; margin-top:1px; }
 .cal-cell.has-entry.mood-low{ background:#F3E1D4; border-color:#E3B78F; }
-.cal-cell.has-entry.mood-mid{ background:#E6E6F2; border-color:var(--line); }
-.cal-cell.has-entry.mood-high{ background:#DBDBEF; border-color:#B0AFDA; }
+.cal-cell.has-entry.mood-mid{ background:#EDE4D2; border-color:var(--line); }
+.cal-cell.has-entry.mood-high{ background:#DEE6D9; border-color:#B8C7AE; }
 .cal-cell.today{ box-shadow:0 0 0 2px var(--ink); }
 
 .legend{ display:flex; gap:14px; margin-top:18px; font-size:0.75rem; color:var(--ink-soft); }
@@ -472,10 +481,10 @@ textarea{
 .stat-label{ font-size:0.72rem; color:var(--ink-soft); margin-top:4px; line-height:1.3; font-weight:500; }
 
 .mood-highlight{
-  background:#5F5B94;
+  background:var(--deep);
   border-radius:var(--radius); padding:16px 18px; color:var(--cream);
 }
-.mood-highlight .label{ color:#DEDEF5; }
+.mood-highlight .label{ color:#D8C8B0; }
 .mood-highlight-val{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; margin-top:4px; }
 
 .mood-chart{ background:var(--paper); border:1.5px solid var(--line); border-radius:var(--radius); padding:14px 10px; }
@@ -536,19 +545,19 @@ textarea{
 
 /* ---------- Respiration ---------- */
 .mode-card.breath-card{
-  background:#3D3A5C;
-  border:none;
-  border-left:3px solid var(--sage);
-  color:var(--cream);
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-left:3px solid var(--breath-inspire);
+  color:var(--ink);
 }
-.mode-card.breath-card p{ opacity:0.9; }
+.mode-card.breath-card p{ color:var(--ink-soft); }
 
 .breathing-screen{
   align-items:center;
   justify-content:center;
   padding-top:30px;
   text-align:center;
-  background:linear-gradient(180deg, var(--cream) 0%, #E9E9F5 100%);
+  background:linear-gradient(180deg, var(--cream) 0%, #EFE3CE 100%);
 }
 .breath-tagline{
   font-family:var(--font-display);
@@ -567,7 +576,7 @@ textarea{
   margin:0 auto;
   border-radius:28px;
   overflow:hidden;
-  background:linear-gradient(180deg, #E9E9F5 0%, #DCDCEE 100%);
+  background:linear-gradient(180deg, #EFE3CE 0%, #E5D5B8 100%);
   transition:background 1.2s ease;
 }
 .wave-svg{ width:100%; height:100%; display:block; }
@@ -576,13 +585,13 @@ textarea{
   stroke-width:3;
   stroke-linecap:round;
   stroke-linejoin:round;
-  stroke:#8B8ABA;
+  stroke:var(--terracotta-deep);
   opacity:0.55;
   transition:stroke 1s ease;
 }
 #wave-dot{
-  fill:#8B8ABA;
-  filter:drop-shadow(0 0 6px rgba(139,138,186,0.7));
+  fill:var(--terracotta-deep);
+  filter:drop-shadow(0 0 6px rgba(169,122,76,0.7));
   transition:fill 1s ease;
 }
 .wave-center{
@@ -599,27 +608,27 @@ textarea{
 .wave-center span:first-child{ font-size:1.2rem; font-weight:600; }
 .wave-center .breath-count{ font-size:1.7rem; font-weight:700; margin-top:4px; opacity:0.9; }
 
-.wave-stage.idle .wave-svg path{ stroke:#C7C6E0; }
+.wave-stage.idle .wave-svg path{ stroke:#C9B99C; }
 .wave-stage.idle .wave-center{ color:var(--ink-soft); }
-.wave-stage.idle #wave-dot{ fill:#C7C6E0; filter:none; }
+.wave-stage.idle #wave-dot{ fill:#C9B99C; filter:none; }
 
-/* Inspire : bleu doux et pastel */
-.wave-stage.inspire{ background:linear-gradient(180deg, #DCE9EE 0%, #C7DBE2 100%); }
-.wave-stage.inspire .wave-svg path{ stroke:#2E5F73; }
-.wave-stage.inspire .wave-center{ color:#1F4655; }
-.wave-stage.inspire #wave-dot{ fill:#2E5F73; filter:drop-shadow(0 0 6px rgba(46,95,115,0.6)); }
+/* Inspire : vert-sauge apaisé, la fraîcheur d'un air qui entre sans être froid */
+.wave-stage.inspire{ background:linear-gradient(180deg, #DCE6D8 0%, #C7D9C0 100%); }
+.wave-stage.inspire .wave-svg path{ stroke:var(--breath-inspire); }
+.wave-stage.inspire .wave-center{ color:#3D5C48; }
+.wave-stage.inspire #wave-dot{ fill:var(--breath-inspire); filter:drop-shadow(0 0 6px rgba(92,122,130,0.6)); }
 
-/* Bloque : lavande douce, suspendue */
-.wave-stage.bloque{ background:linear-gradient(180deg, #DEDCE9 0%, #CBC8DD 100%); }
-.wave-stage.bloque .wave-svg path{ stroke:#4A4870; }
-.wave-stage.bloque .wave-center{ color:#2B2A4A; }
-.wave-stage.bloque #wave-dot{ fill:#4A4870; filter:drop-shadow(0 0 6px rgba(74,72,112,0.6)); }
+/* Bloque : bois patiné, suspendu et stable */
+.wave-stage.bloque{ background:linear-gradient(180deg, #E4DAC7 0%, #D6C7AC 100%); }
+.wave-stage.bloque .wave-svg path{ stroke:var(--breath-bloque); }
+.wave-stage.bloque .wave-center{ color:#4A3E2C; }
+.wave-stage.bloque #wave-dot{ fill:var(--breath-bloque); filter:drop-shadow(0 0 6px rgba(122,106,82,0.6)); }
 
-/* Expire : abricot doux, vague qui s'apaise */
-.wave-stage.expire{ background:linear-gradient(180deg, #F7E3D3 0%, #F0D0B4 100%); }
-.wave-stage.expire .wave-svg path{ stroke:#E08A5B; }
-.wave-stage.expire .wave-center{ color:#A9612F; }
-.wave-stage.expire #wave-dot{ fill:#E08A5B; filter:drop-shadow(0 0 6px rgba(224,138,91,0.6)); }
+/* Expire : ambre-bougie, la chaleur qui se diffuse au relâchement */
+.wave-stage.expire{ background:linear-gradient(180deg, #F2DEC0 0%, #E9CBA0 100%); }
+.wave-stage.expire .wave-svg path{ stroke:var(--breath-expire); }
+.wave-stage.expire .wave-center{ color:#8A5C2F; }
+.wave-stage.expire #wave-dot{ fill:var(--breath-expire); filter:drop-shadow(0 0 6px rgba(201,154,108,0.6)); }
 
 .breath-legend{
   display:flex;
@@ -641,7 +650,7 @@ textarea{
   transition:background .3s ease, transform .3s ease;
 }
 .breath-round-dot.active{ background:var(--sage); transform:scale(1.3); }
-.breath-round-dot.done{ background:#B8B7DC; }
+.breath-round-dot.done{ background:#C9B99C; }
 .breath-round-label{
   font-family:var(--font-display);
   font-size:0.85rem;
@@ -703,7 +712,7 @@ textarea{
 }
 .suggestion-benefit{
   font-size:0.78rem;
-  color:#C9C6DE;
+  color:#D8C8B0;
   line-height:1.3;
 }
 .suggestion-duration{
@@ -724,7 +733,7 @@ textarea{
   width:54px; height:54px;
   border-radius:50%;
   border:none;
-  background:linear-gradient(135deg, #7A79B8, var(--sage));
+  background:linear-gradient(135deg, #6B8A6B, var(--sage));
   color:var(--cream);
   font-size:1.4rem;
   display:flex; align-items:center; justify-content:center;
@@ -739,12 +748,12 @@ textarea{
 
 /* ---------- Carte ancrage (accueil) ---------- */
 .mode-card.anchor-card{
-  background:#514876;
-  border:none;
-  border-left:3px solid #8B7FA8;
-  color:var(--cream);
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-left:3px solid var(--terracotta);
+  color:var(--ink);
 }
-.mode-card.anchor-card p{ opacity:0.88; }
+.mode-card.anchor-card p{ color:var(--ink-soft); }
 
 /* ---------- Écran ancrage ---------- */
 .anchor-item{
@@ -770,12 +779,12 @@ textarea{
 
 /* ---------- Carte d'accès Habitudes (accueil) ---------- */
 .mode-card.habits-card{
-  background:#3D3A5C;
-  border:none;
-  border-left:3px solid #6B7A99;
-  color:var(--cream);
+  background:var(--paper);
+  border:1.5px solid var(--line);
+  border-left:3px solid var(--sage);
+  color:var(--ink);
 }
-.mode-card.habits-card p{ opacity:0.9; }
+.mode-card.habits-card p{ color:var(--ink-soft); }
 
 /* ---------- Écran Habitudes ---------- */
 .overview-card{
@@ -797,10 +806,10 @@ textarea{
   color:var(--cream);
 }
 .rings-center .num{ font-family:var(--font-display); font-size:1.5rem; font-weight:600; }
-.rings-center .lbl{ font-size:0.6rem; color:#B8B4D6; text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+.rings-center .lbl{ font-size:0.6rem; color:#D4C4AC; text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
 
 .overview-legend{ display:flex; flex-direction:column; gap:8px; flex:1; min-width:0; }
-.legend-item{ display:flex; align-items:center; gap:7px; font-size:0.76rem; color:#D8D5EC; }
+.legend-item{ display:flex; align-items:center; gap:7px; font-size:0.76rem; color:#E4D8C0; }
 .legend-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 .legend-item .count{ margin-left:auto; font-weight:600; color:var(--cream); font-size:0.72rem; }
 
@@ -889,9 +898,20 @@ textarea{
   color:var(--ink);
 }
 .habit-freq-select:focus{ outline:none; border-color:var(--terracotta); }
-.habit-delete-btn{ color:#A85C5C; border-color:#A85C5C; }
+.habit-delete-btn{ color:var(--habit-tabac); border-color:var(--habit-tabac); }
 
 .habit-suggestions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.archived-habit-row{
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px;
+  margin-bottom:8px;
+  background:var(--paper);
+  border:1.5px dashed var(--line);
+  border-radius:14px;
+  opacity:0.85;
+}
+.archived-habit-name{ flex:1; font-size:0.9rem; color:var(--ink-soft); }
 .habit-suggestion-chip{
   background:var(--paper);
   border:1.5px dashed var(--line);
@@ -928,7 +948,7 @@ textarea{
 .cal-habit-dot{ width:4px; height:4px; border-radius:50%; }
 
 /* ---------- Section habitudes dans le détail de jour ---------- */
-.entry-section-habits{ border-left:3px solid #6B7A99; }
+.entry-section-habits{ border-left:3px solid var(--habit-meditation); }
 .habit-detail-row{
   display:flex; align-items:center; gap:10px;
   padding:8px 0;
@@ -937,7 +957,7 @@ textarea{
 .habit-detail-row .dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
 .habit-detail-row .name{ flex:1; }
 .habit-detail-row .status{ font-size:0.75rem; font-weight:600; }
-.habit-detail-row .status.done{ color:#5C7A6B; }
+.habit-detail-row .status.done{ color:var(--habit-sport); }
 .habit-detail-row .status.missed{ color:var(--ink-soft); }
 </style>
 </head>
@@ -1563,6 +1583,13 @@ const App = (() => {
 
   // La liste des habitudes suivies est chiffrée comme le reste : un nom d'habitude personnalisé
   // ("Prendre mon traitement", "Ne pas boire") peut être une information sensible en soi.
+  // Habitudes actives uniquement (exclut celles archivées après suppression) : à utiliser pour
+  // tout écran actif — accueil, coche du jour, calendrier, statistiques. Le détail d'un jour
+  // passé garde volontairement l'accès à state.habitsList complet pour afficher l'historique.
+  function getActiveHabits() {
+    return state.habitsList.filter(h => !h.archived);
+  }
+
   async function loadHabitsList(password) {
     const stored = await Store.getMeta('habitsList');
     if (stored) {
@@ -1826,9 +1853,9 @@ const App = (() => {
           </div>
         </div>
         <div class="breath-legend">
-          <span><i style="background:#2E5F73"></i> Inspire</span>
-          <span><i style="background:#4A4870"></i> Bloque</span>
-          <span><i style="background:#E08A5B"></i> Expire</span>
+          <span><i style="background:var(--breath-inspire)"></i> Inspire</span>
+          <span><i style="background:var(--breath-bloque)"></i> Bloque</span>
+          <span><i style="background:var(--breath-expire)"></i> Expire</span>
         </div>
         <div class="nav-row" style="margin-top:30px;">
           <button class="btn btn-primary btn-block" id="breath-start">Commencer</button>
@@ -2024,6 +2051,8 @@ const App = (() => {
     content.style.flex = '1';
     content.style.display = 'flex';
     content.style.flexDirection = 'column';
+    content.style.background = 'var(--cream)';
+    content.style.minHeight = '100%';
 
     if (state.screen === 'home') renderHome(content);
     if (state.screen === 'flow') renderFlow(content);
@@ -2108,7 +2137,7 @@ const App = (() => {
     const streak = computeStreak();
     const streakCard = el('div', 'streak-card');
     streakCard.innerHTML = `
-      <div><div class="num">${streak}</div><div class="label" style="color:#B3B3D9;">jour${streak>1?'s':''} de suite</div></div>
+      <div><div class="num">${streak}</div><div class="label" style="color:#D4C4AC;">jour${streak>1?'s':''} de suite</div></div>
       <div class="txt">Reviens chaque jour, même deux minutes suffisent.</div>
     `;
     screen.appendChild(streakCard);
@@ -2136,7 +2165,7 @@ const App = (() => {
     anchorCard.onclick = () => { state.screen = 'anchor'; render(); };
     screen.appendChild(anchorCard);
 
-    if (state.habitsEnabled && state.habitsList.length) {
+    if (state.habitsEnabled && getActiveHabits().length) {
       const habitsCard = el('div', 'mode-card habits-card');
       habitsCard.innerHTML = `<h3>◎ Mes habitudes</h3><p>Sport, méditation, sommeil… suis ce qui compte pour toi au quotidien.</p>`;
       habitsCard.onclick = () => { state.screen = 'habits'; render(); };
@@ -2336,7 +2365,7 @@ const App = (() => {
     `;
     screen.appendChild(legend);
 
-    if (state.habitsEnabled && state.habitsList.length) {
+    if (state.habitsEnabled && getActiveHabits().length) {
       const habitLegend = el('p', 'q-hint');
       habitLegend.style.marginTop = '12px';
       habitLegend.textContent = "Les petits points sous chaque case indiquent les habitudes cochées ce jour-là.";
@@ -2382,7 +2411,8 @@ const App = (() => {
   // Ajoute les petits points de catégorie d'habitude sous chaque case, après que colorMoodCells
   // ait posé la structure de base (numéro + météo éventuelle) — ne l'écrase jamais, ne fait qu'ajouter.
   async function addHabitDots(grid, year, month) {
-    if (!state.habitsEnabled || !state.habitsList.length) return;
+    const activeHabits = getActiveHabits();
+    if (!state.habitsEnabled || !activeHabits.length) return;
     const cells = grid.querySelectorAll('.cal-cell.has-entry');
     for (const cell of cells) {
       const dayNumEl = cell.querySelector('.cal-day-num');
@@ -2391,7 +2421,7 @@ const App = (() => {
       const dStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
       const checks = await decryptHabitDay(dStr);
       if (!checks) continue;
-      const doneHabits = state.habitsList.filter(h => checks[h.id]);
+      const doneHabits = activeHabits.filter(h => checks[h.id]);
       if (!doneHabits.length) continue;
       const dotsWrap = el('div', 'cal-habit-dots');
       doneHabits.slice(0, 4).forEach(h => {
@@ -2495,7 +2525,7 @@ const App = (() => {
     `;
     screen.appendChild(legend);
 
-    if (state.habitsEnabled && state.habitsList.length) {
+    if (state.habitsEnabled && getActiveHabits().length) {
       screen.appendChild(await buildHabitsStatsSection(days));
     }
   }
@@ -2506,6 +2536,7 @@ const App = (() => {
   // par rapport à CET objectif, pas par rapport à "tous les jours").
   async function buildHabitsStatsSection(days) {
     const wrap = el('div', '');
+    const activeHabits = getActiveHabits();
 
     const label = el('div', 'label');
     label.textContent = 'Objectifs · 30 derniers jours';
@@ -2518,7 +2549,7 @@ const App = (() => {
     // Résumé global : combien d'habitudes atteignent leur objectif, et la meilleure série en cours
     let habitsOnTrack = 0;
     let bestStreak = 0;
-    state.habitsList.forEach(habit => {
+    activeHabits.forEach(habit => {
       const relevantDays = habit.createdAt ? days.filter(d => d >= habit.createdAt) : days;
       const doneCount = relevantDays.filter(d => dayCache[d][habit.id]).length;
       const freq = habit.frequency || 7;
@@ -2536,11 +2567,11 @@ const App = (() => {
       if (streak > bestStreak) bestStreak = streak;
     });
 
-    if (state.habitsList.length) {
+    if (activeHabits.length) {
       const summary = el('div', 'habits-stats-summary');
       summary.innerHTML = `
         <div class="stat-card">
-          <div class="stat-num">${habitsOnTrack}/${state.habitsList.length}</div>
+          <div class="stat-num">${habitsOnTrack}/${activeHabits.length}</div>
           <div class="stat-label">objectifs<br>en bonne voie</div>
         </div>
         <div class="stat-card">
@@ -2551,7 +2582,7 @@ const App = (() => {
       wrap.appendChild(summary);
     }
 
-    state.habitsList.forEach(habit => {
+    activeHabits.forEach(habit => {
       // Ne compte l'objectif que sur les jours où l'habitude existait déjà, pour ne pas pénaliser
       // injustement une habitude tout juste créée avec un objectif calculé sur des jours passés
       // où elle n'existait pas encore.
@@ -2608,7 +2639,7 @@ const App = (() => {
       const x = pad + i * stepX;
       const y = scoreToY(s);
       pathPoints.push(`${x},${y}`);
-      const color = s < -0.3 ? '#C96F42' : s > 0.3 ? '#5C5B99' : '#C7C6E0';
+      const color = s < -0.3 ? '#C96F42' : s > 0.3 ? '#6B8A6B' : '#C9B99C';
       dots.push(`<circle cx="${x}" cy="${y}" r="3.5" fill="${color}" />`);
     });
 
@@ -2616,8 +2647,8 @@ const App = (() => {
 
     const svg = `
       <svg viewBox="0 0 ${w} ${h}" class="mood-chart-svg" xmlns="http://www.w3.org/2000/svg">
-        <line x1="${pad}" y1="${h/2}" x2="${w-pad}" y2="${h/2}" stroke="#D6D6E8" stroke-width="1" stroke-dasharray="3,4" />
-        ${pathD ? `<path d="${pathD}" fill="none" stroke="#5C5B99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />` : ''}
+        <line x1="${pad}" y1="${h/2}" x2="${w-pad}" y2="${h/2}" stroke="#D6C9AE" stroke-width="1" stroke-dasharray="3,4" />
+        ${pathD ? `<path d="${pathD}" fill="none" stroke="#A97A4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />` : ''}
         ${dots.join('')}
       </svg>
     `;
@@ -2656,20 +2687,21 @@ const App = (() => {
     const dayCache = {};
     for (const d of last7) { dayCache[d] = (await decryptHabitDay(d)) || {}; }
     const todayChecks = dayCache[state.todayKey] || {};
+    const activeHabits = getActiveHabits();
 
     screen.innerHTML = '';
 
-    if (!state.habitsList.length) {
+    if (!activeHabits.length) {
       screen.innerHTML = `<div class="empty-state"><span class="ic">◎</span>Ajoute une première habitude à suivre avec le bouton +.</div>`;
     } else {
       // Vue d'ensemble : anneaux concentriques, un par habitude (jusqu'à 3 affichées dans les anneaux)
-      screen.appendChild(buildHabitsOverview(state.habitsList, dayCache, last7));
+      screen.appendChild(buildHabitsOverview(activeHabits, dayCache, last7));
 
       const label = el('div', 'section-label-habits');
       label.textContent = "Aujourd'hui";
       screen.appendChild(label);
 
-      state.habitsList.forEach(habit => {
+      activeHabits.forEach(habit => {
         screen.appendChild(buildHabitCard(habit, dayCache, last7, todayChecks));
       });
     }
@@ -2696,6 +2728,35 @@ const App = (() => {
     customChip.onclick = () => showCustomHabitModal();
     suggestions.appendChild(customChip);
     screen.appendChild(suggestions);
+
+    const archivedHabits = state.habitsList.filter(h => h.archived);
+    if (archivedHabits.length) {
+      const archivedLabel = el('div', 'section-label-habits');
+      archivedLabel.style.marginTop = '22px';
+      archivedLabel.textContent = 'Habitudes archivées';
+      screen.appendChild(archivedLabel);
+
+      const archivedHint = el('p', 'q-hint');
+      archivedHint.textContent = "Leur historique reste visible dans le calendrier. Tu peux les reprendre à tout moment.";
+      archivedHint.style.marginBottom = '10px';
+      screen.appendChild(archivedHint);
+
+      archivedHabits.forEach(habit => {
+        const row = el('div', 'archived-habit-row');
+        row.innerHTML = `
+          <span class="habit-icon" style="background:${habit.color}22; color:${habit.color};">${habit.icon}</span>
+          <span class="archived-habit-name">${escapeHtml(habit.name)}</span>
+          <button class="btn btn-ghost btn-sm">Reprendre</button>
+        `;
+        row.querySelector('button').onclick = async () => {
+          const idx = state.habitsList.findIndex(h => h.id === habit.id);
+          if (idx !== -1) state.habitsList[idx] = { ...state.habitsList[idx], archived: false };
+          await saveHabitsList();
+          render();
+        };
+        screen.appendChild(row);
+      });
+    }
 
     top.querySelector('#habit-add-btn').onclick = () => showCustomHabitModal();
   }
@@ -2792,7 +2853,7 @@ const App = (() => {
   function showCustomHabitModal(existingHabit) {
     const isEdit = !!existingHabit;
     const overlay = el('div', 'modal-overlay');
-    const colors = ['#5C7A6B','#6B7A99','#A85C5C','#8B6F52','#7A6B99','#B4634A'];
+    const colors = ['#6B8A6B','#6E7A93','#A8695C','#8B6F52','#8A7593','#C99A6C'];
     const currentFreq = existingHabit?.frequency || 7;
 
     const freqOptionsHtml = FREQUENCY_OPTIONS.map(f =>
@@ -2863,9 +2924,13 @@ const App = (() => {
       overlay.querySelector('#custom-habit-delete').onclick = () => {
         showConfirmModal(
           'Supprimer cette habitude ?',
-          "L'historique des jours déjà cochés pour cette habitude restera dans tes données passées, mais elle n'apparaîtra plus dans ton suivi actif.",
+          "L'historique des jours déjà cochés pour cette habitude restera visible dans le détail de tes journées passées, mais elle n'apparaîtra plus dans ton suivi actif ni dans les statistiques.",
           async () => {
-            state.habitsList = state.habitsList.filter(h => h.id !== existingHabit.id);
+            // Archivage plutôt que suppression : les coches passées restent lisibles dans le
+            // détail de chaque jour, mais l'habitude disparaît des écrans actifs (accueil,
+            // coche du jour, calendrier, statistiques en cours).
+            const idx = state.habitsList.findIndex(h => h.id === existingHabit.id);
+            if (idx !== -1) state.habitsList[idx] = { ...state.habitsList[idx], archived: true };
             await saveHabitsList();
             close();
             render();
@@ -3029,7 +3094,13 @@ const App = (() => {
       `;
       habitSection.appendChild(headerRow);
 
-      state.habitsList.forEach(habit => {
+      // Le détail d'un jour passé garde l'accès à TOUTES les habitudes (y compris archivées),
+      // pour honorer l'historique — mais une habitude archivée ne s'affiche que si elle a
+      // effectivement été cochée ce jour-là, pour ne pas polluer chaque jour d'anciennes
+      // catégories qu'on ne suit plus activement.
+      state.habitsList
+        .filter(habit => !habit.archived || habitChecks[habit.id])
+        .forEach(habit => {
         const done = !!habitChecks[habit.id];
         const row = el('div', 'habit-detail-row');
         row.innerHTML = `
