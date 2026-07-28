@@ -42,8 +42,8 @@ html{
 
 body{
   font-family:'Inter', sans-serif;
-  background:var(--ink);
-  color:var(--cream);
+  background:var(--cream);
+  color:var(--ink);
   min-height:100vh;
   min-height:100dvh;
   -webkit-tap-highlight-color:transparent;
@@ -537,10 +537,11 @@ textarea{
 
 .toast{
   position:fixed; bottom:96px; left:50%; transform:translateX(-50%);
-  background:var(--ink); color:var(--cream);
+  background:var(--paper); color:var(--ink); border:1.5px solid var(--line);
   padding:11px 20px; border-radius:999px; font-size:0.85rem;
   z-index:50; opacity:0; transition:opacity .25s ease;
   pointer-events:none;
+  box-shadow:0 6px 20px -6px rgba(58,56,68,0.25);
 }
 .toast.show{ opacity:1; }
 
@@ -2046,7 +2047,12 @@ const App = (() => {
   // ---------- RENDER ROOT ----------
   function render() {
     root.innerHTML = '';
-    if (state.screen === 'loading') return;
+    if (state.screen === 'loading') {
+      const loadingDiv = document.createElement('div');
+      loadingDiv.style.cssText = 'flex:1; min-height:100vh; min-height:100dvh; background:var(--cream);';
+      root.appendChild(loadingDiv);
+      return;
+    }
     if (state.screen === 'setup') return renderSetup();
     if (state.screen === 'lock') return renderLock();
 
